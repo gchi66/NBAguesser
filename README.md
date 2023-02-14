@@ -1,2 +1,3 @@
-# NBAguesser-
-Guess the player based on different statistics 
+# NBAguesser
+
+Guess the NBA player based on a set of statistics. 
