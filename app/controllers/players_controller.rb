@@ -1,4 +1,21 @@
 class PlayersController < ApplicationController
+  def index
+
+  end
+  def player_stats
+    season = params[:season] # Retrieve the selected season from the params
+
+    # Fetch player statistics for the selected season using the get_player_stats method
+    @player_stats = get_player_stats(season)
+  end
+
+  private
+
+  def get_player_stats(season)
+    # Implementation to fetch player statistics for the selected season
+    # ...
+  end
+
   def show
     # Fetch player details using player ID
     @player = NBAApi.get_player(params[:id])
@@ -14,7 +31,5 @@ class PlayersController < ApplicationController
     @fg_percentage = NBAApi.get_player_fg_percentage(params[:id])
   end
 
-  # Add more actions as needed for different types of player data
 
-  # ...
 end

@@ -50,7 +50,19 @@ def get_player_stats(season)
 
   response = http.request(request)
   data = JSON.parse(response.read_body)
-  return data
+  processed_data = data['api']['statistics'].map do |player|
+    {
+      name: player['name'],
+      team: player['team'],
+      image_url: player['image_url'],
+      points: player['pts'],
+      rebounds: player['reb'],
+      assists: player['ast']
+      # Other player stats...
+    }
+  end
+
+  return processed_data
 end
 
 

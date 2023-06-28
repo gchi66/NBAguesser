@@ -1,1 +1,7 @@
 <h1>Welcome to the NBA player guessing game!</h1>
+
+
+<%= simple_form_for :season, url: player_stats_path, method: :get do |f| %>
+  <%= f.input :season, collection: ['2020-2021', '2019-2020', '2018-2019'], prompt: 'Select a season' %>
+  <%= f.button :submit, 'Get Player Stats' %>
+<% end %>
