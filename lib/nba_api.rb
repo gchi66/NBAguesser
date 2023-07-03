@@ -4,6 +4,26 @@ require 'openssl'
 require 'json'
 
 class NbaApi
+
+  def process_player_stats(response)
+    players = response['response']
+    return [] if players.nil? || players.empty?
+
+    players.map do |player_data|
+      player = player_data['player']
+      team = player_data['team']
+      {
+        name: "#{player['firstname']} #{player['lastname']}",
+        team: team['name'],
+        image_url: team['logo'],
+        points: player_data['points'],
+        rebounds: player_data['totReb'],
+        assists: player_data['assists']
+        # Add other necessary player stats
+      }
+    end
+  end
+
   def get_player_stats(season)
     puts "Fetching player stats for season: #{season}"
     player_id = rand(1..450)
@@ -32,18 +52,21 @@ class NbaApi
     puts "Response Body:"
     puts response.body
     data = JSON.parse(response.read_body)
-    processed_data = data['response'].map do |player|
-      {
-        name: player['name'],
-        team: player['team'],
-        image_url: player['image_url'],
-        points: player['pts'],
-        rebounds: player['reb'],
-        assists: player['ast']
-        # Other player stats...
-      }
+    processed_data = data['response'].map do |player_data|
+      team = player_data['team']
+      player = player_data['player']
+    {
+      name: "#{player['firstname']} #{player['lastname']}",
+      team: team['name'],
+      image_url: team['logo'],
+      points: player_data['points'],
+      rebounds: player_data['totReb'],
+      assists: player_data['assists']
+      # Add other necessary player stats
+    }
     end
 
-    return processed_data
+    return processed_data[0]
+
   end
 end
