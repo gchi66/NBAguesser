@@ -1,10 +1,20 @@
 <h1>Welcome to the NBA player guessing game!</h1>
 
 
-<%= simple_form_for :season, url: player_stats_path, method: :get do |f| %>
-  <%= f.input :season, collection: ['2020-2021', '2019-2020', '2018-2019'], prompt: 'Select a season' %>
+<%= simple_form_for :season, url: root_path, :html => { :remote => true, :method => :get } do |f| %>
+  <%= f.input :season, collection: ['2021', '2020', '2019'], prompt: 'Select a season' %>
   <%= f.button :submit, 'Get Player Stats' %>
 <% end %>
 
 
-<%= render 'pages/players/player_stats' %>
+<div class="player-card">
+  <% random_player = @player_stats.sample if @player_stats.present? %>
+  <% if random_player %>
+    <img src="<%= random_player['image_url'] %>" alt="Player Image">
+    <h2><%= random_player['name'] %></h2>
+    <p>Team: <span class="stat"><%= random_player['team'] %></span></p>
+    <p>Points: <span class="stat"><%= random_player['points'] %></span></p>
+    <p>Rebounds: <span class="stat"><%= random_player['rebounds'] %></span></p>
+    <p>Assists: <span class="stat"><%= random_player['assists'] %></span></p>
+  <% end %>
+</div>

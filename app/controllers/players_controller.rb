@@ -3,15 +3,17 @@ class PlayersController < ApplicationController
 
   end
 
-  def player_stats
-    season = params[:season] # Retrieve the selected season from the params
-    # Fetch player statistics for the selected season using the get_player_stats method
-    @player_stats = get_player_stats(season)
-    respond_to do |format|
-      format.html {}
-      format.json { render json: @player_stats }
-    end
-  end
+  # def player_stats
+  #   season = params[:season][:season] # Retrieve the selected season from the params
+  #   # Fetch player statistics for the selected season using the get_player_stats method
+  #   @player_stats = get_player_stats(season)
+  #   # respond_to do |format|
+  #   #   format.html
+  #   #   format.json { render json: @player_stats }
+  #   # end
+  #   puts @player_stats
+  #   # render 'pages/home'
+  # end
 
   private
 
