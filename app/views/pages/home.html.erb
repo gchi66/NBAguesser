@@ -2,14 +2,14 @@
 
 
 <%= simple_form_for :season, url: root_path, :html => { :remote => true, :method => :get } do |f| %>
-  <%= f.input :season, collection: ['2021', '2020', '2019'], prompt: 'Select a season' %>
+  <%= f.input :season, collection: ['2021', '2020', '2019', '2018'], prompt: 'Select a season' %>
   <%= f.button :submit, 'Get Player Stats' %>
 <% end %>
 
 
 <div class="player-card">
   <% if @random_player %>
-    <img src="<%= @random_player['image_url'] %>" alt="Player Image">
+    <%# <img src="<%= @random_player['image_url'] " alt="Player Image"> %>
     <h2><%= @random_player[:name] %></h2>
     <p>Team: <span class="stat"><%= @random_player[:team] %></span></p>
     <p>Points: <span class="stat"><%= @random_player[:points] %></span></p>

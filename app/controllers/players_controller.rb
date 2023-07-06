@@ -17,7 +17,7 @@ class PlayersController < ApplicationController
 
   private
 
-  def get_player_stats(season)
+  def get_player_stats(player_id, season)
     # Implementation to fetch player statistics for the selected season
     # ...
   end
