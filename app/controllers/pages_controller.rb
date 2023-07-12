@@ -1,14 +1,63 @@
 require 'nba_api'
-
+require 'nokogiri'
+require 'open-uri'
 class PagesController < ApplicationController
+
   def home
-    season = params.dig(:season, :season)
-    api = NbaApi.new
-    @random_player = api.get_player_stats(season)
+    if params[:season].present? && params[:season][:season].present?
+      season = params[:season][:season]
+
+      url = "https://www.basketball-reference.com/leagues/NBA_#{season}_per_game.html"
+
+      doc = Nokogiri::HTML(URI.open(url))
+
+      puts doc
+
+      players_row = doc.css('tr.full_table')
+
+      selected_rows = players_row[1..380].to_a
+
+      player_row = selected_rows.sample
+
+      puts "HERE IS THE FUCKING PLAYER ROW YOU CUNTBAG:"
+      puts player_row
+
+      if player_row
+        @random_player = parse_player_data(player_row)
+      else
+        @random_player = {}
+      end
+    end
+    render 'home'
   end
+
+  def parse_player_data(player_row)
+
+
+    {
+      name: player_row.at('td[data-stat="player"]').text,
+      team: player_row.at('td[data-stat="team_id"] a').text,
+      points: player_row.at('td[data-stat="pts_per_g"]').text,
+      rebounds: player_row.at('td[data-stat="trb_per_g"]').text,
+      assists: player_row.at('td[data-stat="ast_per_g"]').text
+    }
+  end
+
+  # private
+
+  # def random_player(season)
+
+
+  # end
+
 end
 
 
+  # def home
+  #   season = params.dig(:season, :season)
+  #   api = NbaApi.new
+  #   @random_player = api.get_player_stats(season)
+  # end
 
 # def process_player_stats(response)
 #   players = response['response']

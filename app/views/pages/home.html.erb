@@ -2,7 +2,7 @@
 
 
 <%= simple_form_for :season, url: root_path, :html => { :remote => true, :method => :get } do |f| %>
-  <%= f.input :season, collection: ['2021', '2020', '2019', '2018'], prompt: 'Select a season' %>
+  <%= f.input :season, collection: (1950..2023).to_a.reverse.map(&:to_s), prompt: 'Select a season' %>
   <%= f.button :submit, 'Get Player Stats' %>
 <% end %>
 
