@@ -3,20 +3,57 @@
 
 <%= simple_form_for :season, url: root_path, :html => { :remote => true, :method => :get } do |f| %>
   <%= f.input :season, collection: (1950..2023).to_a.reverse.map(&:to_s), prompt: 'Select a season' %>
-  <%= f.button :submit, 'Get Player Stats' %>
+  <%= f.button :submit, 'Play!' %>
 <% end %>
 
-
+<h1>Who is this player?</h1>
 <div class="player-card">
-  <% if @random_player %>
-    <%# <img src="<%= @random_player['image_url'] " alt="Player Image"> %>
-    <h2><%= @random_player[:name] %></h2>
-    <p>Team: <span class="stat"><%= @random_player[:team] %></span></p>
-    <p>Points: <span class="stat"><%= @random_player[:points] %></span></p>
-    <p>Rebounds: <span class="stat"><%= @random_player[:rebounds] %></span></p>
-    <p>Assists: <span class="stat"><%= @random_player[:assists] %></span></p>
+  <% if @correct_player %>
+    <% if @correct_player[:image_url].present? %>
+      <img src="<%= @correct_player[:image_url] %>" alt="Player Image">
+    <% else %>
+      <p>No Image Available</p>
+    <% end %>
+    <h2><%= @correct_player[:name] %></h2>
+    <p>Team: <span class="stat"><%= @correct_player[:team] %></span></p>
+    <p>Points: <span class="stat"><%= @correct_player[:points] %></span></p>
+    <p>Rebounds: <span class="stat"><%= @correct_player[:rebounds] %></span></p>
+    <p>Assists: <span class="stat"><%= @correct_player[:assists] %></span></p>
   <% end %>
 </div>
+
+<h1>Choose from these four!</h1>
+
+<div class="player-card">
+  <% if @guess_player %>
+    <% if @guess_player[:image_url].present? %>
+      <img src="<%= fetch_player_image(@guess_player[:profile_url]) %>" alt="Player Image">
+    <% else %>
+      <p>No Image Available</p>
+    <% end %>
+    <h2><%= @guess_player[:name] %></h2>
+    <p>Team: <span class="stat"><%= @guess_player[:team] %></span></p>
+    <p>Points: <span class="stat"><%= @guess_player[:points] %></span></p>
+    <p>Rebounds: <span class="stat"><%= @guess_player[:rebounds] %></span></p>
+    <p>Assists: <span class="stat"><%= @guess_player[:assists] %></span></p>
+  <% end %>
+</div>
+
+<div class="player-card">
+  <% if @correct_player %>
+    <% if @correct_player[:image_url].present? %>
+      <img src="<%= @correct_player[:image_url] %>" alt="Player Image">
+    <% else %>
+      <p>No Image Available</p>
+    <% end %>
+    <h2><%= @correct_player[:name] %></h2>
+    <p>Team: <span class="stat"><%= @correct_player[:team] %></span></p>
+    <p>Points: <span class="stat"><%= @correct_player[:points] %></span></p>
+    <p>Rebounds: <span class="stat"><%= @correct_player[:rebounds] %></span></p>
+    <p>Assists: <span class="stat"><%= @correct_player[:assists] %></span></p>
+  <% end %>
+</div>
+
 
 
 <%= link_to "Try again!", root_path, class: "button-main"%>
