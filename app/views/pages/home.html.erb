@@ -25,27 +25,18 @@
 
 <h1>Choose from these four!</h1>
 
-<% @guess_players.each do |guess_player| %>
+
+<% combined_players = @guess_players + [@correct_player] %>
+<% combined_players.shuffle.compact.each do |player| %>
   <div class="player-card">
-    <% if guess_player[:image_url].present? %>
-      <%= image_tag(guess_player[:image_url], alt: "Player Image") %>
+    <% if player[:image_url]&.present? %>
+      <%= image_tag(player[:image_url], alt: "Player Image") %>
     <% else %>
       <p>No Image Available</p>
     <% end %>
-    <h2><%= guess_player[:name] %></h2>
+    <h2><%= player[:name] %></h2>
   </div>
 <% end %>
-
-<div class="player-card">
-  <% if @correct_player %>
-    <% if @correct_player[:image_url].present? %>
-      <%= image_tag(@correct_player[:image_url], alt: "Player Image") %>
-    <% else %>
-      <p>No Image Available</p>
-    <% end %>
-    <h2><%= @correct_player[:name] %></h2>
-  <% end %>
-</div>
 
 
 
