@@ -31,7 +31,7 @@ class PagesController < ApplicationController
 
       if player_row
         @correct_player = parse_player_data(player_row)
-        @correct_player[:image_url] = fetch_player_image(@correct_player[:player_id])
+        # @correct_player[:image_url] = fetch_player_image(@correct_player[:player_id])
       else
         @correct_player = {}
       end
@@ -57,8 +57,7 @@ class PagesController < ApplicationController
 
       @guess_players = selected_rows.sample(3).map do |player_row|
         player_info = parse_player_data(player_row)
-        player_info[:image_url] = fetch_player_image(player_info[:player_id])
-        player_info
+        # player_info[:image_url] = fetch_player_image(player_info[:player_id])
       end
     else
       @guess_players = []
@@ -69,8 +68,11 @@ class PagesController < ApplicationController
     return {} unless player_row
 
     player_link = player_row.at_css('td[data-stat="player"] a')
+    p player_link
     profile_url = "https://www.basketball-reference.com#{player_link['href']}"
+    p profile_url
     player_id = player_link['href'].split('/').last.split('.').first
+    p player_id
 
     {
       name: player_link.text,
@@ -84,19 +86,52 @@ class PagesController < ApplicationController
     }
   end
 
-  def fetch_player_image(player_url)
-    return nil unless player_url
+
+
+  def fetch_player_image(profile_url)
+    return nil unless profile_url
 
     img_tag = nil
     begin
-      doc = Nokogiri::HTML(URI.open(player_url))
-      img_tag = doc.at_css('img[itemprop="image"]')
-    rescue OpenURI::HTTPError => e
+      uri = URI.parse(profile_url)
+      return nil unless uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true if uri.scheme == 'https'
+
+      response = http.get(uri.request_uri)
+
+      if response.is_a?(Net::HTTPSuccess)
+        doc = Nokogiri::HTML(response.body)
+        img_tag = doc.at_css('img[itemscope="image"]')
+
+      else
+        puts "Error fetching player image: #{response.message}"
+      end
+    rescue StandardError => e
       puts "Error fetching player image: #{e.message}"
     end
 
-    img_tag['src'] if img_tag
+    image = img_tag['src'] if img_tag
+
+    p image
+
   end
+
+
+  # def fetch_player_image(profile_url)
+  #   return nil unless profile_url
+
+  #   img_tag = nil
+  #   begin
+  #     doc = Nokogiri::HTML(URI.open(profile_url))
+  #     img_tag = doc.at_css('img[itemprop="image"]')
+  #   rescue OpenURI::HTTPError => e
+  #     puts "Error fetching player image: #{e.message}"
+  #   end
+
+  #   img_tag['src'] if img_tag
+  # end
 
   # private
 

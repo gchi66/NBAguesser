@@ -6,15 +6,16 @@
   <%= f.button :submit, 'Play!' %>
 <% end %>
 
+<% if params[:commit].present? && params[:season].present? && params[:season][:season].present? %>
+  <h4>Selected Season: <%= params[:season][:season] %></h4>
+<% elsif params[:commit].present? %>
+  <h4>Please select a season</h4>
+<% end %>
+
+
 <h1>Who is this player?</h1>
 <div class="player-card">
   <% if @correct_player %>
-    <% if @correct_player[:image_url].present? %>
-      <img src="<%= @correct_player[:image_url] %>" alt="Player Image">
-    <% else %>
-      <p>No Image Available</p>
-    <% end %>
-    <h2><%= @correct_player[:name] %></h2>
     <p>Team: <span class="stat"><%= @correct_player[:team] %></span></p>
     <p>Points: <span class="stat"><%= @correct_player[:points] %></span></p>
     <p>Rebounds: <span class="stat"><%= @correct_player[:rebounds] %></span></p>
@@ -24,33 +25,25 @@
 
 <h1>Choose from these four!</h1>
 
-<div class="player-card">
-  <% if @guess_player %>
-    <% if @guess_player[:image_url].present? %>
-      <img src="<%= fetch_player_image(@guess_player[:profile_url]) %>" alt="Player Image">
+<% @guess_players.each do |guess_player| %>
+  <div class="player-card">
+    <% if guess_player[:image_url].present? %>
+      <%= image_tag(guess_player[:image_url], alt: "Player Image") %>
     <% else %>
       <p>No Image Available</p>
     <% end %>
-    <h2><%= @guess_player[:name] %></h2>
-    <p>Team: <span class="stat"><%= @guess_player[:team] %></span></p>
-    <p>Points: <span class="stat"><%= @guess_player[:points] %></span></p>
-    <p>Rebounds: <span class="stat"><%= @guess_player[:rebounds] %></span></p>
-    <p>Assists: <span class="stat"><%= @guess_player[:assists] %></span></p>
-  <% end %>
-</div>
+    <h2><%= guess_player[:name] %></h2>
+  </div>
+<% end %>
 
 <div class="player-card">
   <% if @correct_player %>
     <% if @correct_player[:image_url].present? %>
-      <img src="<%= @correct_player[:image_url] %>" alt="Player Image">
+      <%= image_tag(@correct_player[:image_url], alt: "Player Image") %>
     <% else %>
       <p>No Image Available</p>
     <% end %>
     <h2><%= @correct_player[:name] %></h2>
-    <p>Team: <span class="stat"><%= @correct_player[:team] %></span></p>
-    <p>Points: <span class="stat"><%= @correct_player[:points] %></span></p>
-    <p>Rebounds: <span class="stat"><%= @correct_player[:rebounds] %></span></p>
-    <p>Assists: <span class="stat"><%= @correct_player[:assists] %></span></p>
   <% end %>
 </div>
 
