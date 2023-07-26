@@ -29,30 +29,17 @@ a, a:hover {
 // Blue color #2D66C8
 
 .page-container {
-  padding: 8px 30px 16px 40px;
-}
-
-.player-card {
-  border: 1px solid #ccc;
-  padding: 10px;
+  padding: 30px 30px 16px 40px;
+  width: auto;
   text-align: center;
+
 }
 
-.player-card img {
-  width: 200px;
-  height: auto;
-  margin-bottom: 10px;
+.form-container {
+  width: 400px;
+  margin: 20px auto;
 }
 
-.player-card h2 {
-  margin-bottom: 5px;
-}
-
-.player-card p {
-  margin-bottom: 3px;
-}
-
-.player-card .stat {
-  font-weight: bold;
-  color: #ff0000;
+.hide-element {
+  display: none;
 }

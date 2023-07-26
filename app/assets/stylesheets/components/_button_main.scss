@@ -1,3 +1,9 @@
+.button-main-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .button-main {
   appearance: none;
   backface-visibility: hidden;
@@ -14,16 +20,17 @@
   font-weight: 500;
   height: 50px;
   letter-spacing: normal;
-  line-height: 1.5;
   outline: none;
   overflow: hidden;
-  padding: 14px 30px;
+  padding: 14px 0px;
+  width: auto;
   position: relative;
   text-align: center;
   text-decoration: none;
   transform: translate3d(0, 0, 0);
   transition: all .2s;
   user-select: none;
+  line-height: normal;
   -webkit-user-select: none;
   touch-action: manipulation;
   vertical-align: top;
@@ -58,15 +65,15 @@
 
 @media (min-width: 768px) {
   .button-main {
-    padding: 14px 22px;
+    padding: 14px 0px;
     width: 176px;
   }
 }
 
 .preview-button {
   display: inline-block;
-  width: 256px;
-  padding: 12px 0;
-  border: 1px solid $sidebar-background;
+  width: auto; /* Set width to auto to allow the button to expand based on its content */
+  padding: 12px 24px; /* Adjust the padding to include the entire button area */
+  border: 1px solid;
   border-radius: 8px;
 }
