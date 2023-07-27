@@ -18,20 +18,20 @@
 
 
   <h1>Who is this player?</h1>
-  <div class="correct-player-card">
     <% if @correct_player %>
-      <p>Points: <span class="stat"><%= @correct_player[:points] %></span></p>
-      <p>Rebounds: <span class="stat"><%= @correct_player[:rebounds] %></span></p>
-      <p>Assists: <span class="stat"><%= @correct_player[:assists] %></span></p>
+      <div class="correct-player-card" data-correct-player-name="<%= @correct_player[:name] %>">
+        <p>Points: <span class="stat"><%= @correct_player[:points] %></span></p>
+        <p>Rebounds: <span class="stat"><%= @correct_player[:rebounds] %></span></p>
+        <p>Assists: <span class="stat"><%= @correct_player[:assists] %></span></p>
+      </div>
     <% end %>
-  </div>
 
   <h1>Choose from these four!</h1>
 
   <div class="player-card-container">
     <% combined_players = @guess_players + [@correct_player] %>
     <% combined_players.shuffle.compact.each do |player| %>
-      <div class="player-card">
+      <div class="player-card" data-player-name="<%= player[:name] %>">
         <% if player[:image_url]&.present? %>
           <%= image_tag(player[:image_url], alt: "Player Image") %>
         <% else %>

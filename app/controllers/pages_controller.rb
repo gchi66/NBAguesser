@@ -18,22 +18,18 @@ class PagesController < ApplicationController
 
       doc = Nokogiri::HTML(URI.open(url))
 
-      puts doc
-
       players_row = doc.css('tr.full_table')
 
       selected_rows = players_row[1..380].to_a
 
-      player_row = selected_rows.sample
-
-      puts "Here is the player row:"
-      puts player_row
-
-      if player_row
-        @correct_player = parse_player_data(player_row)
-      else
-        @correct_player = {}
+      player_with_points = nil
+      while player_with_points.nil?
+        player_row = selected_rows.sample
+        if player_row && player_row.at_css('td[data-stat="pts_per_g"]').text.to_f > 1
+          player_with_points = parse_player_data(player_row)
+        end
       end
+      @correct_player = player_with_points || {}
     end
   end
 
@@ -61,11 +57,8 @@ class PagesController < ApplicationController
     return {} unless player_row
 
     player_link = player_row.at_css('td[data-stat="player"] a')
-    p player_link
     profile_url = "https://www.basketball-reference.com#{player_link['href']}"
-    p profile_url
     player_id = player_link['href'].split('/').last.split('.').first
-    p player_id
 
     {
       name: player_link.text,
@@ -103,9 +96,7 @@ class PagesController < ApplicationController
       puts "Error fetching player image: #{e.message}"
     end
 
-    image = img_tag['src'] if img_tag
-
-    p image
+    img_tag['src'] if img_tag
 
   end
 
