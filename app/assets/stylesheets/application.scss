@@ -10,3 +10,35 @@
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
+
+
+body {
+  background-color: #DBE4EE;
+  font-family: 'Roboto', sans-serif;
+}
+
+a, a:hover {
+  text-decoration: none;
+  color: unset;
+}
+::-webkit-meter-optimum-value .application-container {
+  height: 100vh;
+  width: 100vw;
+}
+
+// Blue color #2D66C8
+
+.page-container {
+  padding: 30px 30px 16px 40px;
+  width: auto;
+  text-align: center;
+}
+
+.form-container {
+  width: 400px;
+  margin: 20px auto;
+}
+
+.hide-element {
+  display: none;
+}

@@ -1,0 +1,59 @@
+.player-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin: 25px;
+}
+
+
+.player-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  margin: 10px;
+}
+
+.player-card img {
+  width: 100px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.player-card h2 {
+  margin-bottom: 5px;
+}
+
+.player-card p {
+  margin-bottom: 3px;
+}
+
+.player-card .stat {
+  font-weight: bold;
+  color: #ff0000;
+}
+
+.correct-player-card {
+  padding: 10px;
+  text-align: center;
+  margin: 10px;
+}
+
+.correct-player-card img {
+  width: 100px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.correct-player-card h2 {
+  margin-bottom: 5px;
+}
+
+.correct-player-card p {
+  margin-bottom: 3px;
+}
+
+.correct-player-card .stat {
+  font-weight: bold;
+  color: #ff0000;
+}
