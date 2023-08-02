@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
             // DISSAPEARING HEADERS LOGIC
 
+
             const headingContainer = document.querySelector(".heading-container");
             const buttonContainer = document.querySelector(".button-main-container");
 
