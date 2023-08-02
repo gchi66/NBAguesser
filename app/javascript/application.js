@@ -8,6 +8,7 @@ import Rails from "@rails/ujs"
 
 
 // AJAX LOGIC VVVV
+
 document.addEventListener("DOMContentLoaded", function(){
   console.log("domcontentloaded");
   document.addEventListener("turbo:load", function() {
@@ -31,7 +32,8 @@ document.addEventListener("DOMContentLoaded", function(){
             console.log(data);
             console.log("ajax successfully fired");
 
-  // LOGIC FOR THE GAME VVVVVVVV
+
+            // DEFINING THE VARIABLES TO MAKE AJAX WORK VVVVVVVV
 
             const playerCardContainer = data.querySelector(".player-card-container");
             const correctPlayerCard = data.querySelector(".correct-player-card");
@@ -43,10 +45,14 @@ document.addEventListener("DOMContentLoaded", function(){
             console.log(actualCorrectPlayerCard);
             actualCorrectPlayerCard.innerHTML = correctPlayerCard.innerHTML;
 
-            const correctPlayerName = actualCorrectPlayerCard.dataset.correctPlayerName;
+            const correctPlayerInfo = document.querySelector(".correct-player-info");
+            const correctPlayerName = correctPlayerInfo.dataset.correctPlayerName;
             console.log(correctPlayerName);
 
             const actualPlayerCards = actualPlayerCardContainer.querySelectorAll(".player-card");
+
+
+            // GAME LOGIC VVVVVVVVVV
 
             actualPlayerCards.forEach(card => {
               console.log(card);
