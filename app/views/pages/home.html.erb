@@ -19,9 +19,10 @@
   <% end %>
 
 
-  <h1>Who is this player?</h1>
+
     <div class="correct-player-card">
       <% if @correct_player %>
+        <h1>Who is this player?</h1>
         <div class="correct-player-info" data-correct-player-name="<%= @correct_player[:name] %>">
           <p>Points: <span class="stat"><%= @correct_player[:points] %></span></p>
           <p>Rebounds: <span class="stat"><%= @correct_player[:rebounds] %></span></p>
@@ -30,23 +31,27 @@
       <% end %>
     </div>
 
-  <h1>Choose from these four!</h1>
+
+  <div class="heading-container hide-element">
+    <h1>Choose from these four!</h1>
+  </div>
+
 
   <div class="player-card-container">
     <% combined_players = @guess_players + [@correct_player] %>
-    <% combined_players.shuffle.compact.each do |player| %>
-      <div class="player-card" data-player-name="<%= player[:name] %>">
-        <% if player[:image_url]&.present? %>
-          <%= image_tag(player[:image_url], alt: "Player Image") %>
-        <% else %>
-          <p>No Image Available</p>
-        <% end %>
-        <h2><%= player[:name] %></h2>
-      </div>
-    <% end %>
+      <% combined_players.shuffle.compact.each do |player| %>
+        <div class="player-card" data-player-name="<%= player[:name] %>">
+          <% if player[:image_url]&.present? %>
+            <%= image_tag(player[:image_url], alt: "Player Image") %>
+          <% else %>
+            <p>No Image Available</p>
+          <% end %>
+          <h2><%= player[:name] %></h2>
+        </div>
+      <% end %>
   </div>
 
-  <div class="button-main-container">
+  <div class="button-main-container hide-element">
     <%= link_to "Try again!", root_path, class: "button-main"%>
   </div>
 

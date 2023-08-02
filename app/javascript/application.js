@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function(){
           url: form.action,
           data: formData,
           success: function(data) {
-            console.log(data);
             console.log("ajax successfully fired");
 
 
@@ -42,14 +41,20 @@ document.addEventListener("DOMContentLoaded", function(){
             actualPlayerCardContainer.innerHTML = playerCardContainer.innerHTML;
 
             const actualCorrectPlayerCard = document.querySelector(".correct-player-card");
-            console.log(actualCorrectPlayerCard);
             actualCorrectPlayerCard.innerHTML = correctPlayerCard.innerHTML;
 
             const correctPlayerInfo = document.querySelector(".correct-player-info");
             const correctPlayerName = correctPlayerInfo.dataset.correctPlayerName;
-            console.log(correctPlayerName);
 
             const actualPlayerCards = actualPlayerCardContainer.querySelectorAll(".player-card");
+
+            // DISSAPEARING HEADERS LOGIC
+
+            const headingContainer = document.querySelector(".heading-container");
+            const buttonContainer = document.querySelector(".button-main-container");
+
+            headingContainer.classList.remove("hide-element");
+            buttonContainer.classList.remove("hide-element");
 
 
             // GAME LOGIC VVVVVVVVVV
