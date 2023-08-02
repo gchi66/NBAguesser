@@ -3,10 +3,12 @@
   <h1>Welcome to the NBA player guessing game!</h1>
 
   <div class="form-container">
-    <%= simple_form_for :season, url: root_path, :html => { :remote => true, :method => :get } do |f| %>
-      <%= f.input :season, collection: (1950..2023).to_a.reverse.map(&:to_s), prompt: 'Select a season', label: false %>
-      <%= f.button :submit, 'Play!', class: "button-main" %>
-    <% end %>
+    <turbo-frame id="season-form">
+      <%= simple_form_for :season, url: root_path, remote: true, method: :post do |f| %>
+        <%= f.input :season, collection: (1950..2023).to_a.reverse.map(&:to_s), prompt: 'Select a season', label: false %>
+        <%= f.button :submit, 'Play!', class: "button-main" %>
+      <% end %>
+    </turbo-frame>
   </div>
 
 
@@ -18,13 +20,15 @@
 
 
   <h1>Who is this player?</h1>
-    <% if @correct_player %>
-      <div class="correct-player-card" data-correct-player-name="<%= @correct_player[:name] %>">
-        <p>Points: <span class="stat"><%= @correct_player[:points] %></span></p>
-        <p>Rebounds: <span class="stat"><%= @correct_player[:rebounds] %></span></p>
-        <p>Assists: <span class="stat"><%= @correct_player[:assists] %></span></p>
-      </div>
-    <% end %>
+    <div class="correct-player-card">
+      <% if @correct_player %>
+        <div class="correct-player-info" data-correct-player-name="<%= @correct_player[:name] %>">
+          <p>Points: <span class="stat"><%= @correct_player[:points] %></span></p>
+          <p>Rebounds: <span class="stat"><%= @correct_player[:rebounds] %></span></p>
+          <p>Assists: <span class="stat"><%= @correct_player[:assists] %></span></p>
+        </div>
+      <% end %>
+    </div>
 
   <h1>Choose from these four!</h1>
 

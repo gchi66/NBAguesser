@@ -1,28 +1,76 @@
-// Entry point for the build script in your package.json
 import "@hotwired/turbo-rails"
 import "./controllers"
 import "bootstrap"
+import Rails from "@rails/ujs"
+//= require rails-ujs
+//= require turbolinks
+//= require_tree .
 
+
+// AJAX LOGIC VVVV
 document.addEventListener("DOMContentLoaded", function(){
+  console.log("domcontentloaded");
   document.addEventListener("turbo:load", function() {
-    const playerCards = document.querySelectorAll(".player-card");
-    const correctPlayerCard = document.querySelector(".correct-player-card");
-    const correctPlayerName = correctPlayerCard.dataset.correctPlayerName;
+    console.log('turbo loaded');
+    const turboFrame = document.getElementById("season-form");
+    const form = turboFrame.firstElementChild;
+    if (form) {
+      form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        console.log("Form submitted via AJAX");
 
-    playerCards.forEach(card => {
-      card.addEventListener("click", function() {
-        const playerName = card.dataset.playerName;
+        const formData = new FormData(form);
 
-        if (playerName === correctPlayerName) {
-          alert("good job you win!");
-        } else {
-          alert(`So close! The correct answer was ${correctPlayerName}`);
-        }
+        console.log(formData);
 
-        setTimeout(function() {
-          window.location.href = "/";
-        }, 1000);
+        Rails.ajax({
+          type: form.method,
+          url: form.action,
+          data: formData,
+          success: function(data) {
+            console.log(data);
+            console.log("ajax successfully fired");
+
+  // LOGIC FOR THE GAME VVVVVVVV
+
+            const playerCardContainer = data.querySelector(".player-card-container");
+            const correctPlayerCard = data.querySelector(".correct-player-card");
+
+            const actualPlayerCardContainer = document.querySelector(".player-card-container");
+            actualPlayerCardContainer.innerHTML = playerCardContainer.innerHTML;
+
+            const actualCorrectPlayerCard = document.querySelector(".correct-player-card");
+            console.log(actualCorrectPlayerCard);
+            actualCorrectPlayerCard.innerHTML = correctPlayerCard.innerHTML;
+
+            const correctPlayerName = actualCorrectPlayerCard.dataset.correctPlayerName;
+            console.log(correctPlayerName);
+
+            const actualPlayerCards = actualPlayerCardContainer.querySelectorAll(".player-card");
+
+            actualPlayerCards.forEach(card => {
+              console.log(card);
+              card.addEventListener("click", function() {
+                console.log("hello");
+                const playerName = card.dataset.playerName;
+
+                if (playerName === correctPlayerName) {
+                  alert("good job you win!");
+                } else {
+                  alert(`So close! The correct answer was ${correctPlayerName}`);
+                }
+
+                setTimeout(function() {
+                  window.location.href = "/";
+                }, 1000);
+              });
+            });
+          },
+          error: function() {
+            console.log("AJAX request failed");
+          }
+        });
       });
-    });
+    }
   });
 });
