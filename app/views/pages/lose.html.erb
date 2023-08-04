@@ -8,6 +8,14 @@
     <% end %>
   </div>
 
+    <% if session[:correct_player_image].present? %>
+      <%= image_tag(session[:correct_player_image], alt: "Correct Player Image") %>
+    <% end %>
+
+  <br>
+  <br>
+  <br>
+
   <div class="button-main-container">
     <%= link_to "Try again!", root_path, class: "button-main"%>
   </div>
