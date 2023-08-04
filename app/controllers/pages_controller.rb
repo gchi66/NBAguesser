@@ -30,6 +30,7 @@ class PagesController < ApplicationController
         end
       end
       @correct_player = player_with_points || {}
+      session[:correct_player_name] = @correct_player[:name] if @correct_player[:name].present?
     end
   end
 

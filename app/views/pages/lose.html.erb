@@ -1,1 +1,15 @@
-<h1>You lost, try again!</h1>
+<div class="page-container">
+
+  <div class="heading-container">
+    <h1>You suck and your family hates you.</h1>
+
+    <% if session[:correct_player_name].present? %>
+      <h2>The correct answer was <%= session[:correct_player_name] %></h2>
+    <% end %>
+  </div>
+
+  <div class="button-main-container">
+    <%= link_to "Try again!", root_path, class: "button-main"%>
+  </div>
+
+</div>

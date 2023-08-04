@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function(){
   document.addEventListener("turbo:load", function() {
     console.log('turbo loaded');
     const turboFrame = document.getElementById("season-form");
-    const form = turboFrame.firstElementChild;
+    const form = turboFrame ? turboFrame.firstElementChild : null;
     if (form) {
       form.addEventListener("submit", function(event) {
         event.preventDefault();
@@ -48,33 +48,25 @@ document.addEventListener("DOMContentLoaded", function(){
 
             const actualPlayerCards = actualPlayerCardContainer.querySelectorAll(".player-card");
 
-            // DISSAPEARING HEADERS LOGIC
+            // DISSAPEARING HEADER LOGIC
 
 
             const headingContainer = document.querySelector(".heading-container");
-            const buttonContainer = document.querySelector(".button-main-container");
-
             headingContainer.classList.remove("hide-element");
-            buttonContainer.classList.remove("hide-element");
 
 
             // GAME LOGIC VVVVVVVVVV
 
             actualPlayerCards.forEach(card => {
-              console.log(card);
               card.addEventListener("click", function() {
                 console.log("hello");
                 const playerName = card.dataset.playerName;
 
                 if (playerName === correctPlayerName) {
-                  alert("good job you win!");
+                  window.location.href = winPageURL;
                 } else {
-                  alert(`So close! The correct answer was ${correctPlayerName}`);
+                  window.location.href = `${losePageURL}?correctPlayerName=${encodeURIComponent(correctPlayerName)}`;
                 }
-
-                setTimeout(function() {
-                  window.location.href = "/";
-                }, 1000);
               });
             });
           },

@@ -8,6 +8,12 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_pack_tag "application", "data-turbo-track": "reload", defer: true %>
+    <!-- Javascript variables -->
+    <script>
+      const winPageURL = "<%= win_page_path %>";
+      const losePageURL = "<%= lose_page_path %>";
+    </script>
+    <!-- /Javascript variables -->
   </head>
 
   <body>
