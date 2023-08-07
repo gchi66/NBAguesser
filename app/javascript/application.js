@@ -36,9 +36,16 @@ document.addEventListener("DOMContentLoaded", function(){
 
             const headingContainer = document.querySelector(".heading-container");
             const messageContainer = document.getElementById("message-container");
+            const welcomeHeader = document.getElementById("welcome-header");
+            const formContainer = document.querySelector(".form-container");
+            const playerCardContainer = data.querySelector(".player-card-container");
+            const correctPlayerCard = data.querySelector(".correct-player-card");
 
             if (formData.get("season[season]")) {
               messageContainer.innerHTML = `<h4>Selected season: ${formData.get("season[season]")}</h4>`;
+              seasonForm.classList.add("hide-element");
+              welcomeHeader.classList.add("hide-element");
+              formContainer.classList.add("hide-element");
               headingContainer.classList.remove("hide-element");
             } else {
               messageContainer.innerHTML = `<h4>Please select a season</h4>`;
@@ -46,13 +53,13 @@ document.addEventListener("DOMContentLoaded", function(){
 
             // DEFINING THE VARIABLES TO MAKE AJAX WORK VVVVVVVV
 
-            const playerCardContainer = data.querySelector(".player-card-container");
-            const correctPlayerCard = data.querySelector(".correct-player-card");
 
             const actualPlayerCardContainer = document.querySelector(".player-card-container");
+            actualPlayerCardContainer.classList.remove("hide-element");
             actualPlayerCardContainer.innerHTML = playerCardContainer.innerHTML;
 
             const actualCorrectPlayerCard = document.querySelector(".correct-player-card");
+            actualCorrectPlayerCard.classList.remove("hide-element");
             actualCorrectPlayerCard.innerHTML = correctPlayerCard.innerHTML;
 
             const correctPlayerInfo = document.querySelector(".correct-player-info");

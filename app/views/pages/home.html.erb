@@ -11,24 +11,33 @@
 
 <div class="page-container">
 
-  <h1>Welcome to the NBA player guessing game!</h1>
 
-  <div class="form-container">
-    <turbo-frame id="season-form">
-      <%= simple_form_for :season, url: root_path, remote: true, method: :post do |f| %>
-        <%= f.input :season, collection: (1950..2023).to_a.reverse.map(&:to_s), prompt: 'Select a season', label: false %>
-        <%= f.button :submit, 'Play!', class: "button-main" %>
-      <% end %>
+  <div class="landing-container">
+
+    <div id="welcome-header">
+      <h1>Welcome to the NBA player guessing game!</h1>
+    </div>
+
+    <div class="form-container" turbo-frame id="season-form">
+        <%= simple_form_for :season, url: root_path, remote: true, method: :post do |f| %>
+          <%= f.input :season, collection: (1950..2023).to_a.reverse.map(&:to_s), prompt: 'Select a season', label: false %>
+          <div id="submit-button">
+            <%= f.button :submit, 'Play!', class: "button-main" %>
+          </div>
+        <% end %>
+    </div>
     </turbo-frame>
+
   </div>
 
 
-<div id="message-container">
-</div>
+  <div id="message-container">
+
+  </div>
 
 
 
-    <div class="correct-player-card">
+    <div class="correct-player-card hide-element">
       <% if @correct_player %>
         <h1>Who is this player?</h1>
         <div class="correct-player-info" data-correct-player-name="<%= @correct_player[:name] %>">
@@ -45,7 +54,7 @@
   </div>
 
 
-  <div class="player-card-container">
+  <div class="player-card-container hide-element">
     <% combined_players = @guess_players + [@correct_player] %>
       <% combined_players.shuffle.compact.each do |player| %>
         <div class="player-card" data-player-name="<%= player[:name] %>">
