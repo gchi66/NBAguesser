@@ -1,19 +1,21 @@
 <div class="page-container">
 
-  <div class="heading-container">
+  <div class="result-container">
     <h1>Nice work hoophead!</h1>
+  </div>
+
+
+  <div class="subheading-container">
     <% if session[:correct_player_name].present? %>
       <h2>The correct answer was <%= session[:correct_player_name] %></h2>
     <% end %>
   </div>
 
-  <% if session[:correct_player_image].present? %>
-    <%= image_tag(session[:correct_player_image], alt: "Correct Player Image") %>
-  <% end %>
-
-  <br>
-  <br>
-  <br>
+  <div class="img-container">
+    <% if session[:correct_player_image].present? %>
+      <%= image_tag(session[:correct_player_image], alt: "Correct Player Image") %>
+    <% end %>
+  </div>
 
   <div class="button-main-container">
     <%= link_to "Try again!", root_path, class: "button-main"%>
