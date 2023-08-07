@@ -12,11 +12,8 @@
   </div>
 
 
-  <% if params[:commit].present? && params[:season].present? && params[:season][:season].present? %>
-    <h4>Selected Season: <%= params[:season][:season] %></h4>
-  <% elsif params[:commit].present? %>
-    <h4>Please select a season</h4>
-  <% end %>
+<div id="message-container">
+</div>
 
 
 

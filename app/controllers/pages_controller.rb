@@ -10,6 +10,9 @@ class PagesController < ApplicationController
     render 'home'
   end
 
+  def create
+  end
+
   def find_correct_player
     if params[:season].present? && params[:season][:season].present?
       season = params[:season][:season]

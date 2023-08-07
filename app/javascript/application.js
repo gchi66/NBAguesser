@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", function(){
   console.log("domcontentloaded");
   document.addEventListener("turbo:load", function() {
     console.log('turbo loaded');
-    const turboFrame = document.getElementById("season-form");
-    const form = turboFrame ? turboFrame.firstElementChild : null;
+    const seasonForm = document.getElementById("season-form");
+    const form = seasonForm ? seasonForm.firstElementChild : null;
     if (form) {
       form.addEventListener("submit", function(event) {
         event.preventDefault();
@@ -32,6 +32,18 @@ document.addEventListener("DOMContentLoaded", function(){
             console.log("ajax successfully fired");
 
 
+            // SEASON SELECTION LOGIC AND APPEARING HEADER LOGIC
+
+            const headingContainer = document.querySelector(".heading-container");
+            const messageContainer = document.getElementById("message-container");
+
+            if (formData.get("season[season]")) {
+              messageContainer.innerHTML = `<h4>Selected season: ${formData.get("season[season]")}</h4>`;
+              headingContainer.classList.remove("hide-element");
+            } else {
+              messageContainer.innerHTML = `<h4>Please select a season</h4>`;
+            }
+
             // DEFINING THE VARIABLES TO MAKE AJAX WORK VVVVVVVV
 
             const playerCardContainer = data.querySelector(".player-card-container");
@@ -48,11 +60,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
             const actualPlayerCards = actualPlayerCardContainer.querySelectorAll(".player-card");
 
-            // DISSAPEARING HEADER LOGIC
-
-
-            const headingContainer = document.querySelector(".heading-container");
-            headingContainer.classList.remove("hide-element");
 
 
             // GAME LOGIC VVVVVVVVVV
@@ -65,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 if (playerName === correctPlayerName) {
                   window.location.href = winPageURL;
                 } else {
-                  window.location.href = `${losePageURL}?correctPlayerName=${encodeURIComponent(correctPlayerName)}`;
+                  window.location.href = losePageURL;
                 }
               });
             });
