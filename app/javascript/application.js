@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function(){
               messageContainer.innerHTML = `<h4>Selected season: ${formData.get("season[season]")}</h4>`;
               seasonForm.classList.add("hide-element");
               welcomeHeader.classList.add("hide-element");
-              formContainer.classList.add("hide-element");
               headingContainer.classList.remove("hide-element");
+              formContainer.classList.add("hide-element");
             } else {
               messageContainer.innerHTML = `<h4>Please select a season</h4>`;
             }

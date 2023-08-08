@@ -5,6 +5,7 @@ require 'net/http'
 class PagesController < ApplicationController
 
   def home
+    clear_correct_player_session
     find_correct_player
     find_guess_players
     render 'home'
@@ -103,6 +104,11 @@ class PagesController < ApplicationController
 
     img_tag['src'] if img_tag
 
+  end
+
+  def clear_correct_player_session
+    session[:correct_player_name] = nil
+    session[:correct_player_image] = nil
   end
 
 end

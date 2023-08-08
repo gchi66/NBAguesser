@@ -1,14 +1,19 @@
 // LANDING PAGE ELEMENTS
 
-.landing-container {
+// .landing-container {
+//   position: fixed;
+//   top: 38%;
+//   transform: translateY(-50%);
+//   margin-top: -10px; /* Adjust this value to control top margin */
+//   margin-bottom: -10px; /* Adjust this value to control bottom margin */
+// }
+
+.form-container {
   position: fixed;
   top: 38%;
   transform: translateY(-50%);
   margin-top: -10px; /* Adjust this value to control top margin */
   margin-bottom: -10px; /* Adjust this value to control bottom margin */
-}
-
-.form-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -16,7 +21,7 @@
 }
 
 #season-form {
-  width: 75%;
+  width: 50%;
 }
 
 

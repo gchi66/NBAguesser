@@ -1,3 +1,12 @@
+<!-- Top Navbar -->
+
+<div class="bar bar-top">
+  <div class="button-container">
+    <h5>Stats</h5>
+    <h5>Instructions</h5>
+  </div>
+</div>
+
 <div class="page-container">
 
   <div class="result-container">
@@ -6,19 +15,30 @@
 
 
   <div class="subheading-container">
-    <% if session[:correct_player_name].present? %>
-      <h2>The correct answer was <%= session[:correct_player_name] %></h2>
-    <% end %>
+    <h2>The correct answer was</h2>
   </div>
 
-  <div class="img-container">
+
+
+  <div class="player-card">
     <% if session[:correct_player_image].present? %>
-      <%= image_tag(session[:correct_player_image], alt: "Correct Player Image") %>
+      <%= image_tag(session[:correct_player_image], alt: "A picture of #{session[:correct_player_name]}") %>
+    <% else %>
+    <% end %>
+    <% if session[:correct_player_name].present? %>
+      <h2><%= session[:correct_player_name] %></h2>
     <% end %>
   </div>
 
-  <div class="button-main-container">
+
+  <div class="result-button-container">
     <%= link_to "Try again!", root_path, class: "button-main"%>
   </div>
 
+</div>
+
+<!-- Bottom Navbar -->
+
+<div class="bar bar-bottom">
+  <h5>Made by Grant</h5>
 </div>
