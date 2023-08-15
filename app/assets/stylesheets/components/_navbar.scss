@@ -6,7 +6,7 @@
   justify-content: center;
   gap: 10px;
   width: 100%;
-  padding: .4%;
+  padding: .7%;
 }
 
 .bar-bottom{
@@ -18,9 +18,9 @@
 
 
 .bar-top{
-  position: relative;
+  position: fixed;
   top: 0;
-  margin-bottom: 1%;
+  margin-bottom: 2%;
 }
 
 
@@ -33,5 +33,5 @@
 .button-container {
   background-color: #333;
   display: flex;
-  gap: 20%;
+  gap: 30%;
 }

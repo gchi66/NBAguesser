@@ -7,25 +7,3 @@
 //   margin-top: -10px; /* Adjust this value to control top margin */
 //   margin-bottom: -10px; /* Adjust this value to control bottom margin */
 // }
-
-.form-container {
-  position: fixed;
-  top: 38%;
-  transform: translateY(-50%);
-  margin-top: -10px; /* Adjust this value to control top margin */
-  margin-bottom: -10px; /* Adjust this value to control bottom margin */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 5% auto;
-}
-
-#season-form {
-  width: 50%;
-}
-
-
-#submit-button {
-  text-align: center;
-  margin-top: 5%;
-}

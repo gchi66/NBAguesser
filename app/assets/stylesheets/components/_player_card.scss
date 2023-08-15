@@ -3,7 +3,7 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  margin: 25px;
+  margin: 1% 3% ;
   width:100%;
 }
 
@@ -13,32 +13,64 @@
   padding: 10px;
   text-align: center;
   margin: 1%;
+  cursor: pointer;
+  border-radius: 10%;
+  background-color: #393E46;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
+.player-card:hover, .player-card:focus {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.player-card:active {
+  transform: scale(1) translateY(2px); /* Add translateY to simulate depression */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Adjust shadow for active state */
+}
 
 .player-card img {
   width: 100px;
   height: auto;
   margin-bottom: 10px;
+  border-radius: 10%;
+  transition: transform  0.2s;
+}
+
+.player-card:hover img, .player-card:focus img {
+  transform: scale(1.03);
+}
+
+.player-card:active img {
+  transform: scale(1.03); /* Adjust image scale for active state */
 }
 
 .player-card h2 {
   margin-bottom: 5px;
+  color: #fff;
 }
 
 .player-card p {
   margin-bottom: 3px;
+  color: #fff;
 }
 
 .player-card .stat {
   font-weight: bold;
-  color: #ff0000;
+  color: #00ADB5;
 }
 
 .correct-player-card {
-  padding: 10px;
-  text-align: center;
-  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1%;
+  margin: 1.8%;
+}
+
+.correct-player-card h1 {
+  margin-bottom: 5.5%;
 }
 
 .correct-player-card img {
@@ -53,9 +85,10 @@
 
 .correct-player-card p {
   margin-bottom: 3px;
+  text-align: center;
 }
 
 .correct-player-card .stat {
   font-weight: bold;
-  color: #ff0000;
+  color: #00ADB5;
 }
