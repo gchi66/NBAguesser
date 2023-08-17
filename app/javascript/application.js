@@ -7,6 +7,39 @@ import Rails from "@rails/ujs"
 //= require_tree .
 
 
+// MODAL LOGIC
+
+var modal = document.getElementById("myModal");
+var btnStats = document.getElementById("showStats");
+var btnInstructions = document.getElementById("showInstructions");
+var modalContent = document.getElementById("modalContent");
+var pageContainer = document.querySelector(".page-container");
+
+btnStats.onclick = function() {
+  modal.style.display = "block";
+  modalContent.innerHTML = "Stats will go here later";
+}
+
+btnInstructions.onclick = function() {
+  modal.style.display = "block";
+  modalContent.innerHTML = "Stats will go here later";
+}
+
+var closeBtn = document.getElementsByClassName("close")[0];
+
+closeBtn.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event){
+  event.preventDefault;
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+}
+
+
+
 // AJAX LOGIC VVVV
 
 document.addEventListener("DOMContentLoaded", function(){
