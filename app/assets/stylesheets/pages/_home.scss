@@ -2,8 +2,18 @@
 // margin: top right bottom left
 
 
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  justify-content:  center;
+  align-items: center;
+  width: 75%;
+  gap: 5rem;
+  margin-top: 1%;
+}
+
 .form-container {
-  position: fixed;
+  position: relative;
   top: 38%;
   transform: translateY(-50%);
   margin-top: -10px; /* Adjust this value to control top margin */
@@ -14,8 +24,10 @@
   margin: 3% auto;
 }
 
+
+
 #season-form {
-  width: 50%;
+  width: 40%;
 }
 
 
