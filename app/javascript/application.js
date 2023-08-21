@@ -13,37 +13,40 @@ var modal = document.getElementById("myModal");
 var btnStats = document.getElementById("showStats");
 var btnInstructions = document.getElementById("showInstructions");
 var modalContent = document.getElementById("modalContent");
-var pageContainer = document.querySelector(".page-container");
-
-btnStats.onclick = function() {
-  modal.style.display = "block";
-  modalContent.innerHTML = "Stats will go here later";
-}
-
-btnInstructions.onclick = function() {
-  modal.style.display = "block";
-  modalContent.innerHTML = "Stats will go here later";
-}
-
-var closeBtn = document.getElementsByClassName("close")[0];
-
-closeBtn.onclick = function() {
-  modal.style.display = "none";
-}
-
-window.onclick = function(event){
-  event.preventDefault;
-  if (event.target === modal) {
-    modal.style.display = "none";
-  }
-}
+// var pageContainer = document.querySelector(".page-container");
 
 
 
-// AJAX LOGIC VVVV
+
 
 document.addEventListener("DOMContentLoaded", function(){
-  console.log("domcontentloaded");
+  // MODAL LOGIC VVVV
+
+  btnStats.onclick = function() {
+    modal.style.display = "block";
+    modalContent.innerHTML = "Stats will go here later";
+  }
+
+  btnInstructions.onclick = function() {
+    modal.style.display = "block";
+    modalContent.innerHTML = "Stats will go here later";
+  }
+
+  var closeBtn = document.getElementsByClassName("close")[0];
+
+  closeBtn.onclick = function() {
+    modal.style.display = "none";
+  }
+  window.onclick = function(event){
+    event.preventDefault;
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  }
+
+
+  // AJAX LOGIC VVVV
+
   document.addEventListener("turbo:load", function() {
     console.log('turbo loaded');
     const seasonForm = document.getElementById("season-form");
@@ -106,8 +109,15 @@ document.addEventListener("DOMContentLoaded", function(){
 
             actualPlayerCards.forEach(card => {
               card.addEventListener("click", function() {
-                console.log("hello");
                 const playerName = card.dataset.playerName;
+                const userGuessForm = document.getElementById("user-guess-form");
+                const userGuessInput = userGuessForm.querySelector("#user-guess");
+                console.log(userGuessInput);
+                userGuessInput.value = playerName;
+
+                console.log(userGuessInput.value);
+
+                userGuessForm.submit();
 
                 if (playerName === correctPlayerName) {
                   window.location.href = winPageURL;

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   post '/', to: "pages#home"
   get '/pages/win', to: 'pages#win', as: :win_page
   get '/pages/lose', to: 'pages#lose', as: :lose_page
+  post 'submit_guess', to: 'pages#create', as: :submit_guess
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

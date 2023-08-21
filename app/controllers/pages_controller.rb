@@ -12,7 +12,20 @@ class PagesController < ApplicationController
   end
 
   def create
+    session[:user_device_id] ||= SecureRandom.uuid
+    user_guess = params[:guess] # Retrieve the user's guess from form params
+    if user_guess == session[:correct_player_name]
+      UserGuessForDevice.create(device_id: session[:user_device_id], correct: true)
+    else
+      UserGuessForDevice.create(device_id: session[:user_device_id], correct: false)
+    end
   end
+
+  # def show_user_guesses
+  #   device_id = session[:user_device_id]
+  #   user_guesses = UserGuessForDevice.where(device_id: device_id)
+  #   # Use user_guesses as needed
+  # end
 
   def find_correct_player
     if params[:season].present? && params[:season][:season].present?
