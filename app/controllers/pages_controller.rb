@@ -11,15 +11,20 @@ class PagesController < ApplicationController
     render 'home'
   end
 
-  def create
-    session[:user_device_id] ||= SecureRandom.uuid
-    user_guess = params[:guess] # Retrieve the user's guess from form params
-    if user_guess == session[:correct_player_name]
-      UserGuessForDevice.create(device_id: session[:user_device_id], correct: true)
-    else
-      UserGuessForDevice.create(device_id: session[:user_device_id], correct: false)
-    end
-  end
+  # def create
+  #   session[:user_device_id] ||= SecureRandom.uuid
+  #   user_guess = params[:guess] # Retrieve the user's guess from form params
+  #   if user_guess == session[:correct_player_name]
+  #     UserGuessForDevice.create(device_id: session[:user_device_id], correct: true)
+  #   else
+  #     UserGuessForDevice.create(device_id: session[:user_device_id], correct: false)
+  #   end
+
+  #   respond_to do |format|
+  #     format.turbo_stream { redirect_to root_path } # This is the Turbo Streams response
+  #     format.html { redirect_to root_path } # If you want a fallback for non-Turbo browsers
+  #   end
+  # end
 
   # def show_user_guesses
   #   device_id = session[:user_device_id]
