@@ -3,6 +3,7 @@ require 'open-uri'
 require 'net/http'
 
 class PagesController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: [:create]
 
   def home
     clear_correct_player_session

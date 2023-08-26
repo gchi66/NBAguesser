@@ -101,26 +101,27 @@ document.addEventListener("DOMContentLoaded", function(){
             const actualPlayerCards = actualPlayerCardContainer.querySelectorAll(".player-card");
 
 
+            const userGuessForm = document.getElementById("user-guess-form");
 
+            userGuessForm.addEventListener("submit", function(){
+              console.log("form submitted");
+            });
             // GAME LOGIC VVVVVVVVVV
 
             actualPlayerCards.forEach(card => {
               card.addEventListener("click", function() {
                 const playerName = card.dataset.playerName;
-                const userGuessForm = document.getElementById("user-guess-form");
                 const userGuessInput = userGuessForm.querySelector("#user-guess");
-                console.log(userGuessInput);
                 userGuessInput.value = playerName;
-
-                console.log(userGuessInput.value);
-
+                console.log(userGuessInput.value  );
                 userGuessForm.submit();
-
-                if (playerName === correctPlayerName) {
-                  window.location.href = winPageURL;
-                } else {
-                  window.location.href = losePageURL;
-                }
+                setTimeout(() => {
+                  if (playerName === correctPlayerName) {
+                    window.location.href = winPageURL;
+                  } else {
+                    window.location.href = losePageURL;
+                  }
+                }, 2000);
               });
             });
           },
