@@ -7,48 +7,45 @@ import Rails from "@rails/ujs"
 //= require_tree .
 
 
-// MODAL LOGIC
-
-var modal = document.getElementById("myModal");
-var btnStats = document.getElementById("showStats");
-var btnInstructions = document.getElementById("showInstructions");
-var modalContent = document.getElementById("modalContent");
-// var pageContainer = document.querySelector(".page-container");
-
-
-
 
 
 document.addEventListener("DOMContentLoaded", function(){
-  // MODAL LOGIC VVVV
-
-  btnStats.onclick = function() {
-    modal.style.display = "block";
-    modalContent.innerHTML = "Stats will go here later";
-  }
-
-  btnInstructions.onclick = function() {
-    modal.style.display = "block";
-    modalContent.innerHTML = "Stats will go here later";
-  }
-
-  var closeBtn = document.getElementsByClassName("close")[0];
-
-  closeBtn.onclick = function() {
-    modal.style.display = "none";
-  }
-  window.onclick = function(event){
-    event.preventDefault;
-    if (event.target === modal) {
-      modal.style.display = "none";
-    }
-  }
+  console.log('domcontentloaded')
 
 
   // AJAX LOGIC VVVV
 
   document.addEventListener("turbo:load", function() {
     console.log('turbo loaded');
+    // MODAL LOGIC VVVV
+
+    var modal = document.getElementById("myModal");
+    var btnStats = document.getElementById("showStats");
+    var btnInstructions = document.getElementById("showInstructions");
+    var modalContent = document.getElementById("modalContent");
+    // var pageContainer = document.querySelector(".page-container");
+
+    btnStats.onclick = function() {
+      modal.style.display = "block";
+      modalContent.innerHTML = "Stats will go here later";
+    }
+
+    btnInstructions.onclick = function() {
+      modal.style.display = "block";
+      modalContent.innerHTML = "Stats will go here later";
+    }
+
+    var closeBtn = document.getElementsByClassName("close")[0];
+
+    closeBtn.onclick = function() {
+      modal.style.display = "none";
+    }
+    window.onclick = function(event){
+      event.preventDefault;
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    }
     const seasonForm = document.getElementById("season-form");
     const form = seasonForm ? seasonForm.firstElementChild : null;
     if (form) {
