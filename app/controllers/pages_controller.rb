@@ -3,7 +3,6 @@ require 'open-uri'
 require 'net/http'
 
 class PagesController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:create]
 
   def home
     clear_correct_player_session
@@ -13,12 +12,13 @@ class PagesController < ApplicationController
   end
 
   def create
-    session[:user_device_id] ||= SecureRandom.uuid
-    user_guess = params[:guess] # Retrieve the user's guess from form params
+    user_device_id = session[:user_device_id] ||= SecureRandom.uuid
+    device = Device.find_or_create_by(uuid: user_device_id)
+    user_guess = params[:guess]["guess"]
     if user_guess == session[:correct_player_name]
-      UserGuessForDevice.create(device_id: session[:user_device_id], correct: true)
+      UserGuessForDevice.create(device_id: device.id, correct: true)
     else
-      UserGuessForDevice.create(device_id: session[:user_device_id], correct: false)
+      UserGuessForDevice.create(device_id: device.id, correct: false)
     end
   end
 

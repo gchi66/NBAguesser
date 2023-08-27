@@ -11,7 +11,8 @@ import Rails from "@rails/ujs"
 
 document.addEventListener("DOMContentLoaded", function(){
   console.log('domcontentloaded')
-
+  const csrfToken = document.querySelector("meta[name='csrf-token']").content;
+  console.log(csrfToken);
 
   // AJAX LOGIC VVVV
 
@@ -60,6 +61,9 @@ document.addEventListener("DOMContentLoaded", function(){
         Rails.ajax({
           type: form.method,
           url: form.action,
+          headers: {
+            "X-CSRF-Token": csrfToken,
+          },
           data: formData,
           success: function(data) {
             console.log("ajax successfully fired");
@@ -99,13 +103,8 @@ document.addEventListener("DOMContentLoaded", function(){
             const correctPlayerName = correctPlayerInfo.dataset.correctPlayerName;
 
             const actualPlayerCards = actualPlayerCardContainer.querySelectorAll(".player-card");
-
-
             const userGuessForm = document.getElementById("user-guess-form");
 
-            userGuessForm.addEventListener("submit", function(){
-              console.log("form submitted");
-            });
             // GAME LOGIC VVVVVVVVVV
 
             actualPlayerCards.forEach(card => {
@@ -113,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 const playerName = card.dataset.playerName;
                 const userGuessInput = userGuessForm.querySelector("#user-guess");
                 userGuessInput.value = playerName;
-                console.log(userGuessInput.value  );
+                console.log(userGuessInput.value);
                 userGuessForm.submit();
                 setTimeout(() => {
                   if (playerName === correctPlayerName) {
