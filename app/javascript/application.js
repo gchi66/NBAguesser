@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function(){
     btnStats.onclick = function() {
       modal.style.display = "block";
       const dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
-      const starEmoji = dailyStreak >= 1 ? "⭐" : "";
+      const starEmoji = dailyStreak >= 3 ? "⭐" : "";
       const streakStartDate = localStorage.getItem("streak_start_date");
       const today = new Date().toISOString().split("T")[0];
       const consecutiveDays = streakStartDate === today ? dailyStreak : 0;
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function(){
                   if (userGuessCorrect) {
                     const currentStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
                     const streakStartDate = localStorage.getItem("streak_start_date");
-                    if (!streakStartDate || streakStartDate !== currentDate) {
+                    if (!streakStartDate || streakStartDate !== currentDate || correctGuesses % 5 === 0) {
                       localStorage.setItem("daily_streak", currentStreak + 1);
                       localStorage.setItem("streak_start_date", currentDate);
                     }
