@@ -11,8 +11,24 @@ import Rails from "@rails/ujs"
 
 document.addEventListener("DOMContentLoaded", function(){
   console.log('domcontentloaded')
-  const csrfToken = document.querySelector("meta[name='csrf-token']").content;
-  console.log(csrfToken);
+  // const csrfToken = document.querySelector("meta[name='csrf-token']").content;
+  // console.log(csrfToken);
+
+
+  // GENERATING UNIQUE DEVICE ID BASED ON TIMESTAMP
+  function generateDeviceId() {
+    const userAgent = window.navigator.userAgent;
+    const timestamp = new Date().getTime();
+    return `${userAgent}_${timestamp}`;
+  }
+
+  // checking to see if the device id exists within localStorage
+  let deviceId = localStorage.getItem("device_id");
+  // making a new one if not
+  if (!deviceId) {
+    deviceId = generateDeviceId();
+    localStorage.setItem("device_id", deviceId);
+  }
 
   // AJAX LOGIC VVVV
 
@@ -26,9 +42,22 @@ document.addEventListener("DOMContentLoaded", function(){
     var modalContent = document.getElementById("modalContent");
     // var pageContainer = document.querySelector(".page-container");
 
+
+    // STATS MODAL VVVV
     btnStats.onclick = function() {
       modal.style.display = "block";
-      modalContent.innerHTML = "Stats will go here later";
+      const dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
+      const starEmoji = dailyStreak >= 1 ? "⭐" : "";
+      const streakStartDate = localStorage.getItem("streak_start_date");
+      const today = new Date().toISOString().split("T")[0];
+      const consecutiveDays = streakStartDate === today ? dailyStreak : 0;
+      const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
+      const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+      const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 : 0;
+
+      modalContent.innerHTML = `Daily Streak: ${starEmoji}<br>`;
+      modalContent.innerHTML += `Current Streak: ${consecutiveDays}<br>`;
+      modalContent.innerHTML += `Win Percentage: ${winPercentage.toFixed(2)}%`;
     }
 
     btnInstructions.onclick = function() {
@@ -61,9 +90,6 @@ document.addEventListener("DOMContentLoaded", function(){
         Rails.ajax({
           type: form.method,
           url: form.action,
-          headers: {
-            "X-CSRF-Token": csrfToken,
-          },
           data: formData,
           success: function(data) {
             console.log("ajax successfully fired");
@@ -103,24 +129,40 @@ document.addEventListener("DOMContentLoaded", function(){
             const correctPlayerName = correctPlayerInfo.dataset.correctPlayerName;
 
             const actualPlayerCards = actualPlayerCardContainer.querySelectorAll(".player-card");
-            const userGuessForm = document.getElementById("user-guess-form");
 
             // GAME LOGIC VVVVVVVVVV
 
             actualPlayerCards.forEach(card => {
               card.addEventListener("click", function() {
+                // storing the total guesses for calculating stats
+                const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+                localStorage.setItem("total_guesses", totalGuesses + 1);
                 const playerName = card.dataset.playerName;
-                const userGuessInput = userGuessForm.querySelector("#user-guess");
-                userGuessInput.value = playerName;
-                console.log(userGuessInput.value);
-                userGuessForm.submit();
-                setTimeout(() => {
-                  if (playerName === correctPlayerName) {
+                const userGuessCorrect = playerName === correctPlayerName
+
+                localStorage.setItem("user_guess_correct", userGuessCorrect);
+                // const userGuess = JSON.parse(localStorage.getItem("user_guess_correct"));
+
+
+                  const currentDate = new Date().toISOString().split("T")[0];
+                  // checking if the user guess is correct and also storing stats for the modal
+                  if (userGuessCorrect) {
+                    const currentStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
+                    const streakStartDate = localStorage.getItem("streak_start_date");
+                    if (!streakStartDate || streakStartDate !== currentDate) {
+                      localStorage.setItem("daily_streak", currentStreak + 1);
+                      localStorage.setItem("streak_start_date", currentDate);
+                    }
+
+                    const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
+                    localStorage.setItem("correct_guesses", correctGuesses + 1);
+
                     window.location.href = winPageURL;
+
                   } else {
                     window.location.href = losePageURL;
+                    localStorage.removeItem("daily_streak");
                   }
-                }, 2000);
               });
             });
           },

@@ -12,14 +12,15 @@ class PagesController < ApplicationController
   end
 
   def create
-    user_device_id = session[:user_device_id] ||= SecureRandom.uuid
-    device = Device.find_or_create_by(uuid: user_device_id)
-    user_guess = params[:guess]["guess"]
-    if user_guess == session[:correct_player_name]
-      UserGuessForDevice.create(device_id: device.id, correct: true)
-    else
-      UserGuessForDevice.create(device_id: device.id, correct: false)
-    end
+    # user_device_id = session[:user_device_id] ||= SecureRandom.uuid
+    # device = Device.find_or_create_by(uuid: user_device_id)
+    # user_guess = params[:guess]["guess"]
+    # if user_guess == session[:correct_player_name]
+    #   UserGuessForDevice.create(device_id: device.id, correct: true)
+    # else
+    #   UserGuessForDevice.create(device_id: device.id, correct: false)
+    # end
+
   end
 
   # def show_user_guesses
