@@ -14,6 +14,36 @@ document.addEventListener("DOMContentLoaded", function(){
   // const csrfToken = document.querySelector("meta[name='csrf-token']").content;
   // console.log(csrfToken);
 
+    // 6 AM LOGIC VVVVVVVV
+    function scheduleResetAt6AM() {
+      // Calculate the time until the next 6 am
+      const now = new Date();
+      const sixAM = new Date(now);
+      sixAM.setHours(6, 0, 0, 0);
+
+      // If it's already past 6 am, schedule it for tomorrow
+      if (now > sixAM) {
+        sixAM.setDate(now.getDate() + 1);
+      }
+
+      const timeUntil6AM = sixAM - now;
+
+      // reset the guesses at 6am
+      setTimeout(function () {
+        // Reset total guesses and any other relevant counters
+        localStorage.setItem("total_guesses", 0);
+
+        // Call any other functions or logic needed for the reset
+        // ...
+
+        // Schedule the next reset for the following day
+        scheduleResetAt6AM();
+      }, timeUntil6AM);
+    }
+
+    // Initial call to schedule the first reset
+    scheduleResetAt6AM();
+
 
   // GENERATING UNIQUE DEVICE ID BASED ON TIMESTAMP
   function generateDeviceId() {
@@ -41,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function(){
     var btnInstructions = document.getElementById("showInstructions");
     const statsContainer = document.querySelector(".stats-container");
     const instructionsContainer = document.querySelector(".instructions-container");
+    const dailyChallengesCompleted = parseInt(localStorage.getItem("daily_challenges_completed")) || 0;
     // var pageContainer = document.querySelector(".page-container");
 
 
@@ -50,7 +81,6 @@ document.addEventListener("DOMContentLoaded", function(){
       statsContainer.classList.remove("hide-element");
       instructionsContainer.classList.add("hide-element");
       // star emoji for each time they've completed a challenge
-      const dailyChallengesCompleted = parseInt(localStorage.getItem("daily_challenges_completed")) || 0;
       const starEmoji = "⭐".repeat(dailyChallengesCompleted);
       // initializing daily streak
       const dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
@@ -118,6 +148,15 @@ document.addEventListener("DOMContentLoaded", function(){
             console.log("ajax successfully fired");
 
 
+            // initializing the total guesses variable
+            const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+
+            // Checking if the user has exceeded the daily limit of 5 guesses
+            // if (totalGuesses >= 5) {
+            //   // TODO IMPLEMENT LOGIC FOR GOING TO THE "EXCEEDED DAILY GUESSES PAGE"
+            //   // window.location.href = LimitPageURL;
+            //   return; // Exit the function, no further processing
+            // }
             // SEASON SELECTION LOGIC AND APPEARING HEADER LOGIC
 
             const headingContainer = document.querySelector(".heading-container");
@@ -127,7 +166,10 @@ document.addEventListener("DOMContentLoaded", function(){
             const playerCardContainer = data.querySelector(".player-card-container");
             const correctPlayerCard = data.querySelector(".correct-player-card");
 
-            if (formData.get("season[season]")) {
+            if (totalGuesses  >= 5) {
+              messageContainer.innerHTML = "Out of guesses, try again tomorrow"
+            }
+            else if (formData.get("season[season]")) {
               messageContainer.innerHTML = `<h4>Selected season: ${formData.get("season[season]")}</h4>`;
               seasonForm.classList.add("hide-element");
               welcomeHeader.classList.add("hide-element");
@@ -160,15 +202,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
                 const currentDate = new Date().toISOString().split("T")[0];
 
-                // storing the total guesses for calculating stats
-                const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
-
-                // Checking if the user has exceeded the daily limit of 5 guesses
-                // if (totalGuesses >= 5) {
-                //   // TODO IMPLEMENT LOGIC FOR GOING TO THE "EXCEEDED DAILY GUESSES PAGE"
-                //   // window.location.href = LimitPageURL;
-                //   return; // Exit the function, no further processing
-                // }
+                // incrementing total guesses
                 localStorage.setItem("total_guesses", totalGuesses + 1);
 
                 const playerName = card.dataset.playerName;
