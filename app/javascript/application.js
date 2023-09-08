@@ -162,6 +162,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
             // SEASON SELECTION LOGIC AND APPEARING HEADER LOGIC
 
+            const landingContainer = document.querySelector(".landing-container");
             const headingContainer = document.querySelector(".heading-container");
             const welcomeHeader = document.getElementById("welcome-header");
             const formContainer = document.querySelector(".form-container");
@@ -170,6 +171,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
             if (formData.get("season[season]")) {
               messageContainer.innerHTML = `<h4>Selected season: ${formData.get("season[season]")}</h4>`;
+              landingContainer.classList.add("hide-element");
               seasonForm.classList.add("hide-element");
               welcomeHeader.classList.add("hide-element");
               headingContainer.classList.remove("hide-element");

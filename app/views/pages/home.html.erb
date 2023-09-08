@@ -2,7 +2,7 @@
 
 <div class="bar bar-top">
   <%# <div class="button-container"> %>
-    <button id = showStats>Stats</button>
+    <button id = showStats>Statistics</button>
     <button id = showInstructions >Instructions</button>
   <%# </div> %>
 </div>
@@ -12,7 +12,7 @@
 <div id="myModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
-    <div class= "stats-container">
+    <div class="stats-container">
       <div id="statsContent"></div>
       <div id="statsContent1"></div>
       <div id="statsContent2"></div>
@@ -38,7 +38,7 @@
         <%= simple_form_for :season, url: root_path, remote: true, method: :post do |f| %>
           <%= f.input :season, collection: (1950..2023).to_a.reverse.map(&:to_s), prompt: 'Select a season', label: false %>
           <div id="submit-button">
-            <%= f.button :submit, 'Play!', class: "button-main" %>
+            <%= f.button :submit, 'Play', class: "button-main" %>
           </div>
         <% end %>
     </div>
