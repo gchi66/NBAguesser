@@ -143,10 +143,10 @@ document.addEventListener("DOMContentLoaded", function(){
 
         // limiting the totalDailyGuesses to 5
         const messageContainer = document.getElementById("message-container");
-        if (totalDailyGuesses  >= 5) {
-          messageContainer.innerHTML = `<h4>Out of guesses, try again tomorrow<h4>`;
-          return;
-        }
+        // if (totalDailyGuesses  >= 5) {
+        //   messageContainer.innerHTML = `<h4>Out of guesses, try again tomorrow<h4>`;
+        //   return;
+        // }
 
         const formData = new FormData(form);
 

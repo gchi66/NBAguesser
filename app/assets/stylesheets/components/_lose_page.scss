@@ -1,19 +1,31 @@
-.result-container{
-  padding: 1%;
+/* Phones */
+@media (max-width: 768px) {
+
+
 }
 
-.subheading-container{
-  padding: 1%;
-}
 
-.img-container{
-  padding: 1%;
-  margin: 1% 1% 5% 1%;
-}
 
-.result-button-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 1%;
+/* Tablet/Desktop */
+@media (min-width: 769px) and (max-width: 1500px) {
+  .result-container{
+    padding: 1%;
+    font-family: $headers-font;
+  }
+
+  .subheading-container{
+    padding: 1%;
+  }
+
+  .img-container{
+    padding: 1%;
+    margin: 1% 1% 5% 1%;
+  }
+
+  .result-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1%;
+  }
 }

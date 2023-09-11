@@ -1,46 +1,57 @@
 // Specific CSS for your home-page
 // margin: top right bottom left
 
+/* Phones */
+@media (max-width: 768px) {
 
-.landing-container {
-  display: flex;
-  flex-direction: column;
-  justify-content:  center;
-  align-items: center;
-  width: 75%;
-  gap: 5rem;
-  margin-top: 4%;
-  font: $headers-font;
-}
 
-.form-container {
-  position: relative;
-  top: 38%;
-  transform: translateY(-50%);
-  margin-top: -10px; /* Adjust this value to control top margin */
-  margin-bottom: -10px; /* Adjust this value to control bottom margin */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin: 3% auto;
 }
 
 
 
-#season-form {
-  width: 40%;
-}
+/* Tablet/Desktop */
+@media (min-width: 769px) and (max-width: 1500px) {
+  .landing-container {
+    display: flex;
+    flex-direction: column;
+    justify-content:  center;
+    align-items: center;
+    width: 75%;
+    gap: 5rem;
+    margin-top: 4%;
+    font-family: $headers-font;
+  }
+
+  .form-container {
+    position: relative;
+    top: 38%;
+    transform: translateY(-50%);
+    margin-top: -10px; /* Adjust this value to control top margin */
+    margin-bottom: -10px; /* Adjust this value to control bottom margin */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 3% auto;
+  }
 
 
-#submit-button {
-  text-align: center;
-  margin-top: 5%;
-}
 
-#welcome-header {
-  margin-top: 5%;
-}
+  #season-form {
+    width: 40%;
+  }
 
-.heading-container{
-  padding: .75%;
+
+  #submit-button {
+    text-align: center;
+    margin-top: 5%;
+  }
+
+  #welcome-header {
+    margin-top: 5%;
+    font-family: $headers-font;
+  }
+
+  .heading-container{
+    padding: .75%;
+  }
 }
