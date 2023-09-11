@@ -9,6 +9,8 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_pack_tag "application", "data-turbo-track": "reload", defer: true %>
+    <!-- favicon stuff -->
+    <%= render 'application/favicon' %>
     <!-- Javascript variables -->
     <script>
       const winPageURL = "<%= win_page_path %>";
