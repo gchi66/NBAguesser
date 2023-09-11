@@ -81,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function(){
     // var pageContainer = document.querySelector(".page-container");
 
     // setting instructions content
+    const instructionsWelcome = document.getElementById("instructionsWelcome");
     const instructionsContent = document.getElementById("instructionsContent");
     const instructionsContent1 = document.getElementById("instructionsContent1");
     const instructionsContent2 = document.getElementById("instructionsContent2");
@@ -92,6 +93,7 @@ document.addEventListener("DOMContentLoaded", function(){
       modal.style.display = "block";
       statsContainer.classList.add("hide-element");
       instructionsContainer.classList.remove("hide-element");
+      instructionsWelcome.innerHTML = "Welcome to NBA Guesser!"
       instructionsContent.innerHTML = "Select a season, then guess the NBA player based on the stats provided.";
       instructionsContent1.innerHTML = `Guess 3 players correct out of your 5 daily guesses to earn yourself a ⭐!`;
       instructionsContent2.innerHTML = `How long can you keep your daily streak going for? 🤔`;
@@ -131,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function(){
       modal.style.display = "block";
       statsContainer.classList.add("hide-element");
       instructionsContainer.classList.remove("hide-element");
+      instructionsWelcome.classList.add("hide-element");
 
       instructionsContent.innerHTML = "Select a season, then guess the NBA player based on the stats provided.";
       instructionsContent1.innerHTML = `Guess 3 players correct out of your 5 daily guesses to earn yourself a ⭐!`;

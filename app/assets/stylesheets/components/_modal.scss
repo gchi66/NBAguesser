@@ -18,9 +18,15 @@
     /* Modal Content */
     .modal-content {
       background-color: white;
-      margin: 75% auto;
+      margin: 55% auto;
       padding: 20px;
       border: 1px solid #888;
+    }
+
+    #instructionsWelcome {
+      text-align: center;
+      font-family: $body-font;
+      font-size: 2rem;
     }
 
     /* Content containers */
@@ -83,6 +89,12 @@
     padding: 20px;
     border: 1px solid #888;
     width: 50%;
+  }
+
+  #instructionsWelcome {
+    text-align: center;
+    font-family: $body-font;
+    font-size: 2rem;
   }
 
   /* Content containers */
