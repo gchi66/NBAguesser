@@ -80,6 +80,24 @@ document.addEventListener("DOMContentLoaded", function(){
     const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
     // var pageContainer = document.querySelector(".page-container");
 
+    // setting instructions content
+    const instructionsContent = document.getElementById("instructionsContent");
+    const instructionsContent1 = document.getElementById("instructionsContent1");
+    const instructionsContent2 = document.getElementById("instructionsContent2");
+
+    // INSTRUCTIONS MODAL ON STARTUP
+    const hasShownModal = localStorage.getItem("hasShownModal");
+
+    if (!hasShownModal) {
+      modal.style.display = "block";
+      statsContainer.classList.add("hide-element");
+      instructionsContainer.classList.remove("hide-element");
+      instructionsContent.innerHTML = "Select a season, then guess the NBA player based on the stats provided.";
+      instructionsContent1.innerHTML = `Guess 3 players correct out of your 5 daily guesses to earn yourself a ⭐!`;
+      instructionsContent2.innerHTML = `How long can you keep your daily streak going for? 🤔`;
+      // Set a flag in localStorage to indicate that the modal has been shown
+      localStorage.setItem("hasShownModal", "true");
+  }
 
     // STATS MODAL VVVV
     btnStats.onclick = function() {
@@ -113,10 +131,6 @@ document.addEventListener("DOMContentLoaded", function(){
       modal.style.display = "block";
       statsContainer.classList.add("hide-element");
       instructionsContainer.classList.remove("hide-element");
-
-      const instructionsContent = document.getElementById("instructionsContent");
-      const instructionsContent1 = document.getElementById("instructionsContent1");
-      const instructionsContent2 = document.getElementById("instructionsContent2");
 
       instructionsContent.innerHTML = "Select a season, then guess the NBA player based on the stats provided.";
       instructionsContent1.innerHTML = `Guess 3 players correct out of your 5 daily guesses to earn yourself a ⭐!`;
