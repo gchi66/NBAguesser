@@ -4,7 +4,46 @@
 /* Phones */
 @media (max-width: 768px) {
 
+  .landing-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    gap: 2rem; /* Adjust gap as needed */
+    margin-top: 55%; /* You can adjust the margin-top as needed */
+    font-family: $headers-font;
+  }
 
+  .form-container {
+    position: relative;
+    top: 38%; /* You can adjust this value as needed */
+    transform: translateY(-50%);
+    margin: 0 auto; /* Center the form horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 1rem; /* You can adjust the margin-top as needed */
+  }
+
+  #season-form {
+    width: 90%; /* Adjust the width as needed */
+  }
+
+  #submit-button {
+    text-align: center;
+    margin-top: 2rem; /* You can adjust the margin-top as needed */
+  }
+
+  #welcome-header {
+    margin-top: 5%; /* You can adjust the margin-top as needed */
+    font-family: $headers-font;
+    margin-bottom: 9%;
+  }
+
+  .heading-container {
+    padding: .5rem; /* Adjust padding as needed */
+  }
 }
 
 

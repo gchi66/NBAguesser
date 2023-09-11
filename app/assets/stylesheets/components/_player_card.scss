@@ -1,6 +1,109 @@
 /* Phones */
 @media (max-width: 768px) {
+  .player-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin: 0% 3% ;
+    width:100%;
+  }
 
+
+  .player-card {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    text-align: center;
+    width: 44%;
+    margin: 0.5rem;
+    cursor: pointer;
+    border-radius: 10%;
+    background-color: #393E46;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: $body-font
+  }
+
+  .player-card:hover, .player-card:focus {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .player-card:active {
+    transform: scale(1) translateY(2px); /* Add translateY to simulate depression */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Adjust shadow for active state */
+  }
+
+  .player-card img {
+    width: 68%;
+    height: auto;
+    margin-bottom: 5%;
+    border-radius: 10%;
+    transition: transform  0.2s;
+  }
+
+  .player-card:hover img, .player-card:focus img {
+    transform: scale(1.03);
+  }
+
+  .player-card:active img {
+    transform: scale(1.03); /* Adjust image scale for active state */
+  }
+
+  .player-card h2 {
+    margin-bottom: 1%;
+    color: #fff;
+    font-size: clamp(1.0rem, 1.0em, 1.5rem);
+    font-weight: 400;
+  }
+
+  .player-card p {
+    margin-bottom: 1%;
+    color: #fff;
+    font-size: 1rem;
+  }
+
+  // .player-card .stat {
+  //   font-weight: bold;
+  //   color: #00ADB5;
+  //   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  // }
+
+  .correct-player-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1%;
+    font-family: $headers-font;
+  }
+
+  .correct-player-card h1 {
+    margin-bottom: 6.5%;
+  }
+
+  .correct-player-card img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .correct-player-card h2 {
+    margin-bottom: 5px;
+  }
+
+  .correct-player-card p {
+    text-align: center;
+    margin-bottom: 0.2rem;
+  }
+
+  .correct-player-card .stat {
+    font-weight: bold;
+    color: #00ADB5;
+  }
+
+  #message-container {
+    margin-top: 8%;
+  }
 
 }
 
