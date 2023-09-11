@@ -3,44 +3,7 @@
   align-items: center;
   justify-content: center;
 }
-@media (max-width: 768px) {
-  .button-main {
-    appearance: none;
-    backface-visibility: hidden;
-    background-color: #393E46;
-    border-radius: 5px;
-    border-style: none;
-    box-shadow: none;
-    box-sizing: border-box;
-    color: #EEEEEE;
-    cursor: pointer;
-    display: inline-block;
-    // TODO add font family and font
-    font-size: 15px;
-    font-weight: 500;
-    height: 50px;
-    letter-spacing: normal;
-    outline: none;
-    overflow: hidden;
-    padding: 14px 0px;
-    width: 50%;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-    transform: translate3d(0, 0, 0);
-    transition: all .2s;
-    user-select: none;
-    line-height: normal;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    vertical-align: top;
-    white-space: nowrap;
-    margin: 0 16px;
-    font-family: $body-font;
-  }
 
-
-}
 .button-main {
   appearance: none;
   backface-visibility: hidden;
@@ -85,7 +48,7 @@
   box-shadow: rgba(0, 0, 0, .05) 0 5px 30px, rgba(0, 0, 0, .05) 0 1px 4px;
   opacity: 1;
   transform: scale(1.05);
-  transition-duration: .35s;
+  transition-duration: .15s;
 }
 
 .button-main:hover:after {
@@ -95,7 +58,7 @@
 .button-main:active {
   box-shadow: rgba(0, 0, 0, .1) 0 3px 6px 0, rgba(0, 0, 0, .1) 0 0 10px 0, rgba(0, 0, 0, .1) 0 1px 4px -1px;
   transform: scale(.90);
-  transition-duration: .35s;
+  transition-duration: .15s;
 }
 
 .button-main:active:after {
