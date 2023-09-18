@@ -124,7 +124,7 @@
   }
 
 
-  .player-card {
+  .player-card, .result-player-card {
     border: 1px solid #ccc;
     padding: 0.5rem;
     text-align: center;
@@ -146,7 +146,7 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Adjust shadow for active state */
   }
 
-  .player-card img {
+  .player-card img, .result-player-card img {
     width: 100px;
     height: auto;
     margin-bottom: 5%;
@@ -162,13 +162,13 @@
     transform: scale(1.03); /* Adjust image scale for active state */
   }
 
-  .player-card h2 {
+  .player-card h2, .result-player-card h2 {
     margin-bottom: 2%;
     color: #fff;
     font-size: 1.5rem;
   }
 
-  .player-card p {
+  .player-card p, .result-player-card p {
     margin-bottom: 1%;
     color: #fff;
     font-size: 1rem;
