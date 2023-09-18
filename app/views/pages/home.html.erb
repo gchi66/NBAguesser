@@ -60,28 +60,16 @@
           <p>Points: <span class="stat"><%= @correct_player[:points] %></span></p>
           <p>Rebounds: <span class="stat"><%= @correct_player[:rebounds] %></span></p>
           <p>Assists: <span class="stat"><%= @correct_player[:assists] %></span></p>
-          <p><% @correct_player[:name] %></p>
         </div>
       <% end %>
     </div>
 
 
-    <% if @correct_player %>
-      <p><% @correct_player[:name] %></p>
-    <% end %>
-
-
-    <div class="result-player-card hide-element">
-      <% if @correct_player %>
-        <%= image_tag(@correct_player[:image_url]) %>
-        <h2><%= @correct_player[:name] %></h2>
-      <% end %>
-    </div>
-
-
-
   <div class="heading-container hide-element">
     <h1>Choose from these four!</h1>
+    <% if @correct_player %>
+      <p><%= @correct_player[:name] %></p>
+    <% end %>
   </div>
 
   <div class="player-card-container hide-element">
@@ -106,7 +94,7 @@
 <div class = "result-page-container hide-element">
 
     <div class="result-container">
-      <%# <h1>Nice work hoophead!</h1> %>
+      <h1>Nice work hoophead!</h1>
     </div>
 
     <div class="subheading-container ">
@@ -114,7 +102,7 @@
     </div>
 
 
-    <div class="results-player-card ">
+    <div class="result-player-card ">
       <% if @correct_player && @correct_player[:image_url].present? %>
         <%= image_tag(@correct_player[:image_url], alt: "A picture of #{@correct_player[:name]}") %>
         <% if @correct_player[:name].present? %>

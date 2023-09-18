@@ -49,6 +49,7 @@ class PagesController < ApplicationController
         end
       end
       @correct_player = player_with_points || {}
+      @correct_player[:id] = @correct_player[:player_id]
       session[:correct_player_name] = @correct_player[:name] if @correct_player[:name].present?
       session[:correct_player_image] = @correct_player[:image_url] if @correct_player[:image_url].present?
     end

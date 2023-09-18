@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function(){
             const formContainer = document.querySelector(".form-container");
             const playerCardContainer = data.querySelector(".player-card-container");
             const correctPlayerCard = data.querySelector(".correct-player-card");
-            const resultPlayerCard = document.querySelector(".result-player-card");
+            const resultPlayerCard = data.querySelector(".result-player-card");
 
             if (formData.get("season[season]")) {
               messageContainer.innerHTML = `<h4>Selected season: ${formData.get("season[season]")}</h4>`;
@@ -260,12 +260,13 @@ document.addEventListener("DOMContentLoaded", function(){
 
             const actualPlayerCards = actualPlayerCardContainer.querySelectorAll(".player-card");
 
-
+            const actualResultPlayerCard = document.querySelector(".result-player-card");
+            actualResultPlayerCard.innerHTML = resultPlayerCard.innerHTML;
+``
             const resultContainer = document.querySelector(".result-container");
             const pageContainer = document.querySelector(".page-container");
             const resultPageContainer = document.querySelector(".result-page-container");
-            // resultPlayerCard.innerHTML = correctPlayerCard.innerHTML;
-            console.log(resultPlayerCard);
+
 
 
             // GAME LOGIC VVVVVVVVVV
