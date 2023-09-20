@@ -3,27 +3,23 @@
 
 /* Phones */
 @media (max-width: 768px) {
-
   .landing-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 90%;
-    gap: 2rem; /* Adjust gap as needed */
-    margin-top: 55%; /* You can adjust the margin-top as needed */
+    gap: 3rem;
     font-family: $headers-font;
   }
 
   .form-container {
     position: relative;
-    top: 38%; /* You can adjust this value as needed */
     transform: translateY(-50%);
     margin: 0 auto; /* Center the form horizontally */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-top: 1rem; /* You can adjust the margin-top as needed */
   }
 
   #season-form {
@@ -36,7 +32,6 @@
   }
 
   #welcome-header {
-    margin-top: 5%; /* You can adjust the margin-top as needed */
     font-family: $headers-font;
     margin-bottom: 9%;
   }
@@ -56,17 +51,17 @@
     justify-content:  center;
     align-items: center;
     width: 75%;
-    gap: 5rem;
-    margin-top: 4%;
+    gap: 3rem;
+    margin-bottom: 3%;
     font-family: $headers-font;
   }
 
   .form-container {
     position: relative;
-    top: 38%;
+    // top: 38%;
     transform: translateY(-50%);
-    margin-top: -10px; /* Adjust this value to control top margin */
-    margin-bottom: -10px; /* Adjust this value to control bottom margin */
+    // margin-top: -10px; /* Adjust this value to control top margin */
+    // margin-bottom: -10px; /* Adjust this value to control bottom margin */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -82,11 +77,11 @@
 
   #submit-button {
     text-align: center;
-    margin-top: 5%;
+    // margin-top: 5%;
   }
 
   #welcome-header {
-    margin-top: 5%;
+    // margin-top: 5%;
     font-family: $headers-font;
   }
 
