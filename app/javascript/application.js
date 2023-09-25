@@ -181,10 +181,12 @@ document.addEventListener("DOMContentLoaded", function(){
       }
     }
 
-
+    // variables
     const seasonForm = document.getElementById("season-form");
     const form = seasonForm ? seasonForm.firstElementChild : null;
     const playButton = document.getElementById("play-button");
+    const loader = document.querySelector(".loader-wrapper");
+    const landingContainer = document.querySelector(".landing-container");
     if (form) {
       form.addEventListener("submit", function(event) {
         event.preventDefault();
@@ -194,8 +196,14 @@ document.addEventListener("DOMContentLoaded", function(){
 
         playButton.disabled = true;
 
+        // displaying the loader after clicking play
+
+        loader.classList.remove("hide-element");
+        landingContainer.classList.add("hide-element");
+
         // limiting the totalDailyGuesses to 5
         const messageContainer = document.getElementById("message-container");
+        messageContainer.classList.add("hide-element");
 
 
         // ***********************************************************************************
@@ -225,24 +233,24 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
             // SEASON SELECTION LOGIC AND APPEARING HEADER LOGIC
-
-            const landingContainer = document.querySelector(".landing-container");
             const headingContainer = document.querySelector(".heading-container");
-            const welcomeHeader = document.getElementById("welcome-header");
             const formContainer = document.querySelector(".form-container");
             const playerCardContainer = data.querySelector(".player-card-container");
             const correctPlayerCard = data.querySelector(".correct-player-card");
             const resultPlayerCard = data.querySelector(".result-player-card");
 
             if (formData.get("season[season]")) {
+              messageContainer.classList.remove("hide-element");
               messageContainer.innerHTML = `<h4>Selected season: ${formData.get("season[season]")}</h4>`;
-              landingContainer.classList.add("hide-element");
-              seasonForm.classList.add("hide-element");
-              welcomeHeader.classList.add("hide-element");
               headingContainer.classList.remove("hide-element");
               formContainer.classList.add("hide-element");
+              loader.classList.add("hide-element");
             } else {
+              messageContainer.classList.remove("hide-element");
               messageContainer.innerHTML = `<h4>Please select a season</h4>`;
+              landingContainer.classList.remove("hide-element");
+              playButton.disabled = false;
+              loader.classList.add("hide-element");
             }
 
             // DEFINING THE VARIABLES TO MAKE AJAX WORK VVVVVVVV
@@ -312,7 +320,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     // incrementing correct guesses count
                     localStorage.setItem("correct_guesses", correctGuesses + 1);
                     pageContainer.classList.add("hide-element");
-                    resultContainer.innerHTML = "Nice work hoophead!";
+                    resultContainer.innerHTML = "<h1>Nice work hoophead!</h1>";
                     resultPageContainer.classList.remove("hide-element");
 
                     // hiding everything else on the page
@@ -320,7 +328,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
                   } else {
                     pageContainer.classList.add("hide-element");
-                    resultContainer.innerHTML = "Close but no cigar.";
+                    resultContainer.innerHTML = "<h1>Not quite! Better luck next time.</h1>";
                     resultPageContainer.classList.remove("hide-element");
 
                   }
