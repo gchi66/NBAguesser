@@ -52,6 +52,7 @@ class PagesController < ApplicationController
       @correct_player[:id] = @correct_player[:player_id]
       session[:correct_player_name] = @correct_player[:name] if @correct_player[:name].present?
       session[:correct_player_image] = @correct_player[:image_url] if @correct_player[:image_url].present?
+      # gon.correct_player_name = @correct_player[:name]
     end
   end
 
@@ -125,6 +126,8 @@ class PagesController < ApplicationController
   def clear_correct_player_session
     session[:correct_player_name] = nil
     session[:correct_player_image] = nil
+    session[:correct_player] = nil if session.key?(:correct_player)
+    session[:guess_players] = nil if session.key?(:guess_players)
   end
 
 end

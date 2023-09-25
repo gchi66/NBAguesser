@@ -40,7 +40,7 @@
         <%= simple_form_for :season, url: root_path, remote: true, method: :post do |f| %>
           <%= f.input :season, collection: (1950..2023).to_a.reverse.map(&:to_s), prompt: 'Select a season', label: false %>
           <div id="submit-button">
-            <%= f.button :submit, 'Play', class: "button-main" %>
+            <%= f.button :submit, 'Play', class: "button-main", id: "play-button" %>
           </div>
         <% end %>
     </div>
@@ -112,9 +112,9 @@
     </div>
 
 
-    <div class="result-button-container">
-      <%= link_to "Try again!", root_path, class: "button-main"%>
-    </div>
+  <div class="result-button-container">
+    <a href="javascript:void(0);" onclick="refreshPage();" class="button-main">Try again!</a>
+  </div>
 </div>
 
 <!-- Bottom Navbar -->

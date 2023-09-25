@@ -11,8 +11,6 @@ import Rails from "@rails/ujs"
 
 document.addEventListener("DOMContentLoaded", function(){
   console.log('domcontentloaded')
-  // const csrfToken = document.querySelector("meta[name='csrf-token']").content;
-  // console.log(csrfToken);
 
     // MIDNIGHT LOGIC VVVVVVVV
     function scheduleResetAtMidnight() {
@@ -186,10 +184,15 @@ document.addEventListener("DOMContentLoaded", function(){
 
     const seasonForm = document.getElementById("season-form");
     const form = seasonForm ? seasonForm.firstElementChild : null;
+    const playButton = document.getElementById("play-button");
     if (form) {
       form.addEventListener("submit", function(event) {
         event.preventDefault();
         console.log("Form submitted via AJAX");
+
+        // disabling the play button until content is loaded.
+
+        playButton.disabled = true;
 
         // limiting the totalDailyGuesses to 5
         const messageContainer = document.getElementById("message-container");
@@ -212,8 +215,6 @@ document.addEventListener("DOMContentLoaded", function(){
         // **************************************************************************************
 
         const formData = new FormData(form);
-
-        console.log(formData);
 
         Rails.ajax({
           type: form.method,
@@ -268,6 +269,9 @@ document.addEventListener("DOMContentLoaded", function(){
             const resultPageContainer = document.querySelector(".result-page-container");
 
 
+            // re-enabling the play button for next time
+            playButton.disabled = false;
+
 
             // GAME LOGIC VVVVVVVVVV
 
@@ -307,38 +311,25 @@ document.addEventListener("DOMContentLoaded", function(){
 
                     // incrementing correct guesses count
                     localStorage.setItem("correct_guesses", correctGuesses + 1);
-
-
-                    // showing the results stuff
-                    // resultContainer.classList.remove("hide-element");
                     pageContainer.classList.add("hide-element");
                     resultContainer.innerHTML = "Nice work hoophead!";
                     resultPageContainer.classList.remove("hide-element");
-                    console.log(resultPlayerCard);
-                    console.log(actualCorrectPlayerCard);
-                    // subheadingContainer.classList.remove("hide-element");
-                    // resultPlayerCard.classList.remove("hide-element");
-                    // resultButton.classList.remove("hide-element");
 
                     // hiding everything else on the page
 
 
                   } else {
-                    // window.location.href = losePageURL;
-                    // localStorage.removeItem("daily_streak");
-                    // resultContainer.classList.remove("hide-element");
                     pageContainer.classList.add("hide-element");
                     resultContainer.innerHTML = "Close but no cigar.";
                     resultPageContainer.classList.remove("hide-element");
-                    // subheadingContainer.classList.remove("hide-element");
-                    // resultPlayerCard.classList.remove("hide-element");
-                    // resultButton.classList.remove("hide-element");
+
                   }
               });
             });
           },
           error: function() {
             console.log("AJAX request failed");
+            playButton.disabled = false;
           }
         });
       });
