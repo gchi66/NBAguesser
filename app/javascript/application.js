@@ -87,17 +87,40 @@ document.addEventListener("DOMContentLoaded", function(){
     // figuring out the current streak
     const consecutiveDays = streakStartDate === today ? dailyStreak : 0;
     // star emoji for each time they've completed a challenge
-    const starEmojis = "⭐".repeat(consecutiveDays);
+    const starEmojis = "🏀".repeat(consecutiveDays);
     // calculating win percentage
     const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
     // const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
     const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 : 0;
 
-    // setting stats content
+    // setting stats content/social media
     const dailyStreakAlert = document.getElementById("dailyStreakAlert");
     const statsContent = document.getElementById("statsContent");
     const statsContent1 = document.getElementById("statsContent1");
     const statsContent2 = document.getElementById("statsContent2");
+    const shareButtonsContainer = document.getElementById("share-buttons-container");
+    const shareButtonX = document.getElementById("x-share-button");
+    const shareButtonWa = document.getElementById("wa-share-button");
+
+
+
+    // twitter sharing message
+    shareButtonX.onclick = function shareOnTwitter() {
+      const message = `I got my 🏀 from NBA guesser today with ${correctGuesses}/5 guesses correct and a streak of ${consecutiveDays} days!`
+      const encodedMessage = encodeURIComponent(message);
+      const twitterIntentURL = `https://twitter.com/intent/tweet?text=${encodedMessage}`;
+      window.open(twitterIntentURL, "_blank");
+    }
+
+    // Whatsapp sharing message
+    shareButtonWa.onclick = function shareOnWhatsapp() {
+      const message = `I got my 🏀 from NBA guesser today with ${correctGuesses}/5 guesses correct and a streak of ${consecutiveDays} days!`;
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappShareURL = `whatsapp://send?text=${encodedMessage}`;
+      window.open(whatsappShareURL, "_blank");
+    };
+
+
     // setting instructions content
     const instructionsWelcome = document.getElementById("instructionsWelcome");
     const instructionsContent = document.getElementById("instructionsContent");
@@ -114,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function(){
       instructionsContainer.classList.remove("hide-element");
       instructionsWelcome.innerHTML = "Welcome to NBA Guesser!"
       instructionsContent.innerHTML = "Select a season, then guess the NBA player based on the stats provided.";
-      instructionsContent1.innerHTML = `Guess 3 players correct out of your 5 daily guesses to earn yourself a ⭐!`;
+      instructionsContent1.innerHTML = `Guess 3 players correct out of your 5 daily guesses to earn yourself a 🏀!`;
       instructionsContent2.innerHTML = `How long can you keep your daily streak going for? 🤔`;
       // Set a flag in localStorage to indicate that the modal has been shown
       localStorage.setItem("hasShownModal", "true");
@@ -126,10 +149,11 @@ document.addEventListener("DOMContentLoaded", function(){
         modal.style.display = "block";
         instructionsContainer.classList.add("hide-element");
         statsContainer.classList.remove("hide-element");
-        dailyStreakAlert.innerHTML = `Congrats, you guessed ${correctGuesses} players correctly and have earned yourself a ⭐. See you tomorrow!`
+        dailyStreakAlert.innerHTML = `Congrats, you guessed ${correctGuesses} players correctly and have earned yourself a 🏀. See you tomorrow!`
         statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
         statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
         statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
+        shareButtonsContainer.classList.remove("hide-element");
       }
       else {
         modal.style.display = "block";
@@ -154,7 +178,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
       statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
       statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
-      statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
+      statsContent2.innerHTML = `Total challenges completed: ${dailyChallengesCompleted}`
+      shareButtonsContainer.classList.remove("hide-element");
     }
 
     // INSTRUCTIONS MODAL VVVV
@@ -187,6 +212,8 @@ document.addEventListener("DOMContentLoaded", function(){
     const playButton = document.getElementById("play-button");
     const loader = document.querySelector(".loader-wrapper");
     const landingContainer = document.querySelector(".landing-container");
+
+
     if (form) {
       form.addEventListener("submit", function(event) {
         event.preventDefault();

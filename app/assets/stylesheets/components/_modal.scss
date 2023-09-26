@@ -67,7 +67,7 @@
 
 
 /* Tablet/Desktop */
-@media (min-width: 769px) and (max-width: 2500px) {
+@media (min-width: 769px) and (max-width: 4000px) {
 
   /* The Modal (background) */
   .modal {
@@ -97,6 +97,19 @@
     font-size: 2rem;
   }
 
+  .share-button {
+    background-color: white;
+  }
+
+  .share-button img{
+    height:2rem;
+  }
+
+  #x-share-button {
+  }
+
+
+
   /* Content containers */
   .stats-container {
     padding: 1rem;
@@ -111,6 +124,13 @@
     flex-direction: column;
     gap: 2rem;
   }
+
+  #share-buttons-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+
 
   /* Close Button */
   .close {

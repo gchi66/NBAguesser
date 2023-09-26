@@ -17,7 +17,17 @@
       <div id="statsContent"></div>
       <div id="statsContent1"></div>
       <div id="statsContent2"></div>
+      <p>Nice work! Share with your friends:</p>
+      <div id="share-buttons-container" class="hide-element">
+        <button class="share-button" id ="x-share-button">
+          <%= image_tag("x-logo-black.png", alt: "Share on X") %>
+        </button>
+        <%# <button class="share-button" id ="wa-share-button">
+          <%= image_tag("whatsapp-logo.png", alt: "Share on Whatsapp") %>
+        <%# </button> %>
+      </div>
     </div>
+
     <div class="instructions-container">
       <div id="instructionsWelcome"></div>
       <div id="instructionsContent"></div>
@@ -125,6 +135,8 @@
   <div class="result-button-container">
     <a href="javascript:void(0);" onclick="refreshPage();" class="button-main">Try again!</a>
   </div>
+
+
 </div>
 
 <!-- Bottom Navbar -->

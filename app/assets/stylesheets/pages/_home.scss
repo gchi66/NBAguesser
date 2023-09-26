@@ -11,6 +11,7 @@
     width: 90%;
     gap: 3rem;
     font-family: $headers-font;
+    background-color: red;
   }
 
   .form-container {
@@ -44,7 +45,7 @@
 
 
 /* Tablet/Desktop */
-@media (min-width: 769px) and (max-width: 25000px) {
+@media (min-width: 769px) and (max-width: 4000px) {
   .landing-container {
     display: flex;
     flex-direction: column;
