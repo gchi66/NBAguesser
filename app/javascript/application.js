@@ -267,9 +267,15 @@ document.addEventListener("DOMContentLoaded", function(){
             const resultPlayerCard = data.querySelector(".result-player-card");
 
             if (formData.get("season[season]")) {
-              messageContainer.classList.remove("hide-element");
-              messageContainer.innerHTML = `<h4>Selected season: ${formData.get("season[season]")}</h4>`;
+              // messageContainer.classList.remove("hide-element");
+              // messageContainer.innerHTML = `<h4>Selected season: ${formData.get("season[season]")}</h4>`;
+              const currentYearString = formData.get("season[season]");
+              const currentYear = parseInt(currentYearString, 10);
+              const previousYear = currentYear - 1;
+              const seasonText = `in the ${previousYear}-${currentYear} season?`;
               headingContainer.classList.remove("hide-element");
+              headingContainer.innerHTML = `<h2>${seasonText}</h2>`;
+
               formContainer.classList.add("hide-element");
               loader.classList.add("hide-element");
             } else {

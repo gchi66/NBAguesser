@@ -80,21 +80,17 @@
 
     <div class="correct-player-card hide-element">
       <% if @correct_player %>
-        <h1>Who is this player?</h1>
+        <h1>Which player averaged</h1>
         <div class="correct-player-info" data-correct-player-name="<%= @correct_player[:name] %>">
-          <p>Points: <span class="stat"><%= @correct_player[:points] %></span></p>
-          <p>Rebounds: <span class="stat"><%= @correct_player[:rebounds] %></span></p>
-          <p>Assists: <span class="stat"><%= @correct_player[:assists] %></span></p>
+          <h4>Points: <span class="stat"><%= @correct_player[:points] %></span></h4>
+          <h4>Rebounds: <span class="stat"><%= @correct_player[:rebounds] %></span></h4>
+          <h4>Assists: <span class="stat"><%= @correct_player[:assists] %></span></h4>
         </div>
       <% end %>
     </div>
 
 
   <div class="heading-container hide-element">
-    <h1>Choose from these four!</h1>
-    <% if @correct_player %>
-      <p><%= @correct_player[:name] %></p>
-    <% end %>
   </div>
 
   <div class="player-card-container hide-element">
@@ -148,6 +144,6 @@
 
 <div class="bar bar-bottom">
   <a href="https://grantchichester.me" target="_blank">
-    <button>Made by Grant</button>
+    <%= image_tag("GC-logo-white-no-bg", alt: "Grant Chichester's logo") %>
   </a>
 </div>
