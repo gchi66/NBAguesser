@@ -29,6 +29,37 @@
       font-size: 2rem;
     }
 
+    #share-header {
+      margin-top: 2rem;
+    }
+
+    .share-button {
+      border: none;
+      margin: 1vh;
+      padding: 0;
+      overflow: visible;
+      background: none;
+      line-height: normal;
+      cursor: pointer;
+    }
+
+    .share-button img{
+      height:2rem;
+    }
+
+    #wa-share-button img {
+      height: 2.5rem;
+    }
+
+    #x-share-button {
+      background-color: black;
+      padding: 0.2rem;
+    }
+
+    #x-share-button img{
+      background-color: black;
+    }
+
     /* Content containers */
     .stats-container {
       padding: 1rem;
@@ -42,6 +73,11 @@
       display: flex;
       flex-direction: column;
       gap: 2rem;
+    }
+
+    #share-buttons-container {
+      display: flex;
+      flex-direction: row;
     }
 
     /* Close Button */
@@ -97,17 +133,36 @@
     font-size: 2rem;
   }
 
+  #share-header {
+    margin-top: 2rem;
+  }
+
   .share-button {
-    background-color: white;
+    border: none;
+    margin: 1vh;
+    padding: 0;
+    overflow: visible;
+    background: none;
+    line-height: normal;
+    cursor: pointer;
   }
 
   .share-button img{
     height:2rem;
   }
 
-  #x-share-button {
+  #wa-share-button img {
+    height: 2.5rem;
   }
 
+  #x-share-button {
+    background-color: black;
+    padding: 0.2rem;
+  }
+
+  #x-share-button img{
+    background-color: black;
+  }
 
 
   /* Content containers */
