@@ -17,7 +17,7 @@
       <div id="statsContent"></div>
       <div id="statsContent1"></div>
       <div id="statsContent2"></div>
-      <div id ="share-header">
+      <div id ="share-header" class="hide-element">
         <p>Nice work! Share with your friends:</p>
       </div>
       <div id="share-buttons-container" class="hide-element">
@@ -74,7 +74,6 @@
 
 
   <div id="message-container">
-
   </div>
 
 
@@ -112,34 +111,37 @@
 
 <!-- Results content -->
 
-<div class = "result-page-container hide-element">
+<div class="page-container-two hide-element">
 
-    <div class="result-container">
-      <h1>Nice work hoophead!</h1>
-    </div>
+  <div class = "result-page-container hide-element">
 
-    <div class="subheading-container ">
-      <h2>The correct answer was</h2>
-    </div>
+      <div class="result-container">
+        <h1>Nice work hoophead!</h1>
+      </div>
+
+      <div class="subheading-container ">
+        <h2>The correct answer was</h2>
+      </div>
 
 
-    <div class="result-player-card ">
-      <% if @correct_player && @correct_player[:image_url].present? %>
-        <%= image_tag(@correct_player[:image_url], alt: "A picture of #{@correct_player[:name]}") %>
-        <% if @correct_player[:name].present? %>
-          <h2><%= @correct_player[:name] %></h2>
+      <div class="result-player-card ">
+        <% if @correct_player && @correct_player[:image_url].present? %>
+          <%= image_tag(@correct_player[:image_url], alt: "A picture of #{@correct_player[:name]}") %>
+          <% if @correct_player[:name].present? %>
+            <h2><%= @correct_player[:name] %></h2>
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
+
+
+    <div class="result-button-container">
+      <a href="javascript:void(0);" onclick="refreshPage();" class="button-main">Try again!</a>
     </div>
 
 
-  <div class="result-button-container">
-    <a href="javascript:void(0);" onclick="refreshPage();" class="button-main">Try again!</a>
   </div>
 
-
 </div>
-
 <!-- Bottom Navbar -->
 
 <div class="bar bar-bottom">

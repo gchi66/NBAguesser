@@ -35,6 +35,16 @@ a, a:hover {
   padding: 5%;
 }
 
+.page-container-two {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 5%;
+}
+
 .hide-element {
-  display: none;
+  display: none !important;
 }

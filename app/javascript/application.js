@@ -98,6 +98,7 @@ document.addEventListener("DOMContentLoaded", function(){
     const statsContent = document.getElementById("statsContent");
     const statsContent1 = document.getElementById("statsContent1");
     const statsContent2 = document.getElementById("statsContent2");
+    const shareHeader =  document.getElementById("share-header");
     const shareButtonsContainer = document.getElementById("share-buttons-container");
     const shareButtonX = document.getElementById("x-share-button");
     const shareButtonWa = document.getElementById("wa-share-button");
@@ -154,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function(){
         statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
         statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
         shareButtonsContainer.classList.remove("hide-element");
+        shareHeader.classList.remove("hide-element");
       }
       else {
         modal.style.display = "block";
@@ -179,7 +181,12 @@ document.addEventListener("DOMContentLoaded", function(){
       statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
       statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
       statsContent2.innerHTML = `Total challenges completed: ${dailyChallengesCompleted}`
-      shareButtonsContainer.classList.remove("hide-element");
+      if (totalDailyGuesses >= 5) {
+        if (correctGuesses >= 3) {
+          shareButtonsContainer.classList.remove("hide-element");
+          shareHeader.classList.remove("hide-element");
+        }
+      }
     }
 
     // INSTRUCTIONS MODAL VVVV
@@ -218,29 +225,30 @@ document.addEventListener("DOMContentLoaded", function(){
       form.addEventListener("submit", function(event) {
         event.preventDefault();
         console.log("Form submitted via AJAX");
+        const messageContainer = document.getElementById("message-container");
 
         // disabling the play button until content is loaded.
 
         playButton.disabled = true;
 
         // displaying the loader after clicking play
+        if (totalDailyGuesses < 5) {
+          loader.classList.remove("hide-element");
+          landingContainer.classList.add("hide-element");
+          messageContainer.classList.add("hide-element");
+        }
 
-        loader.classList.remove("hide-element");
-        landingContainer.classList.add("hide-element");
 
         // limiting the totalDailyGuesses to 5
-        const messageContainer = document.getElementById("message-container");
-        messageContainer.classList.add("hide-element");
-
 
         // ***********************************************************************************
 
         // MAKE SURE
         // THIS SHIT
-        // if (totalDailyGuesses  >= 5) {
-        //   messageContainer.innerHTML = `<h4>Out of guesses, try again tomorrow<h4>`;
-        //   return;
-        // }
+        if (totalDailyGuesses  >= 5) {
+          messageContainer.innerHTML = `<h4>Out of guesses, try again tomorrow<h4>`;
+          return;
+        }
         // IS NOT
         // COMMENTED OUT FOR PRODUCTION
         // U BUM
@@ -308,6 +316,7 @@ document.addEventListener("DOMContentLoaded", function(){
             const resultContainer = document.querySelector(".result-container");
             const pageContainer = document.querySelector(".page-container");
             const resultPageContainer = document.querySelector(".result-page-container");
+            const pageContainerTwo = document.querySelector(".page-container-two");
 
 
             // re-enabling the play button for next time
@@ -355,15 +364,17 @@ document.addEventListener("DOMContentLoaded", function(){
                     pageContainer.classList.add("hide-element");
                     resultContainer.innerHTML = "<h1>Nice work hoophead!</h1>";
                     resultPageContainer.classList.remove("hide-element");
+                    pageContainerTwo.classList.remove("hide-element");
 
                     // hiding everything else on the page
 
 
                   } else {
                     pageContainer.classList.add("hide-element");
+                    pageContainerTwo.classList.remove("hide-element");
                     resultContainer.innerHTML = "<h1>Not quite! Better luck next time.</h1>";
                     resultPageContainer.classList.remove("hide-element");
-
+                    pageContainerTwo.classList.remove("hide-element");
                   }
               });
             });
