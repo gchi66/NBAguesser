@@ -284,7 +284,7 @@ document.addEventListener("DOMContentLoaded", function(){
               headingContainer.classList.remove("hide-element");
               headingContainer.innerHTML = `<h2>${seasonText}</h2>`;
 
-              formContainer.classList.add("hide-element");
+              // formContainer.classList.add("hide-element");
               loader.classList.add("hide-element");
             } else {
               messageContainer.classList.remove("hide-element");
@@ -317,10 +317,26 @@ document.addEventListener("DOMContentLoaded", function(){
             const pageContainer = document.querySelector(".page-container");
             const resultPageContainer = document.querySelector(".result-page-container");
             const pageContainerTwo = document.querySelector(".page-container-two");
+            const tryAgainButton = document.getElementById("try-again-button");
+
+            // function to reset to the main page
+            function resetGame() {
+              form.reset();
+              pageContainer.classList.remove("hide-element");
+              landingContainer.classList.remove("hide-element");
+              playerCardContainer.classList.add("hide-element");
+              headingContainer.classList.add("hide-element");
+              pageContainerTwo.classList.add("hide-element");
+              actualPlayerCardContainer.classList.add("hide-element");
+              actualCorrectPlayerCard.classList.add("hide-element");
+              // TODO reset the value of the form to it's original "select a season"
+            }
+
 
 
             // re-enabling the play button for next time
             playButton.disabled = false;
+
 
 
             // GAME LOGIC VVVVVVVVVV
@@ -365,6 +381,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     resultContainer.innerHTML = "<h1>Nice work hoophead!</h1>";
                     resultPageContainer.classList.remove("hide-element");
                     pageContainerTwo.classList.remove("hide-element");
+                    tryAgainButton.addEventListener("click", resetGame);
 
                     // hiding everything else on the page
 
@@ -375,6 +392,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     resultContainer.innerHTML = "<h1>Not quite! Better luck next time.</h1>";
                     resultPageContainer.classList.remove("hide-element");
                     pageContainerTwo.classList.remove("hide-element");
+                    tryAgainButton.addEventListener("click", resetGame);
                   }
               });
             });
