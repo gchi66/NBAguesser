@@ -1,1 +1,1 @@
-Dotenv.load Rails.root.join('.env')
+Dotenv.load Rails.root.join('.env') unless ENV['RAILS_ENV'] == 'production'
