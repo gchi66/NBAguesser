@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function(){
       instructionsContainer.classList.remove("hide-element");
       instructionsWelcome.innerHTML = "Welcome to NBA Guesser!"
       instructionsContent.innerHTML = "Select a season, then guess the NBA player based on the stats provided.";
-      instructionsContent1.innerHTML = `Guess 3 players correct out of your 5 daily guesses to earn yourself a 🏀!`;
+      instructionsContent1.innerHTML = `Each day you can guess 5 players. Guess at least 3 correctly and earn yourself a 🏀!`;
       instructionsContent2.innerHTML = `How long can you keep your daily streak going for? 🤔`;
       // Set a flag in localStorage to indicate that the modal has been shown
       localStorage.setItem("hasShownModal", "true");
