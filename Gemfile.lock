@@ -99,6 +99,8 @@ GEM
     debug (1.7.1)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
+    dockerfile-rails (1.5.10)
+      rails (>= 3.0.0)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -218,6 +220,11 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
+    sentry-rails (5.11.0)
+      railties (>= 5.0)
+      sentry-ruby (~> 5.11.0)
+    sentry-ruby (5.11.0)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
     sprockets (4.2.0)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -270,6 +277,7 @@ DEPENDENCIES
   bootsnap
   capybara
   debug
+  dockerfile-rails (>= 1.5)
   dotenv-rails
   font-awesome-sass (~> 6.1)
   gon
@@ -283,6 +291,8 @@ DEPENDENCIES
   rails_real_favicon
   sassc-rails
   selenium-webdriver
+  sentry-rails (~> 5.11)
+  sentry-ruby (~> 5.11)
   simple_form!
   sprockets-rails
   stimulus-rails

@@ -6,6 +6,7 @@ require "rails/all"
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+require 'dotenv/rails-now' if Rails.env.development? || Rails.env.test?
 
 module NBAguesser
   class Application < Rails::Application
