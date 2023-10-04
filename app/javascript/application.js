@@ -77,8 +77,10 @@ document.addEventListener("DOMContentLoaded", function(){
     const dailyChallengesCompleted = parseInt(localStorage.getItem("daily_challenges_completed")) || 0;
     // initializing the total daily guesses variable
     const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
+    console.log(`total daily guesses: ${totalDailyGuesses}`);
     // initializing the total guesses variable
     const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+    console.log(`total guesses: ${totalGuesses}`);
 
     // initializing daily streak
     const dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
@@ -321,7 +323,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
             // function to reset to the main page
             function resetGame() {
-              form.reset();
+              // form.reset();
               pageContainer.classList.remove("hide-element");
               landingContainer.classList.remove("hide-element");
               playerCardContainer.classList.add("hide-element");
@@ -329,6 +331,7 @@ document.addEventListener("DOMContentLoaded", function(){
               pageContainerTwo.classList.add("hide-element");
               actualPlayerCardContainer.classList.add("hide-element");
               actualCorrectPlayerCard.classList.add("hide-element");
+              window.location = window.location
               // TODO reset the value of the form to it's original "select a season"
             }
 

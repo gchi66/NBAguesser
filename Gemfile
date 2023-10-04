@@ -32,7 +32,6 @@ gem "babel"
 gem "turbolinks"
 gem "rails-ujs"
 gem 'rails_real_favicon'
-gem 'gon'
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
