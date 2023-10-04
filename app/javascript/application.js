@@ -324,13 +324,13 @@ document.addEventListener("DOMContentLoaded", function(){
             // function to reset to the main page
             function resetGame() {
               // form.reset();
-              pageContainer.classList.remove("hide-element");
-              landingContainer.classList.remove("hide-element");
-              playerCardContainer.classList.add("hide-element");
-              headingContainer.classList.add("hide-element");
-              pageContainerTwo.classList.add("hide-element");
-              actualPlayerCardContainer.classList.add("hide-element");
-              actualCorrectPlayerCard.classList.add("hide-element");
+              // pageContainer.classList.remove("hide-element");
+              // landingContainer.classList.remove("hide-element");
+              // playerCardContainer.classList.add("hide-element");
+              // headingContainer.classList.add("hide-element");
+              // pageContainerTwo.classList.add("hide-element");
+              // actualPlayerCardContainer.classList.add("hide-element");
+              // actualCorrectPlayerCard.classList.add("hide-element");
               window.location = window.location
               // TODO reset the value of the form to it's original "select a season"
             }
