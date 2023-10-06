@@ -331,7 +331,7 @@ document.addEventListener("DOMContentLoaded", function(){
               // pageContainerTwo.classList.add("hide-element");
               // actualPlayerCardContainer.classList.add("hide-element");
               // actualCorrectPlayerCard.classList.add("hide-element");
-              window.location = window.location
+              location.reload();
               // TODO reset the value of the form to it's original "select a season"
             }
 
