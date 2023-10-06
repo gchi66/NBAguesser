@@ -92,14 +92,15 @@
   <div class="heading-container hide-element">
   </div>
 
+
   <div class="player-card-container hide-element">
     <% combined_players = @guess_players + [@correct_player] %>
       <% combined_players.shuffle.compact.each do |player| %>
         <div class="player-card" data-player-name="<%= player[:name] %>">
-          <% if player[:image_url]&.present? %>
+          <% if player[:image_url].present? %>
             <%= image_tag(player[:image_url], alt: "Player Image") %>
           <% else %>
-            <p>No Image Available</p>
+            <%= image_tag("default-player-img.png", alt: 'Default Player Image') %>
           <% end %>
           <h2><%= player[:name] %></h2>
         </div>
@@ -127,9 +128,11 @@
       <div class="result-player-card ">
         <% if @correct_player && @correct_player[:image_url].present? %>
           <%= image_tag(@correct_player[:image_url], alt: "A picture of #{@correct_player[:name]}") %>
-          <% if @correct_player[:name].present? %>
-            <h2><%= @correct_player[:name] %></h2>
-          <% end %>
+        <% else %>
+          <%= image_tag("default-player-img.png", alt: 'Default Player Image') %>
+        <% end %>
+        <% if @correct_player && @correct_player[:name].present? %>
+          <h2><%= @correct_player[:name] %></h2>
         <% end %>
       </div>
 
