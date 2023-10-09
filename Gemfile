@@ -30,6 +30,7 @@ gem "jbuilder"
 gem "webpacker"
 gem "babel"
 gem "turbolinks"
+gem "turbo-rails"
 gem "rails-ujs"
 gem 'rails_real_favicon'
 

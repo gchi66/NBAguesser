@@ -43,108 +43,110 @@
 </div>
 
 <!-- Page content -->
+<turbo-frame id ="turbo-page">
 
-<div class="page-container">
+  <div class="page-container">
 
-  <div class="landing-container">
-    <div id="welcome-header">
-      <h1>NBA Guesser (beta)</h1>
+    <div class="landing-container">
+      <div id="welcome-header">
+        <h1>NBA Guesser (beta)</h1>
+      </div>
+
+      <div class="form-container" turbo-frame id="season-form">
+          <%= simple_form_for :season, url: root_path, remote: true, method: :post do |f| %>
+            <%= f.input :season, collection: (1950..2023).to_a.reverse.map(&:to_s), prompt: 'Select a season', label: false %>
+            <div id="submit-button">
+              <%= f.button :submit, 'Play', class: "button-main", id: "play-button" %>
+            </div>
+          <% end %>
+      </div>
     </div>
 
-    <div class="form-container" turbo-frame id="season-form">
-        <%= simple_form_for :season, url: root_path, remote: true, method: :post do |f| %>
-          <%= f.input :season, collection: (1950..2023).to_a.reverse.map(&:to_s), prompt: 'Select a season', label: false %>
-          <div id="submit-button">
-            <%= f.button :submit, 'Play', class: "button-main", id: "play-button" %>
+    <div class="loader-wrapper hide-element">
+      <div class="floor"></div>
+        <div class="ball">
+          <div class="ball-line"></div>
+          <div class="ball-line"></div>
+          <div class="ball-line"></div>
+          <div class="ball-line"></div>
+      </div>
+    </div>
+
+
+
+    <div id="message-container">
+    </div>
+
+
+      <div class="correct-player-card hide-element">
+        <% if @correct_player %>
+          <h1>Which player averaged</h1>
+          <div class="correct-player-info" data-correct-player-name="<%= @correct_player[:name] %>">
+            <h4>Points: <span class="stat"><%= @correct_player[:points] %></span></h4>
+            <h4>Rebounds: <span class="stat"><%= @correct_player[:rebounds] %></span></h4>
+            <h4>Assists: <span class="stat"><%= @correct_player[:assists] %></span></h4>
+          </div>
+        <% end %>
+      </div>
+
+
+    <div class="heading-container hide-element">
+    </div>
+
+
+    <div class="player-card-container hide-element">
+      <% combined_players = @guess_players + [@correct_player] %>
+        <% combined_players.shuffle.compact.each do |player| %>
+          <div class="player-card" data-player-name="<%= player[:name] %>">
+            <% if player[:image_url].present? %>
+              <%= image_tag(player[:image_url], alt: "Player Image") %>
+            <% else %>
+              <%= image_tag("default-player-img.png", alt: 'Default Player Image') %>
+            <% end %>
+            <h2><%= player[:name] %></h2>
           </div>
         <% end %>
     </div>
+
+
   </div>
 
-  <div class="loader-wrapper hide-element">
-    <div class="floor"></div>
-      <div class="ball">
-        <div class="ball-line"></div>
-        <div class="ball-line"></div>
-        <div class="ball-line"></div>
-        <div class="ball-line"></div>
-    </div>
-  </div>
+  <!-- Results content -->
 
+  <div class="page-container-two hide-element">
 
+    <div class ="result-page-container hide-element">
 
-  <div id="message-container">
-  </div>
-
-
-    <div class="correct-player-card hide-element">
-      <% if @correct_player %>
-        <h1>Which player averaged</h1>
-        <div class="correct-player-info" data-correct-player-name="<%= @correct_player[:name] %>">
-          <h4>Points: <span class="stat"><%= @correct_player[:points] %></span></h4>
-          <h4>Rebounds: <span class="stat"><%= @correct_player[:rebounds] %></span></h4>
-          <h4>Assists: <span class="stat"><%= @correct_player[:assists] %></span></h4>
+        <div class="result-container">
+          <h1>Nice work hoophead!</h1>
         </div>
-      <% end %>
-    </div>
+
+        <div class="subheading-container ">
+          <h2>The correct answer was</h2>
+        </div>
 
 
-  <div class="heading-container hide-element">
-  </div>
-
-
-  <div class="player-card-container hide-element">
-    <% combined_players = @guess_players + [@correct_player] %>
-      <% combined_players.shuffle.compact.each do |player| %>
-        <div class="player-card" data-player-name="<%= player[:name] %>">
-          <% if player[:image_url].present? %>
-            <%= image_tag(player[:image_url], alt: "Player Image") %>
+        <div class="result-player-card ">
+          <% if @correct_player && @correct_player[:image_url].present? %>
+            <%= image_tag(@correct_player[:image_url], alt: "A picture of #{@correct_player[:name]}") %>
           <% else %>
             <%= image_tag("default-player-img.png", alt: 'Default Player Image') %>
           <% end %>
-          <h2><%= player[:name] %></h2>
+          <% if @correct_player && @correct_player[:name].present? %>
+            <h2><%= @correct_player[:name] %></h2>
+          <% end %>
         </div>
-      <% end %>
-  </div>
 
 
-</div>
-
-<!-- Results content -->
-
-<div class="page-container-two hide-element">
-
-  <div class ="result-page-container hide-element">
-
-      <div class="result-container">
-        <h1>Nice work hoophead!</h1>
-      </div>
-
-      <div class="subheading-container ">
-        <h2>The correct answer was</h2>
+      <div class="result-button-container">
+        <button id="try-again-button" class="button-main">Try again!</button>
       </div>
 
 
-      <div class="result-player-card ">
-        <% if @correct_player && @correct_player[:image_url].present? %>
-          <%= image_tag(@correct_player[:image_url], alt: "A picture of #{@correct_player[:name]}") %>
-        <% else %>
-          <%= image_tag("default-player-img.png", alt: 'Default Player Image') %>
-        <% end %>
-        <% if @correct_player && @correct_player[:name].present? %>
-          <h2><%= @correct_player[:name] %></h2>
-        <% end %>
-      </div>
-
-
-    <div class="result-button-container">
-      <button id="try-again-button" class="button-main">Try again!</button>
     </div>
 
-
   </div>
-
-</div>
+</turbo-frame>
 <!-- Bottom Navbar -->
 
 <div class="bar bar-bottom">

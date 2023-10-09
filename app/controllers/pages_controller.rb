@@ -8,7 +8,10 @@ class PagesController < ApplicationController
     clear_correct_player_session
     find_correct_player
     find_guess_players
-    render 'home'
+    respond_to do |format|
+      format.html { render 'home' }
+      format.turbo_stream { render turbo_stream: turbo_stream.replace('turbo-page', page: 'home') }
+    end
   end
 
   def create
@@ -20,7 +23,6 @@ class PagesController < ApplicationController
     # else
     #   UserGuessForDevice.create(device_id: device.id, correct: false)
     # end
-
   end
 
   # def show_user_guesses

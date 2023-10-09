@@ -1,16 +1,19 @@
+//= require turbolinks
+//= require turbo-rails
+//= require turbolinks-compatibility
+//= require rails-ujs
+//= require_tree .
 import "@hotwired/turbo-rails"
 import "./controllers"
 import "bootstrap"
 import Rails from "@rails/ujs"
-//= require rails-ujs
-//= require turbolinks
-//= require_tree .
+import { Turbo } from "@hotwired/turbo-rails";
 
 
 
 
 document.addEventListener("DOMContentLoaded", function(){
-  console.log('domcontentloaded')
+  console.log('domcontentloaded');
 
     // MIDNIGHT LOGIC VVVVVVVV
     function scheduleResetAtMidnight() {
@@ -147,28 +150,31 @@ document.addEventListener("DOMContentLoaded", function(){
   }
 
     // POPUP TO DETERMINE IF THEY'VE EARNED THEIR STAR FOR THE DAY
-    if (totalDailyGuesses >= 5) {
-      if (correctGuesses >=3) {
-        modal.style.display = "block";
-        instructionsContainer.classList.add("hide-element");
-        statsContainer.classList.remove("hide-element");
-        dailyStreakAlert.innerHTML = `Congrats, you guessed ${correctGuesses} players correctly and have earned yourself a 🏀. See you tomorrow!`
-        statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
-        statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
-        statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
-        shareButtonsContainer.classList.remove("hide-element");
-        shareHeader.classList.remove("hide-element");
-      }
-      else {
-        modal.style.display = "block";
-        instructionsContainer.classList.add("hide-element");
-        statsContainer.classList.remove("hide-element");
-        dailyStreakAlert.innerHTML = `So close, but you only got ${correctGuesses} players correct today. Better luck next time!`
-        statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
-        statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
-        statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
+    function popup() {
+      if (totalDailyGuesses >= 5) {
+        if (correctGuesses >=3) {
+          modal.style.display = "block";
+          instructionsContainer.classList.add("hide-element");
+          statsContainer.classList.remove("hide-element");
+          dailyStreakAlert.innerHTML = `Congrats, you guessed ${correctGuesses} players correctly and have earned yourself a 🏀. See you tomorrow!`
+          statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
+          statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
+          statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
+          shareButtonsContainer.classList.remove("hide-element");
+          shareHeader.classList.remove("hide-element");
+        }
+        else {
+          modal.style.display = "block";
+          instructionsContainer.classList.add("hide-element");
+          statsContainer.classList.remove("hide-element");
+          dailyStreakAlert.innerHTML = `So close, but you only got ${correctGuesses} players correct today. Better luck next time!`
+          statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
+          statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
+          statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
+        }
       }
     }
+    popup();
 
 
     // STATS MODAL VVVV
@@ -314,7 +320,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
             const actualResultPlayerCard = document.querySelector(".result-player-card");
             actualResultPlayerCard.innerHTML = resultPlayerCard.innerHTML;
-``
+
             const resultContainer = document.querySelector(".result-container");
             const pageContainer = document.querySelector(".page-container");
             const resultPageContainer = document.querySelector(".result-page-container");
@@ -323,17 +329,24 @@ document.addEventListener("DOMContentLoaded", function(){
 
             // function to reset to the main page
             function resetGame() {
-              // form.reset();
-              // pageContainer.classList.remove("hide-element");
-              // landingContainer.classList.remove("hide-element");
-              // playerCardContainer.classList.add("hide-element");
-              // headingContainer.classList.add("hide-element");
-              // pageContainerTwo.classList.add("hide-element");
-              // actualPlayerCardContainer.classList.add("hide-element");
-              // actualCorrectPlayerCard.classList.add("hide-element");
-              location.reload();
-              // TODO reset the value of the form to it's original "select a season"
+              // Make an AJAX request to the server to get updated content
+              fetch("/", { headers: {"Turbo-Frame": "turbo-page"} })
+                .then(response => response.text())
+                .then(data => {
+                  // Update the content of the container
+                  Turbo.renderStreamMessage(data);
+                })
+                .catch(error => console.error("Error refreshing game:", error));
+              form.reset();
+              pageContainer.classList.remove("hide-element");
+              pageContainerTwo.classList.add("hide-element");
+              actualPlayerCardContainer.classList.add("hide-element");
+              actualCorrectPlayerCard.classList.add("hide-element");
+              headingContainer.classList.add("hide-element");
+              landingContainer.classList.remove("hide-element");
+              popup();
             }
+
 
 
 
