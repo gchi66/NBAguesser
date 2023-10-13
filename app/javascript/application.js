@@ -232,6 +232,11 @@ document.addEventListener("DOMContentLoaded", function(){
     if (form) {
       form.addEventListener("submit", function(event) {
         event.preventDefault();
+        const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
+        console.log(`total daily guesses: ${totalDailyGuesses}`);
+        // initializing the total guesses variable
+        const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+        console.log(`total guesses: ${totalGuesses}`);
         console.log("Form submitted via AJAX");
         const messageContainer = document.getElementById("message-container");
 
@@ -330,19 +335,20 @@ document.addEventListener("DOMContentLoaded", function(){
             // function to reset to the main page
             function resetGame() {
               // Make an AJAX request to the server to get updated content
-              fetch("/", { headers: {"Turbo-Frame": "turbo-page"} })
-                .then(response => response.text())
-                .then(data => {
-                  // Update the content of the container
-                  Turbo.renderStreamMessage(data);
-                })
-                .catch(error => console.error("Error refreshing game:", error));
+              // fetch("/", { headers: {"turbo-frame": "landing-page"} })
+              //   .then(response => response.text())
+              //   .then(data => {
+              //     console.log(data, { frame: 'landing-page' });
+              //     Turbo.renderStreamMessage(data);
+              //   })
+              //   .catch(error => console.error("Error refreshing game:", error));
+
               form.reset();
-              pageContainer.classList.remove("hide-element");
               pageContainerTwo.classList.add("hide-element");
               actualPlayerCardContainer.classList.add("hide-element");
               actualCorrectPlayerCard.classList.add("hide-element");
               headingContainer.classList.add("hide-element");
+              pageContainer.classList.remove("hide-element");
               landingContainer.classList.remove("hide-element");
               popup();
             }
@@ -362,21 +368,58 @@ document.addEventListener("DOMContentLoaded", function(){
 
                 const currentDate = new Date().toISOString().split("T")[0];
 
-                // incrementing total daily guesses
-                localStorage.setItem("total_daily_guesses", totalDailyGuesses + 1);
-
-                // incrementing total guesses for all time (to caluculate winning %)
-                localStorage.setItem("total_guesses", totalGuesses + 1);
 
                 const playerName = card.dataset.playerName;
                 const userGuessCorrect = playerName === correctPlayerName
 
-                localStorage.setItem("user_guess_correct", userGuessCorrect);
-                // const userGuess = JSON.parse(localStorage.getItem("user_guess_correct"));
+                function store () {
+                  localStorage.setItem("user_guess_correct", userGuessCorrect);
+                  // const userGuess = JSON.parse(localStorage.getItem("user_guess_correct"));
+
+                  const notAddedDailyGuesses = totalDailyGuesses
+                  const notAddedTotalGuesses = totalGuesses
+                  console.log(`not added daily guesses: ${notAddedDailyGuesses}`);
+                  console.log(`not added total guesses: ${notAddedTotalGuesses}`);
+
+                  // incrementing total daily guesses
+                  localStorage.setItem("total_daily_guesses", totalDailyGuesses + 1);
+                  const addedDailyGuesses = localStorage.getItem("total_daily_guesses");
 
 
-                  // checking if the user guess is correct and also storing stats for the modal
-                  if (userGuessCorrect) {
+                  // incrementing total guesses for all time (to caluculate winning %)
+                  localStorage.setItem("total_guesses", totalGuesses + 1);
+                  const addedTotalGuesses = localStorage.getItem("total_guesses");
+
+                  console.log(`added daily guesses: ${addedDailyGuesses}`);
+                  console.log(`added total guesses: ${addedTotalGuesses}`);
+
+                  if (notAddedDailyGuesses === addedDailyGuesses && notAddedTotalGuesses === addedTotalGuesses) {
+                    // Update the user interface with the new value
+                    localStorage.setItem("total_daily_guesses", totalDailyGuesses + 1);
+                    localStorage.setItem("total_guesses", totalGuesses + 1);
+                    console.log(`new total daily guesses ${totalDailyGuesses}`);
+                    console.log(`new total guesses ${totalGuesses}`);
+                  }
+                }
+
+
+
+                // function stored () {window.addEventListener('storage', function (e) {
+                //     console.log("storage triggered");
+                //   });
+                // }
+
+                // OPTION 1
+                // trigger storage event
+                // listen for the storage event
+                // if the storage event is not triggered, try it again?
+
+                // OPTION 2
+                // fake http request before the storage event is triggered?
+                // storage event is triggered
+
+                // checking if the user guess is correct and also storing stats for the modal
+                if (userGuessCorrect) {
                     const currentStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
                     const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
                     const streakStartDate = localStorage.getItem("streak_start_date");
@@ -390,6 +433,8 @@ document.addEventListener("DOMContentLoaded", function(){
                         localStorage.setItem("streak_start_date", currentDate);
                       }
                     }
+                    store();
+
 
                     // incrementing correct guesses count
                     localStorage.setItem("correct_guesses", correctGuesses + 1);
@@ -403,6 +448,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
                   } else {
+                    store();
                     pageContainer.classList.add("hide-element");
                     pageContainerTwo.classList.remove("hide-element");
                     resultContainer.innerHTML = "<h1>Not quite! Better luck next time.</h1>";

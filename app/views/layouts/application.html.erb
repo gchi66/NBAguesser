@@ -9,7 +9,6 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_pack_tag "application", "data-turbo-track": "reload", defer: true %>
-    <%= turbo_frame_tag %>
     <!-- favicon stuff -->
     <%= render 'application/favicon' %>
     <!-- Javascript variables -->
@@ -19,6 +18,7 @@
       const homePageURL = "<%= root_path %>";
     </script>
     <!-- /Javascript variables -->
+    <%# <%= turbo_frame_tag %>
   </head>
 
   <body>
