@@ -109,32 +109,7 @@ if (!hasShownModal) {
   localStorage.setItem("hasShownModal", "true");
 }
 
-// POPUP TO DETERMINE IF THEY'VE EARNED THEIR STAR FOR THE DAY
-function popup() {
-  if (totalDailyGuesses >= 5) {
-    if (correctGuesses >=3) {
-      modal.style.display = "block";
-      instructionsContainer.classList.add("hide-element");
-      statsContainer.classList.remove("hide-element");
-      dailyStreakAlert.innerHTML = `Congrats, you guessed ${correctGuesses} players correctly and have earned yourself a 🏀. See you tomorrow!`
-      statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
-      statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
-      statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
-      shareButtonsContainer.classList.remove("hide-element");
-      shareHeader.classList.remove("hide-element");
-    }
-    else {
-      modal.style.display = "block";
-      instructionsContainer.classList.add("hide-element");
-      statsContainer.classList.remove("hide-element");
-      dailyStreakAlert.innerHTML = `So close, but you only got ${correctGuesses} players correct today. Better luck next time!`
-      statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
-      statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
-      statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
-    }
-  }
-}
-popup();
+
 
 
 
@@ -209,7 +184,7 @@ function handleClassChange(mutationsList) {
         const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
         console.log(`total guesses: ${totalGuesses}`);
         console.log(`Correct guesses = ${correctGuesses}`);
-        // popup();
+        popup();
       }
       if (isHideElementAdded) {
         console.log("Class 'hide-element' added to landing-container");
@@ -217,6 +192,35 @@ function handleClassChange(mutationsList) {
     }
   }
 }
+
+// POPUP TO DETERMINE IF THEY'VE EARNED THEIR STAR FOR THE DAY
+function popup() {
+  const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
+  const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
+  if (totalDailyGuesses >= 5) {
+    if (correctGuesses >=3) {
+      modal.style.display = "block";
+      instructionsContainer.classList.add("hide-element");
+      statsContainer.classList.remove("hide-element");
+      dailyStreakAlert.innerHTML = `Congrats, you guessed ${correctGuesses} players correctly and have earned yourself a 🏀. See you tomorrow!`
+      statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
+      statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
+      statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
+      shareButtonsContainer.classList.remove("hide-element");
+      shareHeader.classList.remove("hide-element");
+    }
+    else {
+      modal.style.display = "block";
+      instructionsContainer.classList.add("hide-element");
+      statsContainer.classList.remove("hide-element");
+      dailyStreakAlert.innerHTML = `So close, but you only got ${correctGuesses} players correct today. Better luck next time!`
+      statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
+      statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
+      statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
+    }
+  }
+}
+// popup();
 
 // Options for the observer (which mutations to observe)
 const observerConfig = { attributes: true, attributeFilter: ["class"] };
