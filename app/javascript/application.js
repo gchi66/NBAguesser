@@ -44,18 +44,31 @@ const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
 const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 : 0;
 
 function updateLocalStorageValues() {
-  // Your logic to update localStorage values
-
-  // For example, updating totalDailyGuesses
   const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
   localStorage.setItem("total_daily_guesses", totalDailyGuesses + 1);
   console.log(`Daily guesses after function: ${totalDailyGuesses}`)
   const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
   localStorage.setItem("total_guesses", totalGuesses + 1);
   console.log(`Total Guesses after function ${totalGuesses}`);
+}
 
+function updateStreakAndCorrectGuesses() {
+  const currentDate = new Date().toISOString().split("T")[0];
+  const currentStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
+  const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
+  const streakStartDate = localStorage.getItem("streak_start_date");
 
-  // Other logic...
+  // user must get 3/5 guesses correct
+  if (correctGuesses % 5 === 2) {
+    localStorage.setItem("daily_streak", currentStreak + 1);
+    // incrementing daily challenges
+    localStorage.setItem("daily_challenges_completed", dailyChallengesCompleted + 1);
+    if (!streakStartDate) {
+      localStorage.setItem("streak_start_date", currentDate);
+    }
+  }
+  // incrementing correct guesses count
+  localStorage.setItem("correct_guesses", correctGuesses + 1);
 }
 
 // setting stats content/social media
@@ -183,6 +196,7 @@ function handleClassChange(mutationsList) {
         // initializing the total guesses variable
         const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
         console.log(`total guesses: ${totalGuesses}`);
+        const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
         console.log(`Correct guesses = ${correctGuesses}`);
         popup();
       }
@@ -192,6 +206,11 @@ function handleClassChange(mutationsList) {
     }
   }
 }
+const observerConfig = { attributes: true, attributeFilter: ["class"] };
+const observer = new MutationObserver(handleClassChange);
+observer.observe(landingContainer, observerConfig);
+
+
 
 // POPUP TO DETERMINE IF THEY'VE EARNED THEIR STAR FOR THE DAY
 function popup() {
@@ -220,16 +239,7 @@ function popup() {
     }
   }
 }
-// popup();
-
-// Options for the observer (which mutations to observe)
-const observerConfig = { attributes: true, attributeFilter: ["class"] };
-
-// Create an observer instance linked to the handleClassChange callback
-const observer = new MutationObserver(handleClassChange);
-
-// Start observing the target node for configured mutations
-observer.observe(landingContainer, observerConfig);
+popup();
 
 
 document.addEventListener("DOMContentLoaded", function(){
@@ -298,6 +308,9 @@ document.addEventListener("DOMContentLoaded", function(){
         // disabling the play button until content is loaded.
 
         playButton.disabled = true;
+
+        const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
+        console.log(`form total daily guesses: ${totalDailyGuesses}`);
 
         // displaying the loader after clicking play
         if (totalDailyGuesses < 5) {
@@ -405,7 +418,7 @@ document.addEventListener("DOMContentLoaded", function(){
               headingContainer.classList.add("hide-element");
               pageContainer.classList.remove("hide-element");
               landingContainer.classList.remove("hide-element");
-              popup();
+              // popup();
             }
 
 
@@ -421,7 +434,7 @@ document.addEventListener("DOMContentLoaded", function(){
             actualPlayerCards.forEach(card => {
               card.addEventListener("click", function() {
 
-                const currentDate = new Date().toISOString().split("T")[0];
+                // const currentDate = new Date().toISOString().split("T")[0];
 
 
                 const playerName = card.dataset.playerName;
@@ -463,24 +476,24 @@ document.addEventListener("DOMContentLoaded", function(){
 
                 // checking if the user guess is correct and also storing stats for the modal
                 if (userGuessCorrect) {
-                    const currentStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
-                    const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
-                    const streakStartDate = localStorage.getItem("streak_start_date");
+                    // const currentStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
+                    // const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
+                    // const streakStartDate = localStorage.getItem("streak_start_date");
 
-                    // user must get 3/5 guesses correct
-                    if (correctGuesses % 5 === 2) {
-                      localStorage.setItem("daily_streak", currentStreak + 1);
-                      // incrementing daily challenges
-                      localStorage.setItem("daily_challenges_completed", dailyChallengesCompleted + 1);
-                      if (!streakStartDate) {
-                        localStorage.setItem("streak_start_date", currentDate);
-                      }
-                    }
-                    // store();
+                    // // user must get 3/5 guesses correct
+                    // if (correctGuesses % 5 === 2) {
+                    //   localStorage.setItem("daily_streak", currentStreak + 1);
+                    //   // incrementing daily challenges
+                    //   localStorage.setItem("daily_challenges_completed", dailyChallengesCompleted + 1);
+                    //   if (!streakStartDate) {
+                    //     localStorage.setItem("streak_start_date", currentDate);
+                    //   }
+                    // }
+                    // // incrementing correct guesses count
+                    // localStorage.setItem("correct_guesses", correctGuesses + 1);
+                    updateStreakAndCorrectGuesses();
 
 
-                    // incrementing correct guesses count
-                    localStorage.setItem("correct_guesses", correctGuesses + 1);
                     pageContainer.classList.add("hide-element");
                     resultContainer.innerHTML = "<h1>Nice work hoophead!</h1>";
                     resultPageContainer.classList.remove("hide-element");
