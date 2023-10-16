@@ -7,7 +7,6 @@ import "@hotwired/turbo-rails"
 import "./controllers"
 import "bootstrap"
 import Rails from "@rails/ujs"
-import { Turbo } from "@hotwired/turbo-rails";
 
 
 
@@ -43,7 +42,8 @@ const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
 // const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
 const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 : 0;
 
-function updateLocalStorageValues() {
+// LOCAL STORAGE FUNCTIONS
+function updateLocalGuessValues() {
   const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
   localStorage.setItem("total_daily_guesses", totalDailyGuesses + 1);
   console.log(`Daily guesses after function: ${totalDailyGuesses}`)
@@ -81,11 +81,9 @@ const shareButtonsContainer = document.getElementById("share-buttons-container")
 const shareButtonX = document.getElementById("x-share-button");
 const shareButtonWa = document.getElementById("wa-share-button");
 
-
-
 // twitter sharing message
 shareButtonX.onclick = function shareOnTwitter() {
-  const message = `I got my 🏀 from NBA guesser today with ${correctGuesses}/5 guesses correct and a streak of ${consecutiveDays} days!`
+  const message = `I got my 🏀 from NBA guesser today with ${correctGuesses === 1 ? '1 guess' : `${correctGuesses}/5 guesses`} correct and a streak of ${consecutiveDays === 1 ? '1 day' : `${consecutiveDays} days`}!`;
   const encodedMessage = encodeURIComponent(message);
   const twitterIntentURL = `https://twitter.com/intent/tweet?text=${encodedMessage}`;
   window.open(twitterIntentURL, "_blank");
@@ -93,7 +91,7 @@ shareButtonX.onclick = function shareOnTwitter() {
 
 // Whatsapp sharing message
 shareButtonWa.onclick = function shareOnWhatsapp() {
-  const message = `I got my 🏀 from NBA guesser today with ${correctGuesses}/5 guesses correct and a streak of ${consecutiveDays} days!`;
+  const message = `I got my 🏀 from NBA guesser today with ${correctGuesses === 1 ? '1 guess' : `${correctGuesses}/5 guesses`} correct and a streak of ${consecutiveDays === 1 ? '1 day' : `${consecutiveDays} days`}!`;
   const encodedMessage = encodeURIComponent(message);
   const whatsappShareURL = `whatsapp://send?text=${encodedMessage}`;
   window.open(whatsappShareURL, "_blank");
@@ -122,10 +120,6 @@ if (!hasShownModal) {
   localStorage.setItem("hasShownModal", "true");
 }
 
-
-
-
-
 // STATS MODAL VVVV
 btnStats.onclick = function() {
   modal.style.display = "block";
@@ -134,7 +128,6 @@ btnStats.onclick = function() {
   dailyStreakAlert.classList.add("hide-element");
 
   // updating the modal content
-
   statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
   statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
   statsContent2.innerHTML = `Total challenges completed: ${dailyChallengesCompleted}`
@@ -171,7 +164,7 @@ window.onclick = function(event){
 }
 
 
-// variables
+// landing page variables
 const seasonForm = document.getElementById("season-form");
 const form = seasonForm ? seasonForm.firstElementChild : null;
 const playButton = document.getElementById("play-button");
@@ -210,8 +203,6 @@ const observerConfig = { attributes: true, attributeFilter: ["class"] };
 const observer = new MutationObserver(handleClassChange);
 observer.observe(landingContainer, observerConfig);
 
-
-
 // POPUP TO DETERMINE IF THEY'VE EARNED THEIR STAR FOR THE DAY
 function popup() {
   const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
@@ -241,7 +232,6 @@ function popup() {
 }
 popup();
 
-
 document.addEventListener("DOMContentLoaded", function(){
   console.log('domcontentloaded');
 
@@ -251,30 +241,19 @@ document.addEventListener("DOMContentLoaded", function(){
       const now = new Date();
       const midnight = new Date(now);
       midnight.setHours(24, 0, 0, 0);
-
       // If it's already past midnight schedule it for tomorrow
       if (now > midnight) {
         midnight.setDate(now.getDate() + 1);
       }
-
       const timeUntilMidnight = midnight - now;
-
       // reset the guesses at midnight
       setTimeout(function () {
-        // Reset total guesses and any other relevant counters
-
+        // Reset total daily guesses
         localStorage.setItem("total_daily_guesses", 0);
-        // Call any other functions or logic needed for the reset
-        // ...
-
-        // Schedule the next reset for the following day
         scheduleResetAtMidnight();
       }, timeUntilMidnight);
     }
-
-    // Initial call to schedule the first reset
     scheduleResetAtMidnight();
-
 
   // GENERATING UNIQUE DEVICE ID BASED ON TIMESTAMP
   function generateDeviceId() {
@@ -282,7 +261,6 @@ document.addEventListener("DOMContentLoaded", function(){
     const timestamp = new Date().getTime();
     return `${userAgent}_${timestamp}`;
   }
-
   // checking to see if the device id exists within localStorage
   let deviceId = localStorage.getItem("device_id");
   // making a new one if not
@@ -292,25 +270,16 @@ document.addEventListener("DOMContentLoaded", function(){
   }
 
   // AJAX LOGIC VVVV
-
   document.addEventListener("turbo:load", function() {
     console.log('turbo loaded');
-
-
-
-
     if (form) {
       form.addEventListener("submit", function(event) {
         event.preventDefault();
-        // console.log("Form submitted via AJAX");
         const messageContainer = document.getElementById("message-container");
+        const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
 
         // disabling the play button until content is loaded.
-
         playButton.disabled = true;
-
-        const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
-        console.log(`form total daily guesses: ${totalDailyGuesses}`);
 
         // displaying the loader after clicking play
         if (totalDailyGuesses < 5) {
@@ -319,53 +288,34 @@ document.addEventListener("DOMContentLoaded", function(){
           messageContainer.classList.add("hide-element");
         }
 
-
         // limiting the totalDailyGuesses to 5
-
-        // ***********************************************************************************
-
-        // MAKE SURE
-        // THIS SHIT
         if (totalDailyGuesses  >= 5) {
+          // updating the message container if they try to play
           messageContainer.innerHTML = `<h4>Out of guesses, try again tomorrow<h4>`;
           return;
         }
-        // IS NOT
-        // COMMENTED OUT FOR PRODUCTION
-        // U BUM
 
-
-
-        // **************************************************************************************
-
+        // AJAX CALL ON FORM SUBMISSION
         const formData = new FormData(form);
-
         Rails.ajax({
           type: form.method,
           url: form.action,
           data: formData,
           success: function(data) {
             console.log("ajax successfully fired");
-
-
             // SEASON SELECTION LOGIC AND APPEARING HEADER LOGIC
             const headingContainer = document.querySelector(".heading-container");
-            const formContainer = document.querySelector(".form-container");
             const playerCardContainer = data.querySelector(".player-card-container");
             const correctPlayerCard = data.querySelector(".correct-player-card");
             const resultPlayerCard = data.querySelector(".result-player-card");
 
             if (formData.get("season[season]")) {
-              // messageContainer.classList.remove("hide-element");
-              // messageContainer.innerHTML = `<h4>Selected season: ${formData.get("season[season]")}</h4>`;
               const currentYearString = formData.get("season[season]");
               const currentYear = parseInt(currentYearString, 10);
               const previousYear = currentYear - 1;
               const seasonText = `in the ${previousYear}-${currentYear} season?`;
               headingContainer.classList.remove("hide-element");
               headingContainer.innerHTML = `<h2>${seasonText}</h2>`;
-
-              // formContainer.classList.add("hide-element");
               loader.classList.add("hide-element");
             } else {
               messageContainer.classList.remove("hide-element");
@@ -375,24 +325,18 @@ document.addEventListener("DOMContentLoaded", function(){
               loader.classList.add("hide-element");
             }
 
-            // DEFINING THE VARIABLES TO MAKE AJAX WORK VVVVVVVV
-
-
+            // AJAX replaced elements after data scraping
             const actualPlayerCardContainer = document.querySelector(".player-card-container");
+            const actualCorrectPlayerCard = document.querySelector(".correct-player-card");
             actualPlayerCardContainer.classList.remove("hide-element");
             actualPlayerCardContainer.innerHTML = playerCardContainer.innerHTML;
-
-            const actualCorrectPlayerCard = document.querySelector(".correct-player-card");
+            const actualPlayerCards = actualPlayerCardContainer.querySelectorAll(".player-card");
+            const actualResultPlayerCard = document.querySelector(".result-player-card");
             actualCorrectPlayerCard.classList.remove("hide-element");
             actualCorrectPlayerCard.innerHTML = correctPlayerCard.innerHTML;
-
+            actualResultPlayerCard.innerHTML = resultPlayerCard.innerHTML;
             const correctPlayerInfo = document.querySelector(".correct-player-info");
             const correctPlayerName = correctPlayerInfo.dataset.correctPlayerName;
-
-            const actualPlayerCards = actualPlayerCardContainer.querySelectorAll(".player-card");
-
-            const actualResultPlayerCard = document.querySelector(".result-player-card");
-            actualResultPlayerCard.innerHTML = resultPlayerCard.innerHTML;
 
             const resultContainer = document.querySelector(".result-container");
             const pageContainer = document.querySelector(".page-container");
@@ -400,17 +344,9 @@ document.addEventListener("DOMContentLoaded", function(){
             const pageContainerTwo = document.querySelector(".page-container-two");
             const tryAgainButton = document.getElementById("try-again-button");
 
+
             // function to reset to the main page
             function resetGame() {
-              // Make an AJAX request to the server to get updated content
-              // fetch("/", { headers: {"turbo-frame": "landing-page"} })
-              //   .then(response => response.text())
-              //   .then(data => {
-              //     console.log(data, { frame: 'landing-page' });
-              //     Turbo.renderStreamMessage(data);
-              //   })
-              //   .catch(error => console.error("Error refreshing game:", error));
-
               form.reset();
               pageContainerTwo.classList.add("hide-element");
               actualPlayerCardContainer.classList.add("hide-element");
@@ -418,93 +354,26 @@ document.addEventListener("DOMContentLoaded", function(){
               headingContainer.classList.add("hide-element");
               pageContainer.classList.remove("hide-element");
               landingContainer.classList.remove("hide-element");
-              // popup();
             }
-
-
-
-
             // re-enabling the play button for next time
             playButton.disabled = false;
 
-
-
             // GAME LOGIC VVVVVVVVVV
-
             actualPlayerCards.forEach(card => {
               card.addEventListener("click", function() {
-
-                // const currentDate = new Date().toISOString().split("T")[0];
-
-
                 const playerName = card.dataset.playerName;
                 const userGuessCorrect = playerName === correctPlayerName
                 localStorage.setItem("user_guess_correct", userGuessCorrect);
-
-                updateLocalStorageValues();
-
-                // function store () {
-                //   // const userGuess = JSON.parse(localStorage.getItem("user_guess_correct"));
-
-                //   const notAddedDailyGuesses = totalDailyGuesses
-                //   const notAddedTotalGuesses = totalGuesses
-                //   console.log(`not added daily guesses: ${notAddedDailyGuesses}`);
-                //   console.log(`not added total guesses: ${notAddedTotalGuesses}`);
-
-                //   // incrementing total daily guesses
-                //   localStorage.setItem("total_daily_guesses", totalDailyGuesses + 1);
-                //   const addedDailyGuesses = localStorage.getItem("total_daily_guesses");
-
-
-                //   // incrementing total guesses for all time (to caluculate winning %)
-                //   localStorage.setItem("total_guesses", totalGuesses + 1);
-                //   const addedTotalGuesses = localStorage.getItem("total_guesses");
-
-                //   console.log(`added daily guesses: ${addedDailyGuesses}`);
-                //   console.log(`added total guesses: ${addedTotalGuesses}`);
-
-                //   if (notAddedDailyGuesses === addedDailyGuesses && notAddedTotalGuesses === addedTotalGuesses) {
-                //     // Update the user interface with the new value
-                //     localStorage.setItem("total_daily_guesses", totalDailyGuesses + 1);
-                //     localStorage.setItem("total_guesses", totalGuesses + 1);
-                //     console.log(`new total daily guesses ${totalDailyGuesses}`);
-                //     console.log(`new total guesses ${totalGuesses}`);
-                //   }
-                // }
-                // store();
-
-
+                updateLocalGuessValues();
                 // checking if the user guess is correct and also storing stats for the modal
                 if (userGuessCorrect) {
-                    // const currentStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
-                    // const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
-                    // const streakStartDate = localStorage.getItem("streak_start_date");
-
-                    // // user must get 3/5 guesses correct
-                    // if (correctGuesses % 5 === 2) {
-                    //   localStorage.setItem("daily_streak", currentStreak + 1);
-                    //   // incrementing daily challenges
-                    //   localStorage.setItem("daily_challenges_completed", dailyChallengesCompleted + 1);
-                    //   if (!streakStartDate) {
-                    //     localStorage.setItem("streak_start_date", currentDate);
-                    //   }
-                    // }
-                    // // incrementing correct guesses count
-                    // localStorage.setItem("correct_guesses", correctGuesses + 1);
                     updateStreakAndCorrectGuesses();
-
-
                     pageContainer.classList.add("hide-element");
                     resultContainer.innerHTML = "<h1>Nice work hoophead!</h1>";
                     resultPageContainer.classList.remove("hide-element");
                     pageContainerTwo.classList.remove("hide-element");
                     tryAgainButton.addEventListener("click", resetGame);
-
-                    // hiding everything else on the page
-
-
                   } else {
-                    // store();
                     pageContainer.classList.add("hide-element");
                     pageContainerTwo.classList.remove("hide-element");
                     resultContainer.innerHTML = "<h1>Not quite! Better luck next time.</h1>";

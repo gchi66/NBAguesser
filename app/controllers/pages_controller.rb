@@ -8,10 +8,11 @@ class PagesController < ApplicationController
     clear_correct_player_session
     find_correct_player
     find_guess_players
-    respond_to do |format|
-      format.html { render 'home' }
-      format.turbo_stream { render turbo_stream: turbo_stream.replace('landing-page', partial: 'turbo_landing_page') }
-    end
+    # respond_to do |format|
+    #   format.html { render 'home' }
+    #   format.turbo_stream { render turbo_stream: turbo_stream.replace('landing-page', partial: 'turbo_landing_page') }
+    # end
+    render 'home'
   end
 
   def create
