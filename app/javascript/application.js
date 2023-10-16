@@ -12,6 +12,222 @@ import { Turbo } from "@hotwired/turbo-rails";
 
 
 
+// MODAL LOGIC VVVV
+
+var modal = document.getElementById("myModal");
+var btnStats = document.getElementById("showStats");
+var btnInstructions = document.getElementById("showInstructions");
+const statsContainer = document.querySelector(".stats-container");
+const instructionsContainer = document.querySelector(".instructions-container");
+
+// STREAK AND TOTAL GUESSES LOGIC VVVVVVVVVVVVVVVVVV
+
+const dailyChallengesCompleted = parseInt(localStorage.getItem("daily_challenges_completed")) || 0;
+// initializing the total daily guesses variable
+const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
+console.log(`total daily guesses: ${totalDailyGuesses}`);
+// initializing the total guesses variable
+const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+console.log(`total guesses: ${totalGuesses}`);
+
+// initializing daily streak
+const dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
+const streakStartDate = localStorage.getItem("streak_start_date");
+const today = new Date().toISOString().split("T")[0];
+// figuring out the current streak
+const consecutiveDays = streakStartDate === today ? dailyStreak : 0;
+// star emoji for each time they've completed a challenge
+const starEmojis = "🏀".repeat(consecutiveDays);
+// calculating win percentage
+const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
+// const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 : 0;
+
+function updateLocalStorageValues() {
+  // Your logic to update localStorage values
+
+  // For example, updating totalDailyGuesses
+  const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
+  localStorage.setItem("total_daily_guesses", totalDailyGuesses + 1);
+  console.log(`Daily guesses after function: ${totalDailyGuesses}`)
+  const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+  localStorage.setItem("total_guesses", totalGuesses + 1);
+  console.log(`Total Guesses after function ${totalGuesses}`);
+
+
+  // Other logic...
+}
+
+// setting stats content/social media
+const dailyStreakAlert = document.getElementById("dailyStreakAlert");
+const statsContent = document.getElementById("statsContent");
+const statsContent1 = document.getElementById("statsContent1");
+const statsContent2 = document.getElementById("statsContent2");
+const shareHeader =  document.getElementById("share-header");
+const shareButtonsContainer = document.getElementById("share-buttons-container");
+const shareButtonX = document.getElementById("x-share-button");
+const shareButtonWa = document.getElementById("wa-share-button");
+
+
+
+// twitter sharing message
+shareButtonX.onclick = function shareOnTwitter() {
+  const message = `I got my 🏀 from NBA guesser today with ${correctGuesses}/5 guesses correct and a streak of ${consecutiveDays} days!`
+  const encodedMessage = encodeURIComponent(message);
+  const twitterIntentURL = `https://twitter.com/intent/tweet?text=${encodedMessage}`;
+  window.open(twitterIntentURL, "_blank");
+}
+
+// Whatsapp sharing message
+shareButtonWa.onclick = function shareOnWhatsapp() {
+  const message = `I got my 🏀 from NBA guesser today with ${correctGuesses}/5 guesses correct and a streak of ${consecutiveDays} days!`;
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappShareURL = `whatsapp://send?text=${encodedMessage}`;
+  window.open(whatsappShareURL, "_blank");
+};
+
+
+// setting instructions content
+const instructionsWelcome = document.getElementById("instructionsWelcome");
+const instructionsContent = document.getElementById("instructionsContent");
+const instructionsContent1 = document.getElementById("instructionsContent1");
+const instructionsContent2 = document.getElementById("instructionsContent2");
+
+
+// INSTRUCTIONS MODAL ON STARTUP
+const hasShownModal = localStorage.getItem("hasShownModal");
+
+if (!hasShownModal) {
+  modal.style.display = "block";
+  statsContainer.classList.add("hide-element");
+  instructionsContainer.classList.remove("hide-element");
+  instructionsWelcome.innerHTML = "Welcome to NBA Guesser!"
+  instructionsContent.innerHTML = "Select a season, then guess the NBA player based on the stats provided.";
+  instructionsContent1.innerHTML = `Each day you can guess up to 5 players. Guess at least 3 correctly and earn yourself a 🏀!`;
+  instructionsContent2.innerHTML = `How long can you keep your daily streak going for? 🤔`;
+  // Set a flag in localStorage to indicate that the modal has been shown
+  localStorage.setItem("hasShownModal", "true");
+}
+
+// POPUP TO DETERMINE IF THEY'VE EARNED THEIR STAR FOR THE DAY
+function popup() {
+  if (totalDailyGuesses >= 5) {
+    if (correctGuesses >=3) {
+      modal.style.display = "block";
+      instructionsContainer.classList.add("hide-element");
+      statsContainer.classList.remove("hide-element");
+      dailyStreakAlert.innerHTML = `Congrats, you guessed ${correctGuesses} players correctly and have earned yourself a 🏀. See you tomorrow!`
+      statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
+      statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
+      statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
+      shareButtonsContainer.classList.remove("hide-element");
+      shareHeader.classList.remove("hide-element");
+    }
+    else {
+      modal.style.display = "block";
+      instructionsContainer.classList.add("hide-element");
+      statsContainer.classList.remove("hide-element");
+      dailyStreakAlert.innerHTML = `So close, but you only got ${correctGuesses} players correct today. Better luck next time!`
+      statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
+      statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
+      statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
+    }
+  }
+}
+popup();
+
+
+
+// STATS MODAL VVVV
+btnStats.onclick = function() {
+  modal.style.display = "block";
+  statsContainer.classList.remove("hide-element");
+  instructionsContainer.classList.add("hide-element");
+  dailyStreakAlert.classList.add("hide-element");
+
+  // updating the modal content
+
+  statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
+  statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
+  statsContent2.innerHTML = `Total challenges completed: ${dailyChallengesCompleted}`
+  if (totalDailyGuesses >= 5) {
+    if (correctGuesses >= 3) {
+      shareButtonsContainer.classList.remove("hide-element");
+      shareHeader.classList.remove("hide-element");
+    }
+  }
+}
+
+// INSTRUCTIONS MODAL VVVV
+btnInstructions.onclick = function() {
+  modal.style.display = "block";
+  statsContainer.classList.add("hide-element");
+  instructionsWelcome.classList.add("hide-element");
+  instructionsContainer.classList.remove("hide-element");
+
+  instructionsContent.innerHTML = "Select a season, then guess the NBA player based on the stats provided.";
+  instructionsContent1.innerHTML = `Each day you can guess up to 5 players. Guess at least 3 correctly and earn yourself a 🏀!`;
+  instructionsContent2.innerHTML = `How long can you keep your daily streak going for? 🤔`;
+}
+
+var closeBtn = document.getElementsByClassName("close")[0];
+
+closeBtn.onclick = function() {
+  modal.style.display = "none";
+}
+window.onclick = function(event){
+  event.preventDefault;
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+}
+
+
+// variables
+const seasonForm = document.getElementById("season-form");
+const form = seasonForm ? seasonForm.firstElementChild : null;
+const playButton = document.getElementById("play-button");
+const loader = document.querySelector(".loader-wrapper");
+const landingContainer = document.querySelector(".landing-container");
+
+
+// Function to handle class changes
+function handleClassChange(mutationsList) {
+  for (const mutation of mutationsList) {
+    if (mutation.type === "attributes" && mutation.attributeName === "class") {
+      const isHideElementRemoved = !landingContainer.classList.contains("hide-element");
+      const isHideElementAdded = landingContainer.classList.contains("hide-element");
+
+      if (isHideElementRemoved) {
+        // The "hide-element" class has been removed
+        console.log("Class 'hide-element' removed from landing-container");
+
+        // Your custom logic here
+        const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
+        console.log(`total daily guesses: ${totalDailyGuesses}`);
+        // initializing the total guesses variable
+        const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+        console.log(`total guesses: ${totalGuesses}`);
+        console.log(`Correct guesses = ${correctGuesses}`);
+        // popup();
+      }
+      if (isHideElementAdded) {
+        console.log("Class 'hide-element' added to landing-container");
+      }
+    }
+  }
+}
+
+// Options for the observer (which mutations to observe)
+const observerConfig = { attributes: true, attributeFilter: ["class"] };
+
+// Create an observer instance linked to the handleClassChange callback
+const observer = new MutationObserver(handleClassChange);
+
+// Start observing the target node for configured mutations
+observer.observe(landingContainer, observerConfig);
+
+
 document.addEventListener("DOMContentLoaded", function(){
   console.log('domcontentloaded');
 
@@ -67,177 +283,12 @@ document.addEventListener("DOMContentLoaded", function(){
     console.log('turbo loaded');
 
 
-    // MODAL LOGIC VVVV
-
-    var modal = document.getElementById("myModal");
-    var btnStats = document.getElementById("showStats");
-    var btnInstructions = document.getElementById("showInstructions");
-    const statsContainer = document.querySelector(".stats-container");
-    const instructionsContainer = document.querySelector(".instructions-container");
-
-    // STREAK AND TOTAL GUESSES LOGIC VVVVVVVVVVVVVVVVVV
-
-    const dailyChallengesCompleted = parseInt(localStorage.getItem("daily_challenges_completed")) || 0;
-    // initializing the total daily guesses variable
-    const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
-    console.log(`total daily guesses: ${totalDailyGuesses}`);
-    // initializing the total guesses variable
-    const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
-    console.log(`total guesses: ${totalGuesses}`);
-
-    // initializing daily streak
-    const dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
-    const streakStartDate = localStorage.getItem("streak_start_date");
-    const today = new Date().toISOString().split("T")[0];
-    // figuring out the current streak
-    const consecutiveDays = streakStartDate === today ? dailyStreak : 0;
-    // star emoji for each time they've completed a challenge
-    const starEmojis = "🏀".repeat(consecutiveDays);
-    // calculating win percentage
-    const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
-    // const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
-    const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 : 0;
-
-    // setting stats content/social media
-    const dailyStreakAlert = document.getElementById("dailyStreakAlert");
-    const statsContent = document.getElementById("statsContent");
-    const statsContent1 = document.getElementById("statsContent1");
-    const statsContent2 = document.getElementById("statsContent2");
-    const shareHeader =  document.getElementById("share-header");
-    const shareButtonsContainer = document.getElementById("share-buttons-container");
-    const shareButtonX = document.getElementById("x-share-button");
-    const shareButtonWa = document.getElementById("wa-share-button");
-
-
-
-    // twitter sharing message
-    shareButtonX.onclick = function shareOnTwitter() {
-      const message = `I got my 🏀 from NBA guesser today with ${correctGuesses}/5 guesses correct and a streak of ${consecutiveDays} days!`
-      const encodedMessage = encodeURIComponent(message);
-      const twitterIntentURL = `https://twitter.com/intent/tweet?text=${encodedMessage}`;
-      window.open(twitterIntentURL, "_blank");
-    }
-
-    // Whatsapp sharing message
-    shareButtonWa.onclick = function shareOnWhatsapp() {
-      const message = `I got my 🏀 from NBA guesser today with ${correctGuesses}/5 guesses correct and a streak of ${consecutiveDays} days!`;
-      const encodedMessage = encodeURIComponent(message);
-      const whatsappShareURL = `whatsapp://send?text=${encodedMessage}`;
-      window.open(whatsappShareURL, "_blank");
-    };
-
-
-    // setting instructions content
-    const instructionsWelcome = document.getElementById("instructionsWelcome");
-    const instructionsContent = document.getElementById("instructionsContent");
-    const instructionsContent1 = document.getElementById("instructionsContent1");
-    const instructionsContent2 = document.getElementById("instructionsContent2");
-
-
-    // INSTRUCTIONS MODAL ON STARTUP
-    const hasShownModal = localStorage.getItem("hasShownModal");
-
-    if (!hasShownModal) {
-      modal.style.display = "block";
-      statsContainer.classList.add("hide-element");
-      instructionsContainer.classList.remove("hide-element");
-      instructionsWelcome.innerHTML = "Welcome to NBA Guesser!"
-      instructionsContent.innerHTML = "Select a season, then guess the NBA player based on the stats provided.";
-      instructionsContent1.innerHTML = `Each day you can guess up to 5 players. Guess at least 3 correctly and earn yourself a 🏀!`;
-      instructionsContent2.innerHTML = `How long can you keep your daily streak going for? 🤔`;
-      // Set a flag in localStorage to indicate that the modal has been shown
-      localStorage.setItem("hasShownModal", "true");
-  }
-
-    // POPUP TO DETERMINE IF THEY'VE EARNED THEIR STAR FOR THE DAY
-    function popup() {
-      if (totalDailyGuesses >= 5) {
-        if (correctGuesses >=3) {
-          modal.style.display = "block";
-          instructionsContainer.classList.add("hide-element");
-          statsContainer.classList.remove("hide-element");
-          dailyStreakAlert.innerHTML = `Congrats, you guessed ${correctGuesses} players correctly and have earned yourself a 🏀. See you tomorrow!`
-          statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
-          statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
-          statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
-          shareButtonsContainer.classList.remove("hide-element");
-          shareHeader.classList.remove("hide-element");
-        }
-        else {
-          modal.style.display = "block";
-          instructionsContainer.classList.add("hide-element");
-          statsContainer.classList.remove("hide-element");
-          dailyStreakAlert.innerHTML = `So close, but you only got ${correctGuesses} players correct today. Better luck next time!`
-          statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
-          statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
-          statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
-        }
-      }
-    }
-    popup();
-
-
-    // STATS MODAL VVVV
-    btnStats.onclick = function() {
-      modal.style.display = "block";
-      statsContainer.classList.remove("hide-element");
-      instructionsContainer.classList.add("hide-element");
-      dailyStreakAlert.classList.add("hide-element");
-
-      // updating the modal content
-
-      statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
-      statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
-      statsContent2.innerHTML = `Total challenges completed: ${dailyChallengesCompleted}`
-      if (totalDailyGuesses >= 5) {
-        if (correctGuesses >= 3) {
-          shareButtonsContainer.classList.remove("hide-element");
-          shareHeader.classList.remove("hide-element");
-        }
-      }
-    }
-
-    // INSTRUCTIONS MODAL VVVV
-    btnInstructions.onclick = function() {
-      modal.style.display = "block";
-      statsContainer.classList.add("hide-element");
-      instructionsWelcome.classList.add("hide-element");
-      instructionsContainer.classList.remove("hide-element");
-
-      instructionsContent.innerHTML = "Select a season, then guess the NBA player based on the stats provided.";
-      instructionsContent1.innerHTML = `Each day you can guess up to 5 players. Guess at least 3 correctly and earn yourself a 🏀!`;
-      instructionsContent2.innerHTML = `How long can you keep your daily streak going for? 🤔`;
-    }
-
-    var closeBtn = document.getElementsByClassName("close")[0];
-
-    closeBtn.onclick = function() {
-      modal.style.display = "none";
-    }
-    window.onclick = function(event){
-      event.preventDefault;
-      if (event.target === modal) {
-        modal.style.display = "none";
-      }
-    }
-
-    // variables
-    const seasonForm = document.getElementById("season-form");
-    const form = seasonForm ? seasonForm.firstElementChild : null;
-    const playButton = document.getElementById("play-button");
-    const loader = document.querySelector(".loader-wrapper");
-    const landingContainer = document.querySelector(".landing-container");
 
 
     if (form) {
       form.addEventListener("submit", function(event) {
         event.preventDefault();
-        const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
-        console.log(`total daily guesses: ${totalDailyGuesses}`);
-        // initializing the total guesses variable
-        const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
-        console.log(`total guesses: ${totalGuesses}`);
-        console.log("Form submitted via AJAX");
+        // console.log("Form submitted via AJAX");
         const messageContainer = document.getElementById("message-container");
 
         // disabling the play button until content is loaded.
@@ -371,52 +422,40 @@ document.addEventListener("DOMContentLoaded", function(){
 
                 const playerName = card.dataset.playerName;
                 const userGuessCorrect = playerName === correctPlayerName
+                localStorage.setItem("user_guess_correct", userGuessCorrect);
 
-                function store () {
-                  localStorage.setItem("user_guess_correct", userGuessCorrect);
-                  // const userGuess = JSON.parse(localStorage.getItem("user_guess_correct"));
+                updateLocalStorageValues();
 
-                  const notAddedDailyGuesses = totalDailyGuesses
-                  const notAddedTotalGuesses = totalGuesses
-                  console.log(`not added daily guesses: ${notAddedDailyGuesses}`);
-                  console.log(`not added total guesses: ${notAddedTotalGuesses}`);
+                // function store () {
+                //   // const userGuess = JSON.parse(localStorage.getItem("user_guess_correct"));
 
-                  // incrementing total daily guesses
-                  localStorage.setItem("total_daily_guesses", totalDailyGuesses + 1);
-                  const addedDailyGuesses = localStorage.getItem("total_daily_guesses");
+                //   const notAddedDailyGuesses = totalDailyGuesses
+                //   const notAddedTotalGuesses = totalGuesses
+                //   console.log(`not added daily guesses: ${notAddedDailyGuesses}`);
+                //   console.log(`not added total guesses: ${notAddedTotalGuesses}`);
 
-
-                  // incrementing total guesses for all time (to caluculate winning %)
-                  localStorage.setItem("total_guesses", totalGuesses + 1);
-                  const addedTotalGuesses = localStorage.getItem("total_guesses");
-
-                  console.log(`added daily guesses: ${addedDailyGuesses}`);
-                  console.log(`added total guesses: ${addedTotalGuesses}`);
-
-                  if (notAddedDailyGuesses === addedDailyGuesses && notAddedTotalGuesses === addedTotalGuesses) {
-                    // Update the user interface with the new value
-                    localStorage.setItem("total_daily_guesses", totalDailyGuesses + 1);
-                    localStorage.setItem("total_guesses", totalGuesses + 1);
-                    console.log(`new total daily guesses ${totalDailyGuesses}`);
-                    console.log(`new total guesses ${totalGuesses}`);
-                  }
-                }
+                //   // incrementing total daily guesses
+                //   localStorage.setItem("total_daily_guesses", totalDailyGuesses + 1);
+                //   const addedDailyGuesses = localStorage.getItem("total_daily_guesses");
 
 
+                //   // incrementing total guesses for all time (to caluculate winning %)
+                //   localStorage.setItem("total_guesses", totalGuesses + 1);
+                //   const addedTotalGuesses = localStorage.getItem("total_guesses");
 
-                // function stored () {window.addEventListener('storage', function (e) {
-                //     console.log("storage triggered");
-                //   });
+                //   console.log(`added daily guesses: ${addedDailyGuesses}`);
+                //   console.log(`added total guesses: ${addedTotalGuesses}`);
+
+                //   if (notAddedDailyGuesses === addedDailyGuesses && notAddedTotalGuesses === addedTotalGuesses) {
+                //     // Update the user interface with the new value
+                //     localStorage.setItem("total_daily_guesses", totalDailyGuesses + 1);
+                //     localStorage.setItem("total_guesses", totalGuesses + 1);
+                //     console.log(`new total daily guesses ${totalDailyGuesses}`);
+                //     console.log(`new total guesses ${totalGuesses}`);
+                //   }
                 // }
+                // store();
 
-                // OPTION 1
-                // trigger storage event
-                // listen for the storage event
-                // if the storage event is not triggered, try it again?
-
-                // OPTION 2
-                // fake http request before the storage event is triggered?
-                // storage event is triggered
 
                 // checking if the user guess is correct and also storing stats for the modal
                 if (userGuessCorrect) {
@@ -433,7 +472,7 @@ document.addEventListener("DOMContentLoaded", function(){
                         localStorage.setItem("streak_start_date", currentDate);
                       }
                     }
-                    store();
+                    // store();
 
 
                     // incrementing correct guesses count
@@ -448,7 +487,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
                   } else {
-                    store();
+                    // store();
                     pageContainer.classList.add("hide-element");
                     pageContainerTwo.classList.remove("hide-element");
                     resultContainer.innerHTML = "<h1>Not quite! Better luck next time.</h1>";
