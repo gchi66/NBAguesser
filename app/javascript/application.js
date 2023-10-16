@@ -24,10 +24,10 @@ const instructionsContainer = document.querySelector(".instructions-container");
 const dailyChallengesCompleted = parseInt(localStorage.getItem("daily_challenges_completed")) || 0;
 // initializing the total daily guesses variable
 const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
-console.log(`total daily guesses: ${totalDailyGuesses}`);
+// console.log(`total daily guesses: ${totalDailyGuesses}`);
 // initializing the total guesses variable
 const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
-console.log(`total guesses: ${totalGuesses}`);
+// console.log(`total guesses: ${totalGuesses}`);
 
 // initializing daily streak
 const dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
@@ -46,10 +46,10 @@ const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 :
 function updateLocalGuessValues() {
   const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
   localStorage.setItem("total_daily_guesses", totalDailyGuesses + 1);
-  console.log(`Daily guesses after function: ${totalDailyGuesses}`)
+  // console.log(`Daily guesses after function: ${totalDailyGuesses}`)
   const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
   localStorage.setItem("total_guesses", totalGuesses + 1);
-  console.log(`Total Guesses after function ${totalGuesses}`);
+  // console.log(`Total Guesses after function ${totalGuesses}`);
 }
 
 function updateStreakAndCorrectGuesses() {
@@ -181,20 +181,20 @@ function handleClassChange(mutationsList) {
 
       if (isHideElementRemoved) {
         // The "hide-element" class has been removed
-        console.log("Class 'hide-element' removed from landing-container");
+        // console.log("Class 'hide-element' removed from landing-container");
 
         // Your custom logic here
         const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
-        console.log(`total daily guesses: ${totalDailyGuesses}`);
+        // console.log(`total daily guesses: ${totalDailyGuesses}`);
         // initializing the total guesses variable
         const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
-        console.log(`total guesses: ${totalGuesses}`);
+        // console.log(`total guesses: ${totalGuesses}`);
         const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
-        console.log(`Correct guesses = ${correctGuesses}`);
+        // console.log(`Correct guesses = ${correctGuesses}`);
         popup();
       }
       if (isHideElementAdded) {
-        console.log("Class 'hide-element' added to landing-container");
+        // console.log("Class 'hide-element' added to landing-container");
       }
     }
   }
@@ -233,7 +233,7 @@ function popup() {
 popup();
 
 document.addEventListener("DOMContentLoaded", function(){
-  console.log('domcontentloaded');
+  // console.log('domcontentloaded');
 
     // MIDNIGHT LOGIC VVVVVVVV
     function scheduleResetAtMidnight() {
@@ -271,7 +271,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
   // AJAX LOGIC VVVV
   document.addEventListener("turbo:load", function() {
-    console.log('turbo loaded');
+    // console.log('turbo loaded');
     if (form) {
       form.addEventListener("submit", function(event) {
         event.preventDefault();
@@ -387,6 +387,9 @@ document.addEventListener("DOMContentLoaded", function(){
           error: function() {
             console.log("AJAX request failed");
             playButton.disabled = false;
+            window.location.href = "/";
+            const messageContainer = document.getElementById("message-container");
+            messageContainer.innerHTML = "<p>Oops! Something went wrong. Give it another try.</p>";
           }
         });
       });
