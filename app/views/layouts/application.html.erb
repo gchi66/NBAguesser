@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>NBAguesser</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>NBAguesser - Guess the NBA player based on their stats.</title>
     <meta name="csrf-token" content="<%= form_authenticity_token %>">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <meta name="description" content="Can you guess the NBA player based only on their season statistics? Give it a try with NBA Guesser!">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="NBA Guesser - Guess the NBA player based on their stats.">
+    <meta property="og:description" content="Can you guess the NBA player based only on their season statistics? Give it a try with NBA Guesser!">
+    <meta property="og:image" content="app/assets/images/corey_logo.png"> <!-- Use an image that represents your website -->
+    <meta property="og:url" content="https://nbaguesser.com">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="NBA Guesser - Guess the NBA player based on their stats.">
+    <meta name="twitter:description" content="Can you guess the NBA player based only on their season statistics? Give it a try with NBA Guesser!">
+    <meta name="twitter:image" content="app/assets/images/corey_logo.png"> <!-- Use the same image as in Open Graph for consistency -->
+
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_pack_tag "application", "data-turbo-track": "reload", defer: true %>

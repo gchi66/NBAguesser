@@ -64,9 +64,12 @@ function updateStreakAndCorrectGuesses() {
   }
   // incrementing correct guesses count
   localStorage.setItem("correct_guesses", correctGuesses + 1);
-  return correctGuesses;
 }
 
+function getCorrectGuesses() {
+  const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
+  return correctGuesses;
+}
 
 // setting stats content/social media
 const dailyStreakAlert = document.getElementById("dailyStreakAlert");
@@ -80,7 +83,7 @@ const shareButtonWa = document.getElementById("wa-share-button");
 
 // twitter sharing message
 shareButtonX.onclick = function shareOnTwitter() {
-  let correctGuesses = updateStreakAndCorrectGuesses();
+  let correctGuesses = getCorrectGuesses();
   let consecutiveDays = calculateConsecutiveDays();
   const message = `I got my 🏀 from NBA guesser today with ${correctGuesses === 1 ? '1 guess' : `${correctGuesses}/5 guesses`} correct and a streak of ${consecutiveDays === 1 ? '1 day' : `${consecutiveDays} days`}!`;
   const encodedMessage = encodeURIComponent(message);
@@ -90,7 +93,7 @@ shareButtonX.onclick = function shareOnTwitter() {
 
 // Whatsapp sharing message
 shareButtonWa.onclick = function shareOnWhatsapp() {
-  let correctGuesses = updateStreakAndCorrectGuesses();
+  let correctGuesses = getCorrectGuesses();
   let consecutiveDays = calculateConsecutiveDays();
   const message = `I got my 🏀 from NBA guesser today with ${correctGuesses === 1 ? '1 guess' : `${correctGuesses}/5 guesses`} correct and a streak of ${consecutiveDays === 1 ? '1 day' : `${consecutiveDays} days`}!`;
   const encodedMessage = encodeURIComponent(message);
@@ -248,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function(){
       setTimeout(function () {
         // Reset total daily guesses
         localStorage.setItem("total_daily_guesses", 0);
-        scheduleResetAtMidnight();
+        scheduleResetAtMidnight();Papp
       }, timeUntilMidnight);
     }
     scheduleResetAtMidnight();
@@ -370,6 +373,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 // checking if the user guess is correct and also storing stats for the modal
                 if (userGuessCorrect) {
                     updateStreakAndCorrectGuesses();
+                    // getCorrectGuesses();
                     pageContainer.classList.add("hide-element");
                     resultContainer.innerHTML = "<h1>Nice work hoophead!</h1>";
                     resultPageContainer.classList.remove("hide-element");
