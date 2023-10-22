@@ -172,7 +172,7 @@ const loader = document.querySelector(".loader-wrapper");
 const landingContainer = document.querySelector(".landing-container");
 
 
-// Function to handle class changes
+// Doing things when the landing containers class is changed.
 function handleClassChange(mutationsList) {
   for (const mutation of mutationsList) {
     if (mutation.type === "attributes" && mutation.attributeName === "class") {
@@ -184,13 +184,14 @@ function handleClassChange(mutationsList) {
         // console.log("Class 'hide-element' removed from landing-container");
 
         // Your custom logic here
-        const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
-        // console.log(`total daily guesses: ${totalDailyGuesses}`);
-        // initializing the total guesses variable
-        const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
-        // console.log(`total guesses: ${totalGuesses}`);
-        const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
-        // console.log(`Correct guesses = ${correctGuesses}`);
+        // const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
+        // // console.log(`total daily guesses: ${totalDailyGuesses}`);
+        // // initializing the total guesses variable
+        // const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+        // // console.log(`total guesses: ${totalGuesses}`);
+        // const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
+        // // console.log(`Correct guesses = ${correctGuesses}`);
+        // unloadAssets();
         popup();
       }
       if (isHideElementAdded) {
@@ -212,6 +213,7 @@ function popup() {
       modal.style.display = "block";
       instructionsContainer.classList.add("hide-element");
       statsContainer.classList.remove("hide-element");
+      dailyStreakAlert.classList.remove("hide-element");
       dailyStreakAlert.innerHTML = `Congrats, you guessed ${correctGuesses} players correctly and have earned yourself a 🏀. See you tomorrow!`
       statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
       statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
@@ -223,6 +225,7 @@ function popup() {
       modal.style.display = "block";
       instructionsContainer.classList.add("hide-element");
       statsContainer.classList.remove("hide-element");
+      dailyStreakAlert.classList.remove("hide-element");
       dailyStreakAlert.innerHTML = `So close, but you only got ${correctGuesses} players correct today. Better luck next time!`
       statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
       statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
@@ -344,19 +347,37 @@ document.addEventListener("DOMContentLoaded", function(){
             const pageContainerTwo = document.querySelector(".page-container-two");
             const tryAgainButton = document.getElementById("try-again-button");
 
-
+            // unloading the assets
+            function unloadAssets() {
+              console.log(`Player cards before removal: ${actualPlayerCards.length}`);
+              console.log(actualPlayerCards.parentNode);
+              actualPlayerCards.forEach((card) => {
+                console.log(card.parentNode.className);
+                card.parentNode.removeChild(card);
+                console.log(card);
+              });
+              console.log(`Player cards after removal: ${actualPlayerCards.length}`);
+            };
             // function to reset to the main page
             function resetGame() {
               form.reset();
+              tryAgainButton.removeEventListener("click", resetGameAndUnloadAssets);
               pageContainerTwo.classList.add("hide-element");
               actualPlayerCardContainer.classList.add("hide-element");
               actualCorrectPlayerCard.classList.add("hide-element");
               headingContainer.classList.add("hide-element");
               pageContainer.classList.remove("hide-element");
               landingContainer.classList.remove("hide-element");
+              // Unloading unused player cards function
+            }
+            function resetGameAndUnloadAssets() {
+              unloadAssets();
+              resetGame();
             }
             // re-enabling the play button for next time
             playButton.disabled = false;
+            // attaching the event listener to the try again button
+            tryAgainButton.addEventListener("click", resetGameAndUnloadAssets);
 
             // GAME LOGIC VVVVVVVVVV
             actualPlayerCards.forEach(card => {
@@ -365,6 +386,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 const userGuessCorrect = playerName === correctPlayerName
                 localStorage.setItem("user_guess_correct", userGuessCorrect);
                 updateLocalGuessValues();
+
                 // checking if the user guess is correct and also storing stats for the modal
                 if (userGuessCorrect) {
                     updateStreakAndCorrectGuesses();
@@ -372,14 +394,12 @@ document.addEventListener("DOMContentLoaded", function(){
                     resultContainer.innerHTML = "<h1>Nice work hoophead!</h1>";
                     resultPageContainer.classList.remove("hide-element");
                     pageContainerTwo.classList.remove("hide-element");
-                    tryAgainButton.addEventListener("click", resetGame);
                   } else {
                     pageContainer.classList.add("hide-element");
                     pageContainerTwo.classList.remove("hide-element");
                     resultContainer.innerHTML = "<h1>Not quite! Better luck next time.</h1>";
                     resultPageContainer.classList.remove("hide-element");
                     pageContainerTwo.classList.remove("hide-element");
-                    tryAgainButton.addEventListener("click", resetGame);
                   }
               });
             });

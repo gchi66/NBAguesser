@@ -135,6 +135,7 @@ GEM
       net-smtp
     marcel (1.0.2)
     matrix (0.4.2)
+    memory_profiler (1.0.1)
     method_source (1.0.0)
     mini_mime (1.1.2)
     minitest (5.17.0)
@@ -157,6 +158,8 @@ GEM
       nio4r (~> 2.0)
     racc (1.6.2)
     rack (2.2.6.2)
+    rack-mini-profiler (3.1.1)
+      rack (>= 1.2.0)
     rack-proxy (0.7.6)
       rack
     rack-test (2.0.2)
@@ -274,9 +277,11 @@ DEPENDENCIES
   font-awesome-sass (~> 6.1)
   jbuilder
   jsbundling-rails
+  memory_profiler
   nokogiri
   pg (~> 1.1)
   puma (~> 5.0)
+  rack-mini-profiler
   rails (~> 7.0.4, >= 7.0.4.2)
   rails-ujs
   rails_real_favicon

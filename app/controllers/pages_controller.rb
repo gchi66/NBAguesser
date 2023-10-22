@@ -5,6 +5,7 @@ require 'net/http'
 class PagesController < ApplicationController
 
   def home
+    Rails.logger.debug "home before methods and clear: #{`ps -o rss= -p #{$$}`.to_i / 1024} MB"
     clear_correct_player_session
     find_correct_player
     find_guess_players
