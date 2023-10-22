@@ -22,25 +22,20 @@ const instructionsContainer = document.querySelector(".instructions-container");
 // STREAK AND TOTAL GUESSES LOGIC VVVVVVVVVVVVVVVVVV
 
 const dailyChallengesCompleted = parseInt(localStorage.getItem("daily_challenges_completed")) || 0;
-// initializing the total daily guesses variable
 const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
-// console.log(`total daily guesses: ${totalDailyGuesses}`);
-// initializing the total guesses variable
 const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
-// console.log(`total guesses: ${totalGuesses}`);
 
-// initializing daily streak
-const dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
-const streakStartDate = localStorage.getItem("streak_start_date");
-const today = new Date().toISOString().split("T")[0];
-// figuring out the current streak
-const consecutiveDays = streakStartDate === today ? dailyStreak : 0;
-// star emoji for each time they've completed a challenge
-const starEmojis = "🏀".repeat(consecutiveDays);
-// calculating win percentage
-const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
-// const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
-const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 : 0;
+
+function calculateConsecutiveDays(){
+  // initializing daily streak
+  let consecutiveDays = 0;
+  const dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
+  const streakStartDate = localStorage.getItem("streak_start_date");
+  const today = new Date().toISOString().split("T")[0];
+  // figuring out the current streak
+  consecutiveDays = streakStartDate === today ? dailyStreak : 0;
+  return consecutiveDays;
+}
 
 // LOCAL STORAGE FUNCTIONS
 function updateLocalGuessValues() {
@@ -69,7 +64,9 @@ function updateStreakAndCorrectGuesses() {
   }
   // incrementing correct guesses count
   localStorage.setItem("correct_guesses", correctGuesses + 1);
+  return correctGuesses;
 }
+
 
 // setting stats content/social media
 const dailyStreakAlert = document.getElementById("dailyStreakAlert");
@@ -83,6 +80,8 @@ const shareButtonWa = document.getElementById("wa-share-button");
 
 // twitter sharing message
 shareButtonX.onclick = function shareOnTwitter() {
+  let correctGuesses = updateStreakAndCorrectGuesses();
+  let consecutiveDays = calculateConsecutiveDays();
   const message = `I got my 🏀 from NBA guesser today with ${correctGuesses === 1 ? '1 guess' : `${correctGuesses}/5 guesses`} correct and a streak of ${consecutiveDays === 1 ? '1 day' : `${consecutiveDays} days`}!`;
   const encodedMessage = encodeURIComponent(message);
   const twitterIntentURL = `https://twitter.com/intent/tweet?text=${encodedMessage}`;
@@ -91,6 +90,8 @@ shareButtonX.onclick = function shareOnTwitter() {
 
 // Whatsapp sharing message
 shareButtonWa.onclick = function shareOnWhatsapp() {
+  let correctGuesses = updateStreakAndCorrectGuesses();
+  let consecutiveDays = calculateConsecutiveDays();
   const message = `I got my 🏀 from NBA guesser today with ${correctGuesses === 1 ? '1 guess' : `${correctGuesses}/5 guesses`} correct and a streak of ${consecutiveDays === 1 ? '1 day' : `${consecutiveDays} days`}!`;
   const encodedMessage = encodeURIComponent(message);
   const whatsappShareURL = `whatsapp://send?text=${encodedMessage}`;
@@ -126,9 +127,15 @@ btnStats.onclick = function() {
   statsContainer.classList.remove("hide-element");
   instructionsContainer.classList.add("hide-element");
   dailyStreakAlert.classList.add("hide-element");
-
+  let consecutiveDays = calculateConsecutiveDays();
+  // bball emoji for each time they've completed a challenge
+  const bballEmojis = "🏀".repeat(consecutiveDays);
+  // calculating win percentage
+  const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
+  // const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+  const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 : 0;
   // updating the modal content
-  statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
+  statsContent.innerHTML = `Current Streak: (${consecutiveDays})${bballEmojis}<br>`
   statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
   statsContent2.innerHTML = `Total challenges completed: ${dailyChallengesCompleted}`
   if (totalDailyGuesses >= 5) {
@@ -177,25 +184,8 @@ function handleClassChange(mutationsList) {
   for (const mutation of mutationsList) {
     if (mutation.type === "attributes" && mutation.attributeName === "class") {
       const isHideElementRemoved = !landingContainer.classList.contains("hide-element");
-      const isHideElementAdded = landingContainer.classList.contains("hide-element");
-
       if (isHideElementRemoved) {
-        // The "hide-element" class has been removed
-        // console.log("Class 'hide-element' removed from landing-container");
-
-        // Your custom logic here
-        // const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
-        // // console.log(`total daily guesses: ${totalDailyGuesses}`);
-        // // initializing the total guesses variable
-        // const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
-        // // console.log(`total guesses: ${totalGuesses}`);
-        // const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
-        // // console.log(`Correct guesses = ${correctGuesses}`);
-        // unloadAssets();
         popup();
-      }
-      if (isHideElementAdded) {
-        // console.log("Class 'hide-element' added to landing-container");
       }
     }
   }
@@ -208,6 +198,11 @@ observer.observe(landingContainer, observerConfig);
 function popup() {
   const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
   const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
+  let consecutiveDays = calculateConsecutiveDays();
+  // bball emoji for each time they've completed a challenge
+  const bballEmojis = "🏀".repeat(consecutiveDays);
+  // calculating win percentage
+  const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 : 0;
   if (totalDailyGuesses >= 5) {
     if (correctGuesses >=3) {
       modal.style.display = "block";
@@ -215,7 +210,7 @@ function popup() {
       statsContainer.classList.remove("hide-element");
       dailyStreakAlert.classList.remove("hide-element");
       dailyStreakAlert.innerHTML = `Congrats, you guessed ${correctGuesses} players correctly and have earned yourself a 🏀. See you tomorrow!`
-      statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
+      statsContent.innerHTML = `Current Streak: (${consecutiveDays})${bballEmojis}<br>`
       statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
       statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
       shareButtonsContainer.classList.remove("hide-element");
@@ -305,7 +300,7 @@ document.addEventListener("DOMContentLoaded", function(){
           url: form.action,
           data: formData,
           success: function(data) {
-            console.log("ajax successfully fired");
+            // console.log("ajax successfully fired");
             // SEASON SELECTION LOGIC AND APPEARING HEADER LOGIC
             const headingContainer = document.querySelector(".heading-container");
             const playerCardContainer = data.querySelector(".player-card-container");
@@ -347,21 +342,10 @@ document.addEventListener("DOMContentLoaded", function(){
             const pageContainerTwo = document.querySelector(".page-container-two");
             const tryAgainButton = document.getElementById("try-again-button");
 
-            // unloading the assets
-            function unloadAssets() {
-              console.log(`Player cards before removal: ${actualPlayerCards.length}`);
-              console.log(actualPlayerCards.parentNode);
-              actualPlayerCards.forEach((card) => {
-                console.log(card.parentNode.className);
-                card.parentNode.removeChild(card);
-                console.log(card);
-              });
-              console.log(`Player cards after removal: ${actualPlayerCards.length}`);
-            };
             // function to reset to the main page
             function resetGame() {
               form.reset();
-              tryAgainButton.removeEventListener("click", resetGameAndUnloadAssets);
+              tryAgainButton.removeEventListener("click", resetGame);
               pageContainerTwo.classList.add("hide-element");
               actualPlayerCardContainer.classList.add("hide-element");
               actualCorrectPlayerCard.classList.add("hide-element");
@@ -370,14 +354,10 @@ document.addEventListener("DOMContentLoaded", function(){
               landingContainer.classList.remove("hide-element");
               // Unloading unused player cards function
             }
-            function resetGameAndUnloadAssets() {
-              unloadAssets();
-              resetGame();
-            }
             // re-enabling the play button for next time
             playButton.disabled = false;
             // attaching the event listener to the try again button
-            tryAgainButton.addEventListener("click", resetGameAndUnloadAssets);
+            tryAgainButton.addEventListener("click", resetGame);
 
             // GAME LOGIC VVVVVVVVVV
             actualPlayerCards.forEach(card => {
