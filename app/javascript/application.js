@@ -19,11 +19,15 @@ var btnInstructions = document.getElementById("showInstructions");
 const statsContainer = document.querySelector(".stats-container");
 const instructionsContainer = document.querySelector(".instructions-container");
 
+
 // STREAK AND TOTAL GUESSES LOGIC VVVVVVVVVVVVVVVVVV
 
 const dailyChallengesCompleted = parseInt(localStorage.getItem("daily_challenges_completed")) || 0;
 const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
-const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+// const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+// const streakStartDate = localStorage.getItem("streak_start_date");
+// const dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
+
 
 
 function calculateConsecutiveDays(){
@@ -135,9 +139,10 @@ btnStats.onclick = function() {
   const bballEmojis = "🏀".repeat(consecutiveDays);
   // calculating win percentage
   const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
-  // const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+  const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
   const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 : 0;
   // updating the modal content
+
   statsContent.innerHTML = `Current Streak: (${consecutiveDays})${bballEmojis}<br>`
   statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
   statsContent2.innerHTML = `Total challenges completed: ${dailyChallengesCompleted}`
@@ -200,6 +205,7 @@ observer.observe(landingContainer, observerConfig);
 // POPUP TO DETERMINE IF THEY'VE EARNED THEIR STAR FOR THE DAY
 function popup() {
   const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
+  const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
   const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
   let consecutiveDays = calculateConsecutiveDays();
   // bball emoji for each time they've completed a challenge
@@ -240,11 +246,14 @@ document.addEventListener("DOMContentLoaded", function(){
     function scheduleResetAtMidnight() {
       // Calculate the time until the next midnight
       const now = new Date();
+      console.log(now);
       const midnight = new Date(now);
       midnight.setHours(24, 0, 0, 0);
+      console.log(midnight);
       // If it's already past midnight schedule it for tomorrow
       if (now > midnight) {
         midnight.setDate(now.getDate() + 1);
+        console.log("now is greater than midnight");
       }
       const timeUntilMidnight = midnight - now;
       // reset the guesses at midnight
@@ -292,6 +301,7 @@ document.addEventListener("DOMContentLoaded", function(){
         // limiting the totalDailyGuesses to 5
         if (totalDailyGuesses  >= 5) {
           // updating the message container if they try to play
+          messageContainer.classList.remove("hide-element");
           messageContainer.innerHTML = `<h4>Out of guesses, try again tomorrow<h4>`;
           return;
         }
