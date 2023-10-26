@@ -20,24 +20,43 @@ const statsContainer = document.querySelector(".stats-container");
 const instructionsContainer = document.querySelector(".instructions-container");
 
 
-// STREAK AND TOTAL GUESSES LOGIC VVVVVVVVVVVVVVVVVV
 
 const dailyChallengesCompleted = parseInt(localStorage.getItem("daily_challenges_completed")) || 0;
 const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
-// const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
-// const streakStartDate = localStorage.getItem("streak_start_date");
-// const dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
 
 
+function checkStreak() {
+  const today = new Date().toISOString().split("T")[0];
+  // Calculate yesterday by subtracting one day's worth of milliseconds (86400000 milliseconds) from today
+  const yesterdayDate = new Date(new Date().getTime() - 86400000);
+  const yesterday = yesterdayDate.toISOString().split("T")[0];
+  let dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
+  const streakStartDate = localStorage.getItem("streak_start_date");
+
+    if (streakStartDate !== today && streakStartDate !== yesterday && !streakStartDate) {
+      console.log("daily streak reset");
+      dailyStreak = 0;
+      localStorage.setItem("daily_streak", dailyStreak);
+    }
+  return dailyStreak;
+}
+checkStreak();
 
 function calculateConsecutiveDays(){
   // initializing daily streak
   let consecutiveDays = 0;
-  const dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
-  const streakStartDate = localStorage.getItem("streak_start_date");
-  const today = new Date().toISOString().split("T")[0];
+  const dailyStreak = checkStreak();
+  console.log(`daily streak in con days: ${dailyStreak}`);
+  // const streakStartDate = localStorage.getItem("streak_start_date");
+  // const today = new Date().toISOString().split("T")[0];
+
+  // // Calculate yesterday by subtracting one day's worth of milliseconds (86400000 milliseconds) from today
+  // const yesterdayDate = new Date(new Date().getTime() - 86400000);
+  // const yesterday = yesterdayDate.toISOString().split("T")[0];
+
   // figuring out the current streak
-  consecutiveDays = streakStartDate === today ? dailyStreak : 0;
+  // consecutiveDays = streakStartDate === today || streakStartDate === yesterday ? dailyStreak : 0;
+  consecutiveDays = dailyStreak;
   return consecutiveDays;
 }
 
@@ -55,6 +74,7 @@ function updateStreakAndCorrectGuesses() {
   const currentDate = new Date().toISOString().split("T")[0];
   const currentStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
   const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
+  const dailyCorrectGuesses = parseInt(localStorage.getItem("daily_correct_guesses")) || 0;
   const streakStartDate = localStorage.getItem("streak_start_date");
 
   // user must get 3/5 guesses correct
@@ -68,11 +88,13 @@ function updateStreakAndCorrectGuesses() {
   }
   // incrementing correct guesses count
   localStorage.setItem("correct_guesses", correctGuesses + 1);
+  localStorage.setItem("daily_correct_guesses", dailyCorrectGuesses + 1);
+
 }
 
-function getCorrectGuesses() {
-  const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
-  return correctGuesses;
+function getDailyCorrectGuesses() {
+  const dailyCorrectGuesses = parseInt(localStorage.getItem("daily_correct_guesses")) || 0;
+  return dailyCorrectGuesses;
 }
 
 // setting stats content/social media
@@ -87,9 +109,9 @@ const shareButtonWa = document.getElementById("wa-share-button");
 
 // twitter sharing message
 shareButtonX.onclick = function shareOnTwitter() {
-  let correctGuesses = getCorrectGuesses();
+  let dailyCorrectGuesses = getDailyCorrectGuesses();
   let consecutiveDays = calculateConsecutiveDays();
-  const message = `I got my 🏀 from NBA guesser today with ${correctGuesses === 1 ? '1 guess' : `${correctGuesses}/5 guesses`} correct and a streak of ${consecutiveDays === 1 ? '1 day' : `${consecutiveDays} days`}!`;
+  const message = `I got my 🏀 from www.nbaguesser.com today with ${dailyCorrectGuesses === 1 ? '1 guess' : `${correctGuesses}/5 guesses`} correct and a streak of ${consecutiveDays === 1 ? '1 day' : `${consecutiveDays} days`}!`;
   const encodedMessage = encodeURIComponent(message);
   const twitterIntentURL = `https://twitter.com/intent/tweet?text=${encodedMessage}`;
   window.open(twitterIntentURL, "_blank");
@@ -97,9 +119,9 @@ shareButtonX.onclick = function shareOnTwitter() {
 
 // Whatsapp sharing message
 shareButtonWa.onclick = function shareOnWhatsapp() {
-  let correctGuesses = getCorrectGuesses();
+  let dailyCorrectGuesses = getDailyCorrectGuesses();
   let consecutiveDays = calculateConsecutiveDays();
-  const message = `I got my 🏀 from NBA guesser today with ${correctGuesses === 1 ? '1 guess' : `${correctGuesses}/5 guesses`} correct and a streak of ${consecutiveDays === 1 ? '1 day' : `${consecutiveDays} days`}!`;
+  const message = `I got my 🏀 from www.nbaguesser.com today with ${dailyCorrectGuesses === 1 ? '1 guess' : `${correctGuesses}/5 guesses`} correct and a streak of ${consecutiveDays === 1 ? '1 day' : `${consecutiveDays} days`}!`;
   const encodedMessage = encodeURIComponent(message);
   const whatsappShareURL = `whatsapp://send?text=${encodedMessage}`;
   window.open(whatsappShareURL, "_blank");
@@ -134,6 +156,7 @@ btnStats.onclick = function() {
   statsContainer.classList.remove("hide-element");
   instructionsContainer.classList.add("hide-element");
   dailyStreakAlert.classList.add("hide-element");
+  const dailyCorrectGuesses = parseInt(localStorage.getItem("daily_correct_guesses")) || 0;
   let consecutiveDays = calculateConsecutiveDays();
   // bball emoji for each time they've completed a challenge
   const bballEmojis = "🏀".repeat(consecutiveDays);
@@ -147,7 +170,7 @@ btnStats.onclick = function() {
   statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
   statsContent2.innerHTML = `Total challenges completed: ${dailyChallengesCompleted}`
   if (totalDailyGuesses >= 5) {
-    if (correctGuesses >= 3) {
+    if (dailyCorrectGuesses >= 3) {
       shareButtonsContainer.classList.remove("hide-element");
       shareHeader.classList.remove("hide-element");
     }
@@ -207,18 +230,21 @@ function popup() {
   const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
   const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
   const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
+  const dailyCorrectGuesses = parseInt(localStorage.getItem("daily_correct_guesses")) || 0;
+  const dailyChallengesCompleted = parseInt(localStorage.getItem("daily_challenges_completed")) || 0;
   let consecutiveDays = calculateConsecutiveDays();
+  console.log(`consecutive days: ${consecutiveDays}`);
   // bball emoji for each time they've completed a challenge
   const bballEmojis = "🏀".repeat(consecutiveDays);
   // calculating win percentage
   const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 : 0;
   if (totalDailyGuesses >= 5) {
-    if (correctGuesses >=3) {
+    if (dailyCorrectGuesses >=3) {
       modal.style.display = "block";
       instructionsContainer.classList.add("hide-element");
       statsContainer.classList.remove("hide-element");
       dailyStreakAlert.classList.remove("hide-element");
-      dailyStreakAlert.innerHTML = `Congrats, you guessed ${correctGuesses} players correctly and have earned yourself a 🏀. See you tomorrow!`
+      dailyStreakAlert.innerHTML = `Congrats, you guessed ${dailyCorrectGuesses} players correctly and have earned yourself a 🏀. See you tomorrow!`
       statsContent.innerHTML = `Current Streak: (${consecutiveDays})${bballEmojis}<br>`
       statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
       statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
@@ -230,8 +256,8 @@ function popup() {
       instructionsContainer.classList.add("hide-element");
       statsContainer.classList.remove("hide-element");
       dailyStreakAlert.classList.remove("hide-element");
-      dailyStreakAlert.innerHTML = `So close, but you only got ${correctGuesses} players correct today. Better luck next time!`
-      statsContent.innerHTML = `Current Streak: (${consecutiveDays})${starEmojis}<br>`
+      dailyStreakAlert.innerHTML = `So close, but you only got ${dailyCorrectGuesses} players correct today. Better luck next time!`
+      statsContent.innerHTML = `Current Streak: (${consecutiveDays})${bballEmojis}<br>`
       statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
       statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
     }
@@ -256,11 +282,14 @@ document.addEventListener("DOMContentLoaded", function(){
         console.log("now is greater than midnight");
       }
       const timeUntilMidnight = midnight - now;
+      // const dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
+      // const streakStartDate
       // reset the guesses at midnight
       setTimeout(function () {
         // Reset total daily guesses
         localStorage.setItem("total_daily_guesses", 0);
-        scheduleResetAtMidnight();Papp
+        localStorage.setItem("correct_guesses", 0);
+        scheduleResetAtMidnight();
       }, timeUntilMidnight);
     }
     scheduleResetAtMidnight();
@@ -383,7 +412,6 @@ document.addEventListener("DOMContentLoaded", function(){
                 // checking if the user guess is correct and also storing stats for the modal
                 if (userGuessCorrect) {
                     updateStreakAndCorrectGuesses();
-                    // getCorrectGuesses();
                     pageContainer.classList.add("hide-element");
                     resultContainer.innerHTML = "<h1>Nice work hoophead!</h1>";
                     resultPageContainer.classList.remove("hide-element");
