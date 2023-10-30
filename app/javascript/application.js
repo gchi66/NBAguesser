@@ -32,21 +32,20 @@ function checkStreak() {
   const yesterday = yesterdayDate.toISOString().split("T")[0];
   let dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
   const streakStartDate = localStorage.getItem("streak_start_date");
-
-    if (streakStartDate !== today && streakStartDate !== yesterday && !streakStartDate) {
+    if (streakStartDate !== today && streakStartDate !== yesterday && streakStartDate) {
       console.log("daily streak reset");
+      localStorage.removeItem("streak_start_date");
       dailyStreak = 0;
       localStorage.setItem("daily_streak", dailyStreak);
     }
   return dailyStreak;
 }
-checkStreak();
+
 
 function calculateConsecutiveDays(){
   // initializing daily streak
   let consecutiveDays = 0;
   const dailyStreak = checkStreak();
-  console.log(`daily streak in con days: ${dailyStreak}`);
   // const streakStartDate = localStorage.getItem("streak_start_date");
   // const today = new Date().toISOString().split("T")[0];
 
@@ -266,33 +265,25 @@ function popup() {
 popup();
 
 document.addEventListener("DOMContentLoaded", function(){
-  // console.log('domcontentloaded');
 
-    // MIDNIGHT LOGIC VVVVVVVV
-    function scheduleResetAtMidnight() {
-      // Calculate the time until the next midnight
+    // Resetting the values
+    function resetValuesIfPastMidnight() {
       const now = new Date();
-      console.log(now);
       const midnight = new Date(now);
-      midnight.setHours(24, 0, 0, 0);
-      console.log(midnight);
-      // If it's already past midnight schedule it for tomorrow
+      midnight.setHours(0, 0, 0, 0);
+
       if (now > midnight) {
-        midnight.setDate(now.getDate() + 1);
-        console.log("now is greater than midnight");
+        const dailyCorrectGuesses = parseInt(localStorage.getItem("daily_correct_guesses")) || 0;
+        const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
+
+        if (dailyCorrectGuesses > 0 || totalDailyGuesses > 0) {
+          localStorage.setItem("daily_correct_guesses", 0);
+          localStorage.setItem("total_daily_guesses", 0);
+        }
       }
-      const timeUntilMidnight = midnight - now;
-      // const dailyStreak = parseInt(localStorage.getItem("daily_streak")) || 0;
-      // const streakStartDate
-      // reset the guesses at midnight
-      setTimeout(function () {
-        // Reset total daily guesses
-        localStorage.setItem("total_daily_guesses", 0);
-        localStorage.setItem("correct_guesses", 0);
-        scheduleResetAtMidnight();
-      }, timeUntilMidnight);
     }
-    scheduleResetAtMidnight();
+    resetValuesIfPastMidnight();
+
 
   // GENERATING UNIQUE DEVICE ID BASED ON TIMESTAMP
   function generateDeviceId() {
