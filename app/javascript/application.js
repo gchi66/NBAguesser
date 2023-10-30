@@ -35,8 +35,7 @@ function checkStreak() {
     if (streakStartDate !== today && streakStartDate !== yesterday && streakStartDate) {
       console.log("daily streak reset");
       localStorage.removeItem("streak_start_date");
-      dailyStreak = 0;
-      localStorage.setItem("daily_streak", dailyStreak);
+      localStorage.setItem("daily_streak", 0);
     }
   return dailyStreak;
 }
@@ -46,15 +45,6 @@ function calculateConsecutiveDays(){
   // initializing daily streak
   let consecutiveDays = 0;
   const dailyStreak = checkStreak();
-  // const streakStartDate = localStorage.getItem("streak_start_date");
-  // const today = new Date().toISOString().split("T")[0];
-
-  // // Calculate yesterday by subtracting one day's worth of milliseconds (86400000 milliseconds) from today
-  // const yesterdayDate = new Date(new Date().getTime() - 86400000);
-  // const yesterday = yesterdayDate.toISOString().split("T")[0];
-
-  // figuring out the current streak
-  // consecutiveDays = streakStartDate === today || streakStartDate === yesterday ? dailyStreak : 0;
   consecutiveDays = dailyStreak;
   return consecutiveDays;
 }
@@ -81,9 +71,9 @@ function updateStreakAndCorrectGuesses() {
     localStorage.setItem("daily_streak", currentStreak + 1);
     // incrementing daily challenges
     localStorage.setItem("daily_challenges_completed", dailyChallengesCompleted + 1);
-    if (!streakStartDate) {
-      localStorage.setItem("streak_start_date", currentDate);
-    }
+    localStorage.setItem("streak_start_date", currentDate);
+    console.log(streakStartDate);
+
   }
   // incrementing correct guesses count
   localStorage.setItem("correct_guesses", correctGuesses + 1);
@@ -232,7 +222,6 @@ function popup() {
   const dailyCorrectGuesses = parseInt(localStorage.getItem("daily_correct_guesses")) || 0;
   const dailyChallengesCompleted = parseInt(localStorage.getItem("daily_challenges_completed")) || 0;
   let consecutiveDays = calculateConsecutiveDays();
-  console.log(`consecutive days: ${consecutiveDays}`);
   // bball emoji for each time they've completed a challenge
   const bballEmojis = "🏀".repeat(consecutiveDays);
   // calculating win percentage
