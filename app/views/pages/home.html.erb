@@ -45,24 +45,41 @@
 
   <!-- Page content -->
 
+    <div class="guess-counter-container">
+      <div class="counter">
+        <div class="label">Daily guesses:</div>
+        <div class="bar-container">
+          <div class="guess-bar" id="total-guess-bar"></div>
+          <div class="number" id="total-guess-number">(5)</div>
+        </div>
+      </div>
+      <div class="counter">
+        <div class="label">Correct guesses:</div>
+        <div class="bar-container">
+          <div class="guess-bar" id="correct-guess-bar"></div>
+          <div class="number" id="correct-guess-number">(0)</div>
+        </div>
+      </div>
+    </div>
+
+
     <div class="page-container">
 
-       <%# turbo_frame_tag 'landing-page' do %>
-        <div class="landing-container">
-          <div id="welcome-header">
-            <h1>NBA Guesser (beta)</h1>
-          </div>
-
-          <div class="form-container" turbo-frame id="season-form">
-              <%= simple_form_for :season, url: root_path, remote: true, method: :post do |f| %>
-                <%= f.input :season, collection: (1950..2023).to_a.reverse.map(&:to_s), prompt: 'Select a season', label: false %>
-                <div id="submit-button">
-                  <%= f.button :submit, 'Play', class: "button-main", id: "play-button" %>
-                </div>
-              <% end %>
-          </div>
+      <div class="landing-container">
+        <div id="welcome-header">
+          <h1>NBA Guesser (beta)</h1>
         </div>
-      <%# <% end %>
+
+        <div class="form-container" turbo-frame id="season-form">
+            <%= simple_form_for :season, url: root_path, remote: true, method: :post do |f| %>
+              <%= f.input :season, collection: (1950..2023).to_a.reverse.map(&:to_s), prompt: 'Select a season', label: false %>
+              <div id="submit-button">
+                <%= f.button :submit, 'Play', class: "button-main", id: "play-button" %>
+              </div>
+            <% end %>
+        </div>
+      </div>
+
 
       <div class="loader-wrapper hide-element">
         <div class="floor"></div>

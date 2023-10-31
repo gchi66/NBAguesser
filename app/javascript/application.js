@@ -67,7 +67,7 @@ function updateStreakAndCorrectGuesses() {
   const streakStartDate = localStorage.getItem("streak_start_date");
 
   // user must get 3/5 guesses correct
-  if (correctGuesses % 5 === 2) {
+  if (dailyCorrectGuesses % 5 === 2) {
     localStorage.setItem("daily_streak", currentStreak + 1);
     // incrementing daily challenges
     localStorage.setItem("daily_challenges_completed", dailyChallengesCompleted + 1);
@@ -85,6 +85,28 @@ function getDailyCorrectGuesses() {
   const dailyCorrectGuesses = parseInt(localStorage.getItem("daily_correct_guesses")) || 0;
   return dailyCorrectGuesses;
 }
+
+function updateGuessCounter() {
+  const dailyCorrectGuesses = parseInt(localStorage.getItem("daily_correct_guesses")) || 0;
+  const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
+
+  const totalGuessBar = document.getElementById("total-guess-bar");
+  const correctGuessBar = document.getElementById("correct-guess-bar");
+
+  const totalGuessNumber = document.getElementById("total-guess-number");
+  const correctGuessNumber = document.getElementById('correct-guess-number');
+
+
+
+  // Calculate the width of the bars based on the remaining guesses
+  // const totalGuessesRemaining = 5 - totalDailyGuesses;
+  totalGuessBar.style.width = totalDailyGuesses * 2 + 'vh';
+  totalGuessNumber.innerText = `(${totalDailyGuesses})`;
+  correctGuessBar.style.width = dailyCorrectGuesses * 2 + 'vh';
+  correctGuessNumber.innerText = `(${dailyCorrectGuesses})`;
+}
+updateGuessCounter();
+
 
 // setting stats content/social media
 const dailyStreakAlert = document.getElementById("dailyStreakAlert");
@@ -295,6 +317,7 @@ document.addEventListener("DOMContentLoaded", function(){
       form.addEventListener("submit", function(event) {
         event.preventDefault();
         const messageContainer = document.getElementById("message-container");
+        const guessCounterContainer  = document.querySelector(".guess-counter-container");
         const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
 
         // disabling the play button until content is loaded.
@@ -305,6 +328,7 @@ document.addEventListener("DOMContentLoaded", function(){
           loader.classList.remove("hide-element");
           landingContainer.classList.add("hide-element");
           messageContainer.classList.add("hide-element");
+          guessCounterContainer.classList.add("hide-element");
         }
 
         // limiting the totalDailyGuesses to 5
@@ -392,11 +416,15 @@ document.addEventListener("DOMContentLoaded", function(){
                 // checking if the user guess is correct and also storing stats for the modal
                 if (userGuessCorrect) {
                     updateStreakAndCorrectGuesses();
+                    updateGuessCounter();
+                    guessCounterContainer.classList.remove("hide-element");
                     pageContainer.classList.add("hide-element");
                     resultContainer.innerHTML = "<h1>Nice work hoophead!</h1>";
                     resultPageContainer.classList.remove("hide-element");
                     pageContainerTwo.classList.remove("hide-element");
                   } else {
+                    updateGuessCounter();
+                    guessCounterContainer.classList.remove("hide-element");
                     pageContainer.classList.add("hide-element");
                     pageContainerTwo.classList.remove("hide-element");
                     resultContainer.innerHTML = "<h1>Not quite! Better luck next time.</h1>";
