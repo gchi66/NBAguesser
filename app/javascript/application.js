@@ -278,22 +278,18 @@ popup();
 document.addEventListener("DOMContentLoaded", function(){
 
     // Resetting the values
-    function resetValuesIfPastMidnight() {
+    function resetValuesIfNewDay() {
       const now = new Date();
-      const midnight = new Date(now);
-      midnight.setHours(0, 0, 0, 0);
+      const lastResetDate = new Date(localStorage.getItem("last_reset_date"));
 
-      if (now > midnight) {
-        const dailyCorrectGuesses = parseInt(localStorage.getItem("daily_correct_guesses")) || 0;
-        const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
-
-        if (dailyCorrectGuesses > 0 || totalDailyGuesses > 0) {
-          localStorage.setItem("daily_correct_guesses", 0);
-          localStorage.setItem("total_daily_guesses", 0);
-        }
+      if (now.toDateString() !== lastResetDate.toDateString()) {
+        console.log("guesses reset triggered");
+        localStorage.setItem("daily_correct_guesses", 0);
+        localStorage.setItem("total_daily_guesses", 0);
+        localStorage.setItem("last_reset_date", now.toDateString());
       }
     }
-    resetValuesIfPastMidnight();
+    resetValuesIfNewDay();
 
 
   // GENERATING UNIQUE DEVICE ID BASED ON TIMESTAMP
