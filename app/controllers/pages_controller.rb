@@ -5,33 +5,11 @@ require 'net/http'
 class PagesController < ApplicationController
 
   def home
-    Rails.logger.debug "home before methods and clear: #{`ps -o rss= -p #{$$}`.to_i / 1024} MB"
     clear_correct_player_session
     find_correct_player
     find_guess_players
-    # respond_to do |format|
-    #   format.html { render 'home' }
-    #   format.turbo_stream { render turbo_stream: turbo_stream.replace('landing-page', partial: 'turbo_landing_page') }
-    # end
     render 'home'
   end
-
-  def create
-    # user_device_id = session[:user_device_id] ||= SecureRandom.uuid
-    # device = Device.find_or_create_by(uuid: user_device_id)
-    # user_guess = params[:guess]["guess"]
-    # if user_guess == session[:correct_player_name]
-    #   UserGuessForDevice.create(device_id: device.id, correct: true)
-    # else
-    #   UserGuessForDevice.create(device_id: device.id, correct: false)
-    # end
-  end
-
-  # def show_user_guesses
-  #   device_id = session[:user_device_id]
-  #   user_guesses = UserGuessForDevice.where(device_id: device_id)
-  #   # Use user_guesses as needed
-  # end
 
   def find_correct_player
     if params[:season].present? && params[:season][:season].present?
@@ -56,7 +34,6 @@ class PagesController < ApplicationController
       @correct_player[:id] = @correct_player[:player_id]
       session[:correct_player_name] = @correct_player[:name] if @correct_player[:name].present?
       session[:correct_player_image] = @correct_player[:image_url] if @correct_player[:image_url].present?
-      # gon.correct_player_name = @correct_player[:name]
     end
   end
 
@@ -124,7 +101,6 @@ class PagesController < ApplicationController
     end
 
     img_tag['src'] if img_tag
-
   end
 
   def clear_correct_player_session
