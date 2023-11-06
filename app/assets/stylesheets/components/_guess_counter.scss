@@ -1,12 +1,28 @@
-.guess-counter-container {
-  position: fixed;
-  top: 10dvh;
-  right: 8dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 20dvh;
+@media (min-width: 769px) and (max-width: 5000px) {
+  .guess-counter-container {
+    position: fixed;
+    top: 10dvh;
+    right: 20dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20dvh;
+  }
 }
+
+@media (max-width: 769px) {
+  .guess-counter-container {
+    position: fixed;
+    top: 10dvh;
+    right: 8dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20dvh;
+  }
+
+}
+
 
 .counter {
   display: flex;
