@@ -2,7 +2,7 @@
 
 Guess the NBA player based on a set of statistics.
 
-#### Video Demo:  <URL HERE>
+#### Video Demo:  <https://youtu.be/rTuKzBSqtO0>
 
 #### Description:
 
