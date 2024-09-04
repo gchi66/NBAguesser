@@ -17,11 +17,15 @@ class PagesController < ApplicationController
 
       url = "https://www.basketball-reference.com/leagues/NBA_#{season}_per_game.html"
 
+
       doc = Nokogiri::HTML(URI.open(url))
 
-      players_row = doc.css('tr.full_table')
-
-      selected_rows = players_row[1..380].to_a
+      players_row = doc.css('tr').select do |row|
+        row.at('th[scope="row"]')
+      end
+      # puts "Number of rows: #{players_row.count}"
+      # puts players_row.first(3).map(&:to_html)
+      selected_rows = players_row[1..450].to_a
 
       player_with_points = nil
       while player_with_points.nil?
@@ -42,12 +46,16 @@ class PagesController < ApplicationController
       season = params[:season][:season]
 
       url = "https://www.basketball-reference.com/leagues/NBA_#{season}_per_game.html"
+      puts "Fetched URL: #{url}"
 
       doc = Nokogiri::HTML(URI.open(url))
 
-      players_row = doc.css('tr.full_table')
+      players_row = doc.css('tr').select do |row|
+        row.at('th[scope="row"]')
+      end
+      puts "Number of rows fetched: #{players_row.count}"
 
-      selected_rows = players_row[1..380].to_a
+      selected_rows = players_row[1..450].to_a
 
       @guess_players = selected_rows.sample(3).map do |player_row|
         parse_player_data(player_row)
@@ -60,7 +68,7 @@ class PagesController < ApplicationController
   def parse_player_data(player_row)
     return {} unless player_row
 
-    player_link = player_row.at_css('td[data-stat="player"] a')
+    player_link = player_row.at_css('td[data-stat="name_display"] a')
     profile_url = "https://www.basketball-reference.com#{player_link['href']}"
     player_id = player_link['href'].split('/').last.split('.').first
 
