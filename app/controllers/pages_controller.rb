@@ -6,26 +6,42 @@ class PagesController < ApplicationController
 
   def home
     clear_correct_player_session
+    fetch_players_data
     find_correct_player
     find_guess_players
     render 'home'
+  end
+
+  def fetch_players_data
+    @players_data ||= {}
+
+    if params[:season].present? && params[:season][:season].present?
+      season = params[:season][:season]
+      url = "https://www.basketball-reference.com/leagues/NBA_#{season}_per_game.html"
+
+      doc = Nokogiri::HTML(URI.open(url))
+      players_row = doc.css('tr').select do |row|
+        row.at('th[scope="row"]')
+      end
+      @players_data[season] = players_row[1..450].to_a
+    end
   end
 
   def find_correct_player
     if params[:season].present? && params[:season][:season].present?
       season = params[:season][:season]
 
-      url = "https://www.basketball-reference.com/leagues/NBA_#{season}_per_game.html"
+      # url = "https://www.basketball-reference.com/leagues/NBA_#{season}_per_game.html"
 
 
-      doc = Nokogiri::HTML(URI.open(url))
+      # doc = Nokogiri::HTML(URI.open(url))
 
-      players_row = doc.css('tr').select do |row|
-        row.at('th[scope="row"]')
-      end
+      # players_row = doc.css('tr').select do |row|
+      #   row.at('th[scope="row"]')
+      # end
       # puts "Number of rows: #{players_row.count}"
       # puts players_row.first(3).map(&:to_html)
-      selected_rows = players_row[1..450].to_a
+      selected_rows = @players_data[season]
 
       player_with_points = nil
       while player_with_points.nil?
@@ -45,17 +61,17 @@ class PagesController < ApplicationController
     if params[:season].present? && params[:season][:season].present?
       season = params[:season][:season]
 
-      url = "https://www.basketball-reference.com/leagues/NBA_#{season}_per_game.html"
-      puts "Fetched URL: #{url}"
+      # url = "https://www.basketball-reference.com/leagues/NBA_#{season}_per_game.html"
+      # puts "Fetched URL: #{url}"
 
-      doc = Nokogiri::HTML(URI.open(url))
+      # doc = Nokogiri::HTML(URI.open(url))
 
-      players_row = doc.css('tr').select do |row|
-        row.at('th[scope="row"]')
-      end
-      puts "Number of rows fetched: #{players_row.count}"
+      # players_row = doc.css('tr').select do |row|
+      #   row.at('th[scope="row"]')
+      # end
+      # puts "Number of rows fetched: #{players_row.count}"
 
-      selected_rows = players_row[1..450].to_a
+      selected_rows = @players_data[season]
 
       @guess_players = selected_rows.sample(3).map do |player_row|
         parse_player_data(player_row)
@@ -110,6 +126,7 @@ class PagesController < ApplicationController
 
     img_tag['src'] if img_tag
   end
+
 
   def clear_correct_player_session
     session[:correct_player_name] = nil
