@@ -1,17 +1,33 @@
 @media (min-width: 769px) and (max-width: 5000px) {
-  .guess-counter-container {
-    position: fixed;
-    top: 10dvh;
-    right: 20dvh;
+  .guess-cards-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 75%;
+    gap: 3rem;
+    margin-bottom: 3%;
+  }
+
+  .guess-card {
+    // position: fixed;
+    // top: 10dvh;
+    // right: 20dvh;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 20dvh;
+    width: 35dvh;
+    background-color: white;
+    padding: 2dvh;
   }
+
+
 }
 
 @media (max-width: 769px) {
-  .guess-counter-container {
+  .guess-card {
     position: fixed;
     top: 10dvh;
     right: 8dvh;
@@ -23,31 +39,75 @@
 
 }
 
+.text-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.guess-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2vh;
+}
+
+.icon-container {
+  width: 5vh;
+  height: 5vh;
+  background-color: #f1f5f8; /* Background for the icon */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 2vh; /* Space between icon and text */
+}
+
+.icon {
+  width: 2.5vh; /* Icon size */
+  height: auto; /* Keep aspect ratio */
+}
+
+.bar-container {
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.progress-bar-background {
+  width: 85%; /* Adjust as needed */
+  height: 1.5vh;
+  background-color: #bce9e9; /* Lighter background color */
+  border-radius: 1vh;
+  overflow: hidden; /* Ensures the fill stays within the container */
+  margin-bottom: 0.5vh;
+}
 
 .counter {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   margin: 1vh 0;
 }
 
 .label {
-  width: 10vh;
+  width: 23vh;
   text-align: left;
   padding-right: 2vh;
+  // padding-left: 2vh;
   font-weight: bold;
+  margin-bottom: 0.5vh;
 }
 
 .guess-bar {
-  height: 2vh;
-  width: 10vh;
-  background-color: #00ADB5;
+  height: 100%;
+  width: 0%;
+  background-color: #3c969b;
   transition: width 0.5s;
-  border-radius: 1vh;
+  // border-radius: 1vh;
 }
 
 .number {
-  font-size: 1.5vh;
+  font-size: 2.5vh;
   color: #333;
-  text-align: center;
+  // text-align: center;
 }

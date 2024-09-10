@@ -89,6 +89,7 @@ function getDailyCorrectGuesses() {
 function updateGuessCounter() {
   const dailyCorrectGuesses = parseInt(localStorage.getItem("daily_correct_guesses")) || 0;
   const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
+  const maxGuesses = 5; // Maximum number of guesses
 
   const totalGuessBar = document.getElementById("total-guess-bar");
   const correctGuessBar = document.getElementById("correct-guess-bar");
@@ -96,15 +97,19 @@ function updateGuessCounter() {
   const totalGuessNumber = document.getElementById("total-guess-number");
   const correctGuessNumber = document.getElementById('correct-guess-number');
 
+  // Calculate the percentage fill for the bars
+  const totalGuessPercentage = (totalDailyGuesses / maxGuesses) * 100;
+  const correctGuessPercentage = (dailyCorrectGuesses / maxGuesses) * 100;
 
+  // Update the width of the progress bars
+  totalGuessBar.style.width = totalGuessPercentage + '%';
+  correctGuessBar.style.width = correctGuessPercentage + '%';
 
-  // Calculate the width of the bars based on the remaining guesses
-  // const totalGuessesRemaining = 5 - totalDailyGuesses;
-  totalGuessBar.style.width = totalDailyGuesses * 2 + 'vh';
-  totalGuessNumber.innerText = `(${totalDailyGuesses})`;
-  correctGuessBar.style.width = dailyCorrectGuesses * 2 + 'vh';
-  correctGuessNumber.innerText = `(${dailyCorrectGuesses})`;
+  // Update the numbers displayed
+  totalGuessNumber.innerText = totalDailyGuesses;
+  correctGuessNumber.innerText = dailyCorrectGuesses;
 }
+
 updateGuessCounter();
 
 
@@ -313,7 +318,7 @@ document.addEventListener("DOMContentLoaded", function(){
       form.addEventListener("submit", function(event) {
         event.preventDefault();
         const messageContainer = document.getElementById("message-container");
-        const guessCounterContainer  = document.querySelector(".guess-counter-container");
+        const guessCounterContainer  = document.querySelector(".guess-cards-container");
         const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
 
         // disabling the play button until content is loaded.
