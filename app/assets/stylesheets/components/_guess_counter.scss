@@ -83,6 +83,17 @@
   align-items: center;
 }
 
+.balls-container {
+  width: 94%;
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+}
+
+.balls {
+  text-align: left;
+}
+
 .progress-bar-background {
   width: 100%; /* Adjust as needed */
   height: 1.5vh;

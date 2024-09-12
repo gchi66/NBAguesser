@@ -89,25 +89,37 @@ function getDailyCorrectGuesses() {
 function updateGuessCounter() {
   const dailyCorrectGuesses = parseInt(localStorage.getItem("daily_correct_guesses")) || 0;
   const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
+  const dailyStreak = calculateConsecutiveDays();
   const maxGuesses = 5; // Maximum number of guesses
 
-  const totalGuessBar = document.getElementById("total-guess-bar");
-  const correctGuessBar = document.getElementById("correct-guess-bar");
+  const totalGuessBars = document.querySelectorAll(".total-guess-bar");
+  const correctGuessBars = document.querySelectorAll(".correct-guess-bar");
+  const bballEmojis = "🏀".repeat(dailyStreak);
+  const ballsContent = document.getElementById("balls-content");
 
-  const totalGuessNumber = document.getElementById("total-guess-number");
-  const correctGuessNumber = document.getElementById('correct-guess-number');
-
+  const totalGuessNumbers = document.querySelectorAll(".total-guess-number");
+  const correctGuessNumbers = document.querySelectorAll('.correct-guess-number');
+  const currentStreakNumber = document.getElementById('current-streak-number');
   // Calculate the percentage fill for the bars
   const totalGuessPercentage = (totalDailyGuesses / maxGuesses) * 100;
   const correctGuessPercentage = (dailyCorrectGuesses / maxGuesses) * 100;
-
-  // Update the width of the progress bars
-  totalGuessBar.style.width = totalGuessPercentage + '%';
-  correctGuessBar.style.width = correctGuessPercentage + '%';
-
+  // Update the width of the total guess bars (since it's a NodeList, loop through it)
+  totalGuessBars.forEach((bar) => {
+    bar.style.width = totalGuessPercentage + '%';
+  });
+  correctGuessBars.forEach((bar) => {
+    bar.style.width = correctGuessPercentage + '%';
+  });
   // Update the numbers displayed
-  totalGuessNumber.innerText = totalDailyGuesses;
-  correctGuessNumber.innerText = dailyCorrectGuesses;
+  totalGuessNumbers.forEach((number) => {
+    number.innerText = totalDailyGuesses;
+  });
+  correctGuessNumbers.forEach((number) => {
+    number.innerText = dailyCorrectGuesses;
+  });
+  currentStreakNumber.innerText = dailyStreak;
+  ballsContent.innerHTML = bballEmojis;
+
 }
 
 updateGuessCounter();
@@ -115,9 +127,9 @@ updateGuessCounter();
 
 // setting stats content/social media
 const dailyStreakAlert = document.getElementById("dailyStreakAlert");
-const statsContent = document.getElementById("statsContent");
-const statsContent1 = document.getElementById("statsContent1");
-const statsContent2 = document.getElementById("statsContent2");
+// const statsContent = document.getElementById("statsContent");
+// const statsContent1 = document.getElementById("statsContent1");
+// const statsContent2 = document.getElementById("statsContent2");
 const shareHeader =  document.getElementById("share-header");
 const shareButtonsContainer = document.getElementById("share-buttons-container");
 const shareButtonX = document.getElementById("x-share-button");
@@ -168,23 +180,24 @@ if (!hasShownModal) {
 
 // STATS MODAL VVVV
 btnStats.onclick = function() {
+  const dailyCorrectGuesses = parseInt(localStorage.getItem("daily_correct_guesses")) || 0;
+  updateGuessCounter();
   modal.style.display = "block";
   statsContainer.classList.remove("hide-element");
   instructionsContainer.classList.add("hide-element");
   dailyStreakAlert.classList.add("hide-element");
-  const dailyCorrectGuesses = parseInt(localStorage.getItem("daily_correct_guesses")) || 0;
-  let consecutiveDays = calculateConsecutiveDays();
-  // bball emoji for each time they've completed a challenge
-  const bballEmojis = "🏀".repeat(consecutiveDays);
-  // calculating win percentage
-  const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
-  const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
-  const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 : 0;
-  // updating the modal content
+  // let consecutiveDays = calculateConsecutiveDays();
+  // // bball emoji for each time they've completed a challenge
+  // const bballEmojis = "🏀".repeat(consecutiveDays);
+  // // calculating win percentage
+  // const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
+  // const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+  // const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 : 0;
+  // // updating the modal content
 
-  statsContent.innerHTML = `Current Streak: (${consecutiveDays})${bballEmojis}<br>`
-  statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
-  statsContent2.innerHTML = `Total challenges completed: ${dailyChallengesCompleted}`
+  // statsContent.innerHTML = `Current Streak: (${consecutiveDays})${bballEmojis}<br>`
+  // statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
+  // statsContent2.innerHTML = `Total challenges completed: ${dailyChallengesCompleted}`
   if (totalDailyGuesses >= 5) {
     if (dailyCorrectGuesses >= 3) {
       shareButtonsContainer.classList.remove("hide-element");
@@ -226,7 +239,7 @@ const loader = document.querySelector(".loader-wrapper");
 const landingContainer = document.querySelector(".landing-container");
 
 
-// Doing things when the landing containers class is changed.
+// Doing things when the landing container's class is changed.
 function handleClassChange(mutationsList) {
   for (const mutation of mutationsList) {
     if (mutation.type === "attributes" && mutation.attributeName === "class") {
@@ -243,16 +256,18 @@ observer.observe(landingContainer, observerConfig);
 
 // POPUP TO DETERMINE IF THEY'VE EARNED THEIR STAR FOR THE DAY
 function popup() {
+  updateGuessCounter();
+  calculateConsecutiveDays();
   const totalDailyGuesses = parseInt(localStorage.getItem("total_daily_guesses")) || 0;
-  const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
-  const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
+  // const totalGuesses = parseInt(localStorage.getItem("total_guesses")) || 0;
+  // const correctGuesses = parseInt(localStorage.getItem("correct_guesses")) || 0;
   const dailyCorrectGuesses = parseInt(localStorage.getItem("daily_correct_guesses")) || 0;
-  const dailyChallengesCompleted = parseInt(localStorage.getItem("daily_challenges_completed")) || 0;
-  let consecutiveDays = calculateConsecutiveDays();
+  // const dailyChallengesCompleted = parseInt(localStorage.getItem("daily_challenges_completed")) || 0;
+  // let consecutiveDays = calculateConsecutiveDays();
   // bball emoji for each time they've completed a challenge
-  const bballEmojis = "🏀".repeat(consecutiveDays);
+  // const bballEmojis = "🏀".repeat(consecutiveDays);
   // calculating win percentage
-  const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 : 0;
+  // const winPercentage = totalGuesses > 0 ? (correctGuesses / totalGuesses) * 100 : 0;
   if (totalDailyGuesses >= 5) {
     if (dailyCorrectGuesses >=3) {
       modal.style.display = "block";
@@ -260,11 +275,12 @@ function popup() {
       statsContainer.classList.remove("hide-element");
       dailyStreakAlert.classList.remove("hide-element");
       dailyStreakAlert.innerHTML = `Congrats, you guessed ${dailyCorrectGuesses} players correctly and have earned yourself a 🏀. See you tomorrow!`
-      statsContent.innerHTML = `Current Streak: (${consecutiveDays})${bballEmojis}<br>`
-      statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
-      statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
+      // statsContent.innerHTML = `Current Streak: (${consecutiveDays})${bballEmojis}<br>`
+      // statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
+      // statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
       shareButtonsContainer.classList.remove("hide-element");
       shareHeader.classList.remove("hide-element");
+      // TODO: show current streak number on a card
     }
     else {
       modal.style.display = "block";
@@ -272,9 +288,10 @@ function popup() {
       statsContainer.classList.remove("hide-element");
       dailyStreakAlert.classList.remove("hide-element");
       dailyStreakAlert.innerHTML = `So close, but you only got ${dailyCorrectGuesses} players correct today. Better luck next time!`
-      statsContent.innerHTML = `Current Streak: (${consecutiveDays})${bballEmojis}<br>`
-      statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
-      statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
+      // statsContent.innerHTML = `Current Streak: (${consecutiveDays})${bballEmojis}<br>`
+      // statsContent1.innerHTML = `Win Percentage: ${winPercentage.toFixed(2)}%`;
+      // statsContent2.innerHTML =`Total challenges completed: ${dailyChallengesCompleted}`
+      // TODO: Make current streak show up as zero on a card.
     }
   }
 }
