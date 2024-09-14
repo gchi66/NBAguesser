@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   root to: "pages#home"
   post '/', to: "pages#home"
   get '/pages/win', to: 'pages#win', as: :win_page

@@ -10,23 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_21_120729) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_13_205709) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "devices", force: :cascade do |t|
-    t.string "uuid"
+  create_table "player_stats", force: :cascade do |t|
+    t.integer "player_id"
+    t.integer "season_id"
+    t.decimal "points_per_game"
+    t.decimal "rebounds_per_game"
+    t.decimal "assists_per_game"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_guesses_for_devices", force: :cascade do |t|
-    t.bigint "device_id", null: false
-    t.boolean "correct"
+  create_table "players", force: :cascade do |t|
+    t.string "name"
+    t.integer "team_id"
+    t.decimal "points_per_game"
+    t.decimal "rebounds_per_game"
+    t.decimal "assists_per_game"
+    t.text "profile_url"
+    t.text "image_url"
+    t.string "player_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["device_id"], name: "index_user_guesses_for_devices_on_device_id"
   end
 
-  add_foreign_key "user_guesses_for_devices", "devices"
+  create_table "seasons", force: :cascade do |t|
+    t.integer "year"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string "name"
+    t.string "abbreviation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "player_stats", "players"
+  add_foreign_key "player_stats", "seasons"
+  add_foreign_key "players", "teams"
 end

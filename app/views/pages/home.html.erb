@@ -216,7 +216,7 @@
 
         <div class="form-container" turbo-frame id="season-form">
             <%= simple_form_for :season, url: root_path, remote: true, method: :post do |f| %>
-              <%= f.input :season, collection: (1950..2024).to_a.reverse.map(&:to_s), prompt: 'Select a season', label: false %>
+              <%= f.input :year, collection: (1950..2024).to_a.reverse.map(&:to_s), prompt: 'Select a season', label: false %>
               <div id="submit-button">
                 <%= f.button :submit, 'Play', class: "button-main", id: "play-button" %>
               </div>
@@ -244,10 +244,10 @@
         <div class="correct-player-card hide-element">
           <% if @correct_player %>
             <h1>Which player averaged</h1>
-            <div class="correct-player-info" data-correct-player-name="<%= @correct_player[:name] %>">
-              <h4>Points: <span class="stat"><%= @correct_player[:points] %></span></h4>
-              <h4>Rebounds: <span class="stat"><%= @correct_player[:rebounds] %></span></h4>
-              <h4>Assists: <span class="stat"><%= @correct_player[:assists] %></span></h4>
+            <div class="correct-player-info" data-correct-player-name="<%= @correct_player.name %>">
+              <h4>Points: <span class="stat"><%= @correct_player.player_stats.find_by(season_id: @season.id).points_per_game %></span></h4>
+              <h4>Rebounds: <span class="stat"><%= @correct_player.player_stats.find_by(season_id: @season.id).rebounds_per_game %></span></h4>
+              <h4>Assists: <span class="stat"><%= @correct_player.player_stats.find_by(season_id: @season.id).assists_per_game %></span></h4>
             </div>
           <% end %>
         </div>
@@ -260,13 +260,13 @@
       <div class="player-card-container hide-element">
         <% combined_players = @guess_players + [@correct_player] %>
           <% combined_players.shuffle.compact.each do |player| %>
-            <div class="player-card" data-player-name="<%= player[:name] %>">
-              <% if player[:image_url].present? %>
-                <%= image_tag(player[:image_url], alt: "Player Image") %>
+            <div class="player-card" data-player-name="<%= player.name %>">
+              <% if player.image_url.present? %>
+                <%= image_tag(player.image_url, alt: "Player Image") %>
               <% else %>
                 <%= image_tag("default-player-img.png", alt: 'Default Player Image') %>
               <% end %>
-              <h2><%= player[:name] %></h2>
+              <h2><%= player.name %></h2>
             </div>
           <% end %>
       </div>
@@ -292,13 +292,13 @@
 
 
           <div class="result-player-card ">
-            <% if @correct_player && @correct_player[:image_url].present? %>
-              <%= image_tag(@correct_player[:image_url], alt: "A picture of #{@correct_player[:name]}") %>
+            <% if @correct_player && @correct_player.image_url.present? %>
+              <%= image_tag(@correct_player.image_url, alt: "A picture of #{@correct_player.name}") %>
             <% else %>
               <%= image_tag("default-player-img.png", alt: 'Default Player Image') %>
             <% end %>
-            <% if @correct_player && @correct_player[:name].present? %>
-              <h2><%= @correct_player[:name] %></h2>
+            <% if @correct_player && @correct_player.name.present? %>
+              <h2><%= @correct_player.name %></h2>
             <% end %>
           </div>
 

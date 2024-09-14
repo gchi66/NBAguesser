@@ -34,6 +34,7 @@ gem "rails-ujs"
 gem 'rails_real_favicon'
 gem 'rack-mini-profiler'
 gem 'memory_profiler'
+gem 'rails_admin'
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"

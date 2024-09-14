@@ -217,9 +217,7 @@ btnInstructions.onclick = function() {
   instructionsContent1.innerHTML = `Each day you can guess up to 5 players. Guess at least 3 correctly and earn yourself a 🏀!`;
   instructionsContent2.innerHTML = `How long can you keep your daily streak going for? 🤔`;
 }
-
 var closeBtn = document.getElementsByClassName("close")[0];
-
 closeBtn.onclick = function() {
   modal.style.display = "none";
 }
@@ -237,7 +235,6 @@ const form = seasonForm ? seasonForm.firstElementChild : null;
 const playButton = document.getElementById("play-button");
 const loader = document.querySelector(".loader-wrapper");
 const landingContainer = document.querySelector(".landing-container");
-
 
 // Doing things when the landing container's class is changed.
 function handleClassChange(mutationsList) {
@@ -364,15 +361,16 @@ document.addEventListener("DOMContentLoaded", function(){
           url: form.action,
           data: formData,
           success: function(data) {
-            // console.log("ajax successfully fired");
+            console.log("ajax successfully fired");
             // SEASON SELECTION LOGIC AND APPEARING HEADER LOGIC
             const headingContainer = document.querySelector(".heading-container");
             const playerCardContainer = data.querySelector(".player-card-container");
             const correctPlayerCard = data.querySelector(".correct-player-card");
             const resultPlayerCard = data.querySelector(".result-player-card");
 
-            if (formData.get("season[season]")) {
-              const currentYearString = formData.get("season[season]");
+
+            if (formData.get("season[year]")) {
+              const currentYearString = formData.get("season[year]");
               const currentYear = parseInt(currentYearString, 10);
               const previousYear = currentYear - 1;
               const seasonText = `in the ${previousYear}-${currentYear} season?`;

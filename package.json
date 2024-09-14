@@ -9,6 +9,7 @@
     "@rails/ujs": "^7.0.0",
     "@rails/webpacker": "5.4.4",
     "bootstrap": "^5.2.3",
+    "rails_admin": "3.2.0",
     "webpack": "^4.46.0",
     "webpack-cli": "^3.3.12"
   },
@@ -19,5 +20,8 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "webpack-dev-server": "^3"
   },
-  "packageManager": "yarn@1.22.19"
+  "packageManager": "yarn@1.22.19",
+  "resolutions": {
+    "rails_admin/@fortawesome/fontawesome-free": "^5.15.0"
+  }
 }
