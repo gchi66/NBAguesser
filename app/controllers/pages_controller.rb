@@ -56,29 +56,32 @@ class PagesController < ApplicationController
     end
   end
 
-  def fetch_players_data
+  def fetch_players_data(seasons = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019])
     @players_data ||= {}
 
     # if params[:season].present? && params[:season][:season].present?
-    season = 2023
-    url = "https://www.basketball-reference.com/leagues/NBA_#{season}_per_game.html"
 
-    doc = Nokogiri::HTML(URI.open(url))
-    players_row = doc.css('tr').select do |row|
-      row.at('th[scope="row"]')
-    end
-    @players_data[season] = players_row[1..450].to_a
+    seasons.each do |season|
+      url = "https://www.basketball-reference.com/leagues/NBA_#{season}_per_game.html"
 
-    @players_data[season].each do |player_row|
-      parse_player_data(player_row)
+      doc = Nokogiri::HTML(URI.open(url))
+      players_row = doc.css('tr').select do |row|
+        row.at('th[scope="row"]')
+      end
+      @players_data[season] = players_row[1..-1].to_a
+
+      @players_data[season].each do |player_row|
+        parse_player_data(player_row, season)
+      end
     end
-    # end
   end
 
-  def parse_player_data(player_row)
+  def parse_player_data(player_row, season_year)
     return {} unless player_row
 
     player_link = player_row.at_css('td[data-stat="name_display"] a')
+    return {} unless player_link
+
     profile_url = "https://www.basketball-reference.com#{player_link['href']}"
     player_id = player_link['href'].split('/').last.split('.').first
     team_name = player_row.at_css('td[data-stat="team_id"] a')&.text || "N/A"
@@ -89,29 +92,34 @@ class PagesController < ApplicationController
       p.name = player_link.text
       p.team_id = team.id
       p.profile_url = profile_url
-      p.image_url = fetch_player_image(profile_url)
     end
 
-    if player.image_url.blank?
-      player.update(image_url: fetch_player_image(profile_url))
-    end
+    player_image = fetch_player_image(profile_url)
+    player.update(image_url: player_image) if player.image_url.blank?
 
-    season_year = '2023'
     season_id = Season.find_or_create_by(year: season_year).id
-    PlayerStat.create!(
-      player_id: player.id,
-      season_id: season_id,
-      points_per_game: player_row.at_css('td[data-stat="pts_per_g"]').text.to_f,
-      rebounds_per_game: player_row.at_css('td[data-stat="trb_per_g"]').text.to_f,
-      assists_per_game: player_row.at_css('td[data-stat="ast_per_g"]').text.to_f
-    )
+
+    # Create player stats if all values are present
+    points = player_row.at_css('td[data-stat="pts_per_g"]')&.text.to_f
+    rebounds = player_row.at_css('td[data-stat="trb_per_g"]')&.text.to_f
+    assists = player_row.at_css('td[data-stat="ast_per_g"]')&.text.to_f
+
+    if points && rebounds && assists
+      PlayerStat.create!(
+        player_id: player.id,
+        season_id: season_id,
+        points_per_game: points,
+        rebounds_per_game: rebounds,
+        assists_per_game: assists
+      )
+    end
 
     {
       name: player.name,
       team: team.name,
-      points: player.points_per_game,
-      rebounds: player.rebounds_per_game,
-      assists: player.assists_per_game,
+      points: points,
+      rebounds: rebounds,
+      assists: assists,
       profile_url: profile_url,
       image_url: player.image_url,
       player_id: player_id
@@ -141,7 +149,7 @@ class PagesController < ApplicationController
     rescue StandardError => e
       puts "Error fetching player image: #{e.message}"
     end
-    sleep(1.5) # Pause between requests
+    sleep(2) # Pause between requests
 
     img_tag['src'] if img_tag
   end
