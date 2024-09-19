@@ -19,7 +19,7 @@ default: &default
   encoding: unicode
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: 5
 
 development:
   <<: *default
@@ -81,6 +81,8 @@ test:
 #
 production:
   <<: *default
-  database: NBAguesser_production
-  username: NBAguesser
-  password: <%= ENV["NBAGUESSER_DATABASE_PASSWORD"] %>
+  database: postgres
+  username: postgres.fuqkefrkfklbqxfgqust
+  password: <%= ENV["SUPABASE_PASSWORD"] %>
+  host: aws-0-us-west-1.pooler.supabase.com
+  port: 6543

@@ -15,8 +15,21 @@ class PagesController < ApplicationController
     if params[:season].present? && params[:season][:year].present?
       # querying the db instead of scraping
       @season = Season.find_by(year: params[:season][:year])
+      if @season.nil?
+        Rails.logger.error("Season not found for year #{params[:season][:year]}")
+        return
+      end
       player_stat = PlayerStat.joins(:player).where(season_id: @season.id).where('player_stats.points_per_game > ?', 1).sample
+      Rails.logger.info("Player stats found: #{player_stat.inspect}")
+      if player_stat.nil?
+        Rails.logger.error("No player_stat found for season #{@season.id}")
+        return
+      end
       @correct_player = player_stat.player
+      if @correct_player.nil?
+        Rails.logger.error("No player associated with player_stat #{player_stat.id}")
+        return
+      end
       session[:correct_player_name] = @correct_player.name
       session[:correct_player_image] = @correct_player.image_url
 
@@ -56,10 +69,12 @@ class PagesController < ApplicationController
     end
   end
 
-  def fetch_players_data(seasons = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019])
+  def fetch_players_data(seasons = (1950..2024).to_a)
     @players_data ||= {}
 
     # if params[:season].present? && params[:season][:season].present?
+
+    puts Time.now
 
     seasons.each do |season|
       url = "https://www.basketball-reference.com/leagues/NBA_#{season}_per_game.html"
@@ -70,36 +85,53 @@ class PagesController < ApplicationController
       end
       @players_data[season] = players_row[1..-1].to_a
 
-      @players_data[season].each do |player_row|
-        parse_player_data(player_row, season)
+      @players_data[season].each_with_index do |player_row, index|
+        parse_player_data(player_row, season, index)
       end
+      puts "Finished processing season #{season}"
     end
   end
 
-  def parse_player_data(player_row, season_year)
+  def parse_player_data(player_row, season_year, index)
     return {} unless player_row
 
     player_link = player_row.at_css('td[data-stat="name_display"] a')
     return {} unless player_link
 
-    profile_url = "https://www.basketball-reference.com#{player_link['href']}"
+    player_name = player_link&.text || "Unknown Player"
     player_id = player_link['href'].split('/').last.split('.').first
     team_name = player_row.at_css('td[data-stat="team_id"] a')&.text || "N/A"
 
-    team = Team.find_or_create_by(name: team_name)
-
-    player = Player.find_or_create_by(player_id: player_id) do |p|
-      p.name = player_link.text
-      p.team_id = team.id
-      p.profile_url = profile_url
+    # Log progress every 50 players
+    if index % 50 == 0
+      puts "Processing player #{index}: #{player_name} for season #{season_year}..."
     end
 
-    player_image = fetch_player_image(profile_url)
-    player.update(image_url: player_image) if player.image_url.blank?
+    # Find or create the season
+    season = Season.find_or_create_by(year: season_year)
 
-    season_id = Season.find_or_create_by(year: season_year).id
+    # Find or create the player and team
+    team = Team.find_or_create_by(name: team_name)
+    player = Player.find_or_create_by(player_id: player_id) do |p|
+      p.name = player_name
+      p.team_id = team.id
+      p.profile_url = "https://www.basketball-reference.com#{player_link['href']}"
+    end
 
-    # Create player stats if all values are present
+    # Check if player stats for this season already exist
+    existing_stats = PlayerStat.find_by(player_id: player.id, season_id: season.id)
+    if existing_stats
+      puts "Player stats for #{player_name} in season #{season_year} already exist. Skipping..."
+      return
+    end
+
+    # Fetch player image if missing
+    if player.image_url.blank?
+      player_image = fetch_player_image(player.profile_url)
+      player.update(image_url: player_image)
+    end
+
+    # Create player stats if available
     points = player_row.at_css('td[data-stat="pts_per_g"]')&.text.to_f
     rebounds = player_row.at_css('td[data-stat="trb_per_g"]')&.text.to_f
     assists = player_row.at_css('td[data-stat="ast_per_g"]')&.text.to_f
@@ -107,7 +139,7 @@ class PagesController < ApplicationController
     if points && rebounds && assists
       PlayerStat.create!(
         player_id: player.id,
-        season_id: season_id,
+        season_id: season.id,
         points_per_game: points,
         rebounds_per_game: rebounds,
         assists_per_game: assists
@@ -120,7 +152,7 @@ class PagesController < ApplicationController
       points: points,
       rebounds: rebounds,
       assists: assists,
-      profile_url: profile_url,
+      profile_url: player.profile_url,
       image_url: player.image_url,
       player_id: player_id
     }
