@@ -327,8 +327,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
   // AJAX LOGIC VVVV
   document.addEventListener("turbo:load", function() {
-    // console.log('turbo loaded');
     if (form) {
+      // Form submission event
       form.addEventListener("submit", function(event) {
         event.preventDefault();
         const messageContainer = document.getElementById("message-container");
