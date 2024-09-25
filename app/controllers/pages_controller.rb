@@ -2,34 +2,27 @@ require 'nokogiri'
 require 'open-uri'
 require 'net/http'
 
+def deallocate_prepared_statements
+  ActiveRecord::Base.connection.execute("DEALLOCATE ALL;")
+end
+
 class PagesController < ApplicationController
 
   def home
+    # deallocate_prepared_statements
     find_correct_player
     find_guess_players
     render 'home'
   end
 
 
+
   def find_correct_player
     if params[:season].present? && params[:season][:year].present?
       # querying the db instead of scraping
       @season = Season.find_by(year: params[:season][:year])
-      if @season.nil?
-        Rails.logger.error("Season not found for year #{params[:season][:year]}")
-        return
-      end
       player_stat = PlayerStat.joins(:player).where(season_id: @season.id).where('player_stats.points_per_game > ?', 1).sample
-      Rails.logger.info("Player stats found: #{player_stat.inspect}")
-      if player_stat.nil?
-        Rails.logger.error("No player_stat found for season #{@season.id}")
-        return
-      end
       @correct_player = player_stat.player
-      if @correct_player.nil?
-        Rails.logger.error("No player associated with player_stat #{player_stat.id}")
-        return
-      end
       session[:correct_player_name] = @correct_player.name
       session[:correct_player_image] = @correct_player.image_url
 

@@ -24,6 +24,7 @@ default: &default
 development:
   <<: *default
   database: NBAguesser_development
+  prepared_statements: false
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -85,4 +86,5 @@ production:
   username: postgres.fuqkefrkfklbqxfgqust
   password: <%= ENV["SUPABASE_PASSWORD"] %>
   host: aws-0-us-west-1.pooler.supabase.com
+  prepared_statements: false
   port: 6543
